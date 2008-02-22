@@ -1,7 +1,7 @@
 package ru.amse.nikitin.sensnet.impl;
 
 import javax.swing.ImageIcon;
-
+import java.util.*;
 import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.IActiveObject;
@@ -12,12 +12,13 @@ import ru.amse.nikitin.sensnet.IMotModuleFactory;
 public class Mot implements IActiveObject {
 	protected Dispatcher s;
 	protected int id, x, y, lastMessageID, lastMessageSource, lastMessageDest;
-	protected double transmitterpower;
+	protected double transmitterPower;
 	protected double threshold;
 
+	// private MotModule net;
+	// protected MotModule app;
 	protected MotModule mac;
-	private MotModule net;
-	protected MotModule app;
+	protected List<MotModule> modules = new LinkedList<MotModule>();
 	
 	protected IBattery b = new Battery (100000000);
 	
@@ -27,14 +28,25 @@ public class Mot implements IActiveObject {
 			double power, double threshold, IMotModuleFactory f) {
 		x = x_; y = y_;
 		s = Dispatcher.getInstance();
-		transmitterpower = power;
-		this.threshold = threshold; 
-		app = f.App(this);
-		net = f.Net(this);
+		transmitterPower = power;
+		this.threshold = threshold;
 		mac = f.Mac(this);
-		app.SetNeghbours(null, net);
-		net.SetNeghbours(app, mac);
-		mac.SetNeghbours(net, null);
+		modules.add(f.App(this));
+		modules.add(f.Net(this));
+		modules.add(mac);
+		// app.SetNeghbours(null, net);
+		// net.SetNeghbours(app, mac);
+		// mac.SetNeghbours(net, null);
+		Iterator<MotModule> i = modules.iterator();
+		MotModule prev = null;
+		MotModule next = i.hasNext() ? i.next() : null;
+		while (i.hasNext()) {
+			MotModule tmp = i.next();
+			next.setNeghbours(prev, tmp);
+			prev = next;
+			next = tmp;
+		}
+		next.setNeghbours(prev, null);
 		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
 	}
 	
@@ -50,9 +62,12 @@ public class Mot implements IActiveObject {
 			case TIMER:
 				int id = m.getID();
 				// System.out.println(id + " recieved");
-				app.fireEvent(id);
-				net.fireEvent(id);
-				mac.fireEvent(id);
+				// app.fireEvent(id);
+				// net.fireEvent(id);
+				// mac.fireEvent(id);
+				for (MotModule module: modules) {
+					module.fireEvent(id);
+				}
 				return true;
 			case INIT:
 				/* sheduleEvent(new Runnable() {
@@ -63,9 +78,12 @@ public class Mot implements IActiveObject {
 				int[] t = new int [2];
 				t[1] = 0;
 				app.sendMessage(t); */
-				mac.init(s.getTopology());
-				net.init(s.getTopology());
-				app.init(s.getTopology());
+				// mac.init(s.getTopology());
+				// net.init(s.getTopology());
+				// app.init(s.getTopology());
+				for (MotModule module: modules) {
+					module.init(s.getTopology());
+				}
 				return true;
 			default:
 				if (b.drain()) {
@@ -125,7 +143,7 @@ public class Mot implements IActiveObject {
 	}
 	
 	public double getTransmitterPower() {
-		return transmitterpower;
+		return transmitterPower;
 	}
 	
 	public double getThreshold() {
