@@ -19,18 +19,21 @@ public class MotModule implements IMotModule {
 	public MotModule(Mot m) {
 		mot = m;
 	}
+	
 	public void setNeghbours(IMotModule u, IMotModule l) {
 		upper = u; // Reciever
 		lower = l; // Sender
 	}
+	
 	public boolean recieveMessage(IPacket m) {
 		return false;
 	}
+	
 	public boolean sendMessage(IPacket m) {
 		return false;
 	}
 	
-	public void scheduleEvent(Runnable r, int t) {
+	protected void scheduleEvent(Runnable r, int t) {
 		IMessage msg = mot.allocateMessage(mot);
 		Integer id = msg.getID();
 		// System.out.println(id + " allocated");
@@ -39,7 +42,7 @@ public class MotModule implements IMotModule {
 		events.put(id, r);
 	}
 	
-	public void scheduleEvent(Runnable r, Time t) {
+	protected void scheduleEvent(Runnable r, Time t) {
 		IMessage msg = mot.allocateMessage(mot);
 		Integer id = msg.getID();
 		// System.out.println(id + " allocated");
@@ -54,11 +57,13 @@ public class MotModule implements IMotModule {
 			r.run();
 		}
 	}
+	
 	/* public int getID() {
 		return p.getID();
 	}
 	public void setID(int newID) {
 	} */
+	
 	public void init(IGraph<Integer> topology) {
 	}
 }

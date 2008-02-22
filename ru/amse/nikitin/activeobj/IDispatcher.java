@@ -25,4 +25,5 @@ public interface IDispatcher {
 	void setTopology(IGraph<Integer> graph);
 	/** topology getter */
 	IGraph<Integer> getTopology();
+	int getListenersCount();
 }

@@ -19,7 +19,7 @@ public class SenderMotFactory implements IMotModuleFactory {
 		return 3;
 	}
 	
-	public MotModule getModule(Mot m, int index) {
+	public MotModule createModule(Mot m, int index) {
 		switch (index) {
 			case 0: return Mac(m);
 			case 1: return Net(m);
