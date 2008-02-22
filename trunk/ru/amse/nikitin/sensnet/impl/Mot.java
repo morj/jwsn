@@ -28,9 +28,9 @@ public class Mot implements IActiveObject {
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		mac = f.getModule(this, 0);
+		mac = f.createModule(this, 0);
 		for (int i = f.getModuleCount()-1; i > 0; i--) {
-			modules.add(f.getModule(this, i));
+			modules.add(f.createModule(this, i));
 		}
 		modules.add(mac);
 		Iterator<MotModule> i = modules.iterator();

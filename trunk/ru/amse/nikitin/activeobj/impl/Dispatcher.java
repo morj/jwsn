@@ -186,4 +186,8 @@ public class Dispatcher implements IDispatcher {
 	public IGraph<Integer> getTopology() {
 		return graph;
 	}
+
+	public int getListenersCount() {
+		return listenersCount;
+	}
 }

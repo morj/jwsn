@@ -11,5 +11,5 @@ import ru.amse.nikitin.sensnet.impl.MotModule;
  */
 public interface IMotModuleFactory {
 	int getModuleCount();
-	MotModule getModule(Mot m, int index);
+	MotModule createModule(Mot m, int index);
 }
