@@ -1,7 +1,8 @@
-package ru.amse.nikitin.sensnet.impl;
+package ru.amse.nikitin.sensnet.random;
 
 import ru.amse.nikitin.sensnet.IRandomArea;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
+import ru.amse.nikitin.sensnet.impl.Mot;
 
 import javax.swing.ImageIcon;
 

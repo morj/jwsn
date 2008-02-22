@@ -1,4 +1,4 @@
-package ru.amse.nikitin.sensnet.impl;
+package ru.amse.nikitin.sensnet.random;
 
 import java.util.Random;
 

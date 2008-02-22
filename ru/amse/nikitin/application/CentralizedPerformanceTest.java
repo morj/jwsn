@@ -13,7 +13,7 @@ import ru.amse.nikitin.cui.impl.BasicUI;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Radio;
-import ru.amse.nikitin.sensnet.impl.RandomArea;
+import ru.amse.nikitin.sensnet.random.RandomArea;
 
 public class CentralizedPerformanceTest {
 

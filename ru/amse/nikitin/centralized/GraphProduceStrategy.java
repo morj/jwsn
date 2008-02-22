@@ -5,7 +5,7 @@ import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.graph.impl.Graph;
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.RandomArea;
+import ru.amse.nikitin.sensnet.random.RandomArea;
 
 public class GraphProduceStrategy implements IGraphProduceStrategy {
 	private static GraphProduceStrategy instance = null;

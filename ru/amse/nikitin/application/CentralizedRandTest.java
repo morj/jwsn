@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 import ru.amse.nikitin.gui.impl.BasicUI;
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.RandomArea;
+import ru.amse.nikitin.sensnet.random.RandomArea;
 import ru.amse.nikitin.centralized.*;
 
 public class CentralizedRandTest {
