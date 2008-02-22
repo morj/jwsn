@@ -13,16 +13,29 @@ public class BsMotFactory implements IMotModuleFactory {
 		}
 		return instance;
 	}
+	
+	public int getModuleCount() {
+		return 3;
+	}
+	
+	public MotModule getModule(Mot m, int index) {
+		switch (index) {
+			case 0: return Mac(m);
+			case 1: return Net(m);
+			case 2: return App(m);
+			default: return null;
+		}
+	}
 
-	public MotModule App(Mot m) {
+	protected MotModule App(Mot m) {
 		return new BsApp(m);
 	}
 
-	public MotModule Net(Mot m) {
+	protected MotModule Net(Mot m) {
 		return new CommonNet(m);
 	}
 
-	public MotModule Mac(Mot m) {
+	protected MotModule Mac(Mot m) {
 		return new CommonMac(m);
 	}
 

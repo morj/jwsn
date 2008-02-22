@@ -15,9 +15,7 @@ public class Mot implements IActiveObject {
 	protected double transmitterPower;
 	protected double threshold;
 
-	// private MotModule net;
-	// protected MotModule app;
-	protected MotModule mac;
+	protected MotModule mac; // just for quick reference
 	protected List<MotModule> modules = new LinkedList<MotModule>();
 	
 	protected IBattery b = new Battery (100000000);
@@ -30,13 +28,11 @@ public class Mot implements IActiveObject {
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		mac = f.Mac(this);
-		modules.add(f.App(this));
-		modules.add(f.Net(this));
+		mac = f.getModule(this, 0);
+		for (int i = f.getModuleCount()-1; i > 0; i--) {
+			modules.add(f.getModule(this, i));
+		}
 		modules.add(mac);
-		// app.SetNeghbours(null, net);
-		// net.SetNeghbours(app, mac);
-		// mac.SetNeghbours(net, null);
 		Iterator<MotModule> i = modules.iterator();
 		MotModule prev = null;
 		MotModule next = i.hasNext() ? i.next() : null;
@@ -62,9 +58,6 @@ public class Mot implements IActiveObject {
 			case TIMER:
 				int id = m.getID();
 				// System.out.println(id + " recieved");
-				// app.fireEvent(id);
-				// net.fireEvent(id);
-				// mac.fireEvent(id);
 				for (MotModule module: modules) {
 					module.fireEvent(id);
 				}
@@ -78,9 +71,6 @@ public class Mot implements IActiveObject {
 				int[] t = new int [2];
 				t[1] = 0;
 				app.sendMessage(t); */
-				// mac.init(s.getTopology());
-				// net.init(s.getTopology());
-				// app.init(s.getTopology());
 				for (MotModule module: modules) {
 					module.init(s.getTopology());
 				}

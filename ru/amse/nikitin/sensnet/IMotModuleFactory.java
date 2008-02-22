@@ -10,7 +10,6 @@ import ru.amse.nikitin.sensnet.impl.MotModule;
  *
  */
 public interface IMotModuleFactory {
-	MotModule App(Mot m);
-	MotModule Net(Mot m);
-	MotModule Mac(Mot m);
+	int getModuleCount();
+	MotModule getModule(Mot m, int index);
 }
