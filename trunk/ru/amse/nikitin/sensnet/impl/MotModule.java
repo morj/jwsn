@@ -19,7 +19,7 @@ public class MotModule implements IMotModule {
 	public MotModule(Mot m) {
 		mot = m;
 	}
-	public void SetNeghbours(IMotModule u, IMotModule l) {
+	public void setNeghbours(IMotModule u, IMotModule l) {
 		upper = u; // Reciever
 		lower = l; // Sender
 	}

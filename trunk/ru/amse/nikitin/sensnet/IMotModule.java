@@ -10,7 +10,7 @@ import ru.amse.nikitin.graph.IGraph;
  */
 public interface IMotModule {
 	/** upper and lower layer setter */
-	void SetNeghbours(IMotModule u, IMotModule l);
+	void setNeghbours(IMotModule u, IMotModule l);
 	/** message recieve */
 	boolean recieveMessage(IPacket m);
 	/** message send */
