@@ -6,7 +6,7 @@ import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.gui.ITool;
 import ru.amse.nikitin.gui.Const;
 
-public class SampleTool2 implements ITool {
+public class EditTool implements ITool {
 	protected IActiveObjectDesc desc = null;
 	
 	public void mouseMoved(MouseEvent arg0) {
