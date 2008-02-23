@@ -6,6 +6,8 @@ import java.util.concurrent.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import javax.swing.event.MouseInputListener;
 
 // import javax.swing.JToolTip;
 import javax.swing.JTextArea;
@@ -17,14 +19,16 @@ import ru.amse.nikitin.activeobj.IDisplayListener;
 import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.gui.Const;
+import ru.amse.nikitin.gui.ITool;
 import ru.amse.nikitin.gui.IShape;
+import ru.amse.nikitin.gui.IDisplayComponent;
 
 /**
  * @author Pavel A. Nikitin
  * GUI implementation
  *
  */
-public class DisplayComponent extends JComponent {
+public class DisplayComponent extends JComponent implements IDisplayComponent {
 	private static final long serialVersionUID = 239;
 	protected final IDispatcher dispatcher;
 	protected final DisplayListener displayListener = new DisplayListener();
@@ -37,7 +41,7 @@ public class DisplayComponent extends JComponent {
 	protected boolean firstRun = true;
 	protected boolean isRunning = false;
 	
-	protected final Color bkColor = new Color (235, 235, 235); 
+	protected ITool mouseTool;
 	
 	/** a runnable, performing steps */
 	class SimulationRunnable implements Runnable {
@@ -68,10 +72,9 @@ public class DisplayComponent extends JComponent {
 			
 			try {
 				shapes.put(new Line(
-					d1.getX(), d1.getY(),
-					d2.getX(), d2.getY(),
+					d1, d2,
 					Color.RED,
-					bkColor
+					Const.BK_COLOR
 				));
 			} catch (InterruptedException ie) {
 			}
@@ -88,10 +91,9 @@ public class DisplayComponent extends JComponent {
 				IActiveObjectDesc d2 = descriptions.get(dest);
 				try {
 					shapes.put(new Line(
-						d1.getX(), d1.getY(),
-						d2.getX(), d2.getY(),
+						d1, d2,
 						Color.GREEN,
-						bkColor
+						Const.BK_COLOR
 					));
 				} catch (InterruptedException ie) {
 				}
@@ -103,8 +105,7 @@ public class DisplayComponent extends JComponent {
 			IActiveObjectDesc d = descriptions.get(dest);
 			try {
 				shapes.put(new Frame(
-					d.getX(), d.getY(),
-					Color.BLUE, bkColor
+					d, Color.BLUE, Const.BK_COLOR
 				));
 			} catch (InterruptedException ie) {
 			}
@@ -139,6 +140,44 @@ public class DisplayComponent extends JComponent {
 		}
 	}
 	
+	class MyMouseListener implements MouseInputListener {
+		
+		public void mouseClicked(MouseEvent arg0) {}
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseMoved(MouseEvent arg0) {}
+		
+		public void mousePressed(MouseEvent arg0) {
+			IActiveObjectDesc affectedDesc = null;
+			for (IActiveObjectDesc d: descriptions.values()) {
+				if (
+					(Math.abs(arg0.getX() - d.getX() - Const.POINT_X_SIZE / 2)
+						< Const.POINT_X_SIZE) &&
+					(Math.abs(arg0.getY() - d.getY() - Const.POINT_Y_SIZE / 2)
+						< Const.POINT_Y_SIZE)
+				) {
+					affectedDesc = d;
+					// System.err.println("Hit!");
+				}
+			}
+			mouseTool.mousePressed(arg0, affectedDesc);
+		}
+		
+		public void mouseDragged(MouseEvent arg0) {
+			// System.err.println("Moved!");
+			mouseTool.mouseMoved(arg0);
+			repaint();
+		}
+		
+		public void mouseReleased(MouseEvent arg0) {
+			mouseTool.mouseReleased(arg0);
+		}
+		
+		public void mouseExited(MouseEvent arg0) {
+			mouseTool.mouseReleased(arg0);
+		}
+		
+	}
+	
 	/** icons painter */
 	protected void paintMots (Graphics graphics) {
 		Color prevColor = graphics.getColor();
@@ -148,7 +187,7 @@ public class DisplayComponent extends JComponent {
 			d.getImage().paintIcon(this, graphics, p.getValue().getX(), p.getValue().getY());
 			graphics.drawString(
 				d.getName(),
-				d.getX() + Const.pointXSize, d.getY() + Const.pointYSize
+				d.getX() + Const.POINT_X_SIZE, d.getY() + Const.POINT_Y_SIZE
 			);
 		}
 		graphics.setColor(prevColor);
@@ -157,7 +196,7 @@ public class DisplayComponent extends JComponent {
 	/** component painter */
 	protected void paintComponent (Graphics graphics) {
 		Color prevColor = graphics.getColor();
-		graphics.setColor(bkColor);
+		graphics.setColor(Const.BK_COLOR);
 		Rectangle r = graphics.getClipBounds();
 		graphics.fillRect(0, 0, r.width, r.height);
 		graphics.drawRect(0, 0, getWidth() - 1, getHeight() - 1); // frame
@@ -189,6 +228,10 @@ public class DisplayComponent extends JComponent {
 		this.logOutput = logOutput;
 		Logger.getInstance().addListener(displayListener);
 		d.addDisplayListener(displayListener);
+		// enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+		MouseInputListener listener = new MyMouseListener();
+		addMouseListener(listener);
+		addMouseMotionListener(listener);
 	}
 	
 	/* public JToolTip createToolTip() {
@@ -220,4 +263,13 @@ public class DisplayComponent extends JComponent {
 			isRunning = false;
 		}
 	}
+
+	/**
+	 * @param mouseTool The mouseTool to set.
+	 */
+	public void setMouseTool(ITool mouseTool) {
+		// System.err.println(mouseTool.getClass().getSimpleName());
+		this.mouseTool = mouseTool;
+	}
+	
 }

@@ -16,4 +16,9 @@ public interface IActiveObjectDesc {
 	public int getX();
 	/** Y coordinate getter */
 	public int getY();
+	/** X coordinate setter */
+	public void setX(int x);
+	/** Y coordinate setter */
+	public void setY(int y);
+	public void invalidate();
 }
