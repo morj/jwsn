@@ -96,6 +96,6 @@ import java.util.Random;
 		}
 		
 		// System.out.println(commonMotPower / maxd);
-		return (commonMotPower / maxd) - 0.01;
+		return (commonMotPower / maxd);
 	}
 }

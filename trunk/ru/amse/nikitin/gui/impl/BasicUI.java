@@ -1,15 +1,13 @@
 package ru.amse.nikitin.gui.impl;
 
+import javax.swing.BoxLayout;
+import java.awt.Font;
 import java.awt.BorderLayout;
+// import java.awt.Color;
 import java.awt.LayoutManager;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
 import ru.amse.nikitin.gui.Const;
 import ru.amse.nikitin.activeobj.impl.Dispatcher;
@@ -31,7 +29,7 @@ public class BasicUI {
 		JFrame mainFrame = new JFrame ("Random sensnet test");
 		
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setSize(Const.frameWidth, Const.frameHeight);
+		mainFrame.setSize(Const.FRAME_WIDTH, Const.FRAME_HEIGHT);
 		
 		// LayoutManager layout = new GridLayout(2, 1, 1, 1);
 		LayoutManager layout = new BorderLayout();
@@ -41,54 +39,61 @@ public class BasicUI {
 	}
 	
 	/** UI frame creator */
-	public static JFrame createUIFrame(Mot[] mots, IGraphProduceStrategy s, int bsIndex) {		
+	public static JFrame createUIFrame(Mot[] mots, IGraphProduceStrategy s, int bsIndex) {
+		/* try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException cnfe) {
+		} catch (InstantiationException ie) {
+		} catch (UnsupportedLookAndFeelException ulafe) {
+		} catch (IllegalAccessException iae) {
+		} /**/
+		
 		JFrame appFrame = createMainFrame();
-		JTextArea logTextArea = new JTextArea("", 11, 1);
+		JTextArea logTextArea = new JTextArea(11, 1);
+		logTextArea.setFont(new Font("Arial", Font.PLAIN, 11));
 		Dispatcher disp = Dispatcher.getInstance(); 
 		disp.setMessageFilter(Radio.getInstance());
 		DisplayComponent dispc = new DisplayComponent(disp, logTextArea);
+		
 		JScrollPane logPane = new JScrollPane(logTextArea);
 		logPane.setWheelScrollingEnabled(true);
-		
-		/* if (centralized) {
-			mots = RandomArea.getInstance().getArea(
-				1024, 480, 30,
-				ru.amse.nikitin.centralized.SendMotFactory.getInstance(),
-				ru.amse.nikitin.centralized.MotFactory.getInstance(),
-				ru.amse.nikitin.centralized.BsMotFactory.getInstance(),
-				Const.bsPower
-			);
-		} else {
-			mots = RandomArea.getInstance().getArea(
-				1024, 480, 30,
-				ru.amse.nikitin.aloha.SendMotFactory.getInstance(),
-				ru.amse.nikitin.aloha.MotFactory.getInstance(),
-				ru.amse.nikitin.aloha.BsMotFactory.getInstance(),
-				RandomArea.commonMotPower
-			);
-		} */
+		logPane.setBorder(BorderFactory.createTitledBorder("Log"));
 		
 		Action runAction  = ActionKit.createRunSimulationAction (dispc,
 			500, TimeUnit.MILLISECONDS);
 		Action stepAction = ActionKit.createStepSimulationAction(dispc);
 		Action stopAction = ActionKit.createStopSimulationAction(dispc);
 		
-		appFrame.add(dispc); // add another panel to frame
+		JPanel dispPanel = new JPanel(new BorderLayout());
+        dispPanel.add(dispc);
+        dispPanel.setBorder(BorderFactory.createTitledBorder("Simulated network"));
+       
 		JButton runButton = new JButton(runAction);
 		JButton stepButton = new JButton(stepAction);
 		JButton stopButton = new JButton(stopAction);
 
 	    JPanel opPanel = new JPanel();
+	    opPanel.setLayout(new BoxLayout(opPanel, BoxLayout.X_AXIS));
 	    opPanel.add(runButton);
         opPanel.add(stepButton);
         opPanel.add(stopButton);
+        opPanel.setBorder(BorderFactory.createTitledBorder("Process control"));
+ 
+        ToolBox tools = new ToolBox(dispc);
+        JPanel aaaPanel = new JPanel();
+        // aaaPanel.setBorder(new LineBorder(Color.DARK_GRAY));
+        aaaPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
+        // aaaPanel.setBorder(BorderFactory.createTitledBorder("*"));
+        aaaPanel.add(tools.getJList(), BorderLayout.NORTH);
         
         JPanel simPanel = new JPanel(new BorderLayout());
-        simPanel.add(opPanel, BorderLayout.SOUTH);
-        simPanel.add(dispc);
+        simPanel.add(opPanel, BorderLayout.NORTH);
+        simPanel.add(aaaPanel, BorderLayout.WEST);
+        simPanel.add(dispPanel);
         
-        appFrame.getContentPane().add(logPane, BorderLayout.SOUTH);
-        appFrame.getContentPane().add(simPanel);
+        appFrame.add(logPane, BorderLayout.SOUTH);
+        appFrame.add(simPanel);
 		
 		for (int i = 0; i < mots.length; i++) {
 			disp.addActiveObjectListener(mots[i]);

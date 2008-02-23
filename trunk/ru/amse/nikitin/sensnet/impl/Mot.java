@@ -14,6 +14,8 @@ public class Mot implements IActiveObject {
 	protected int id, x, y, lastMessageID, lastMessageSource, lastMessageDest;
 	protected double transmitterPower;
 	protected double threshold;
+	protected double ratioX;
+	protected double ratioY;
 
 	protected MotModule mac; // just for quick reference
 	protected List<MotModule> modules = new LinkedList<MotModule>();
@@ -125,6 +127,7 @@ public class Mot implements IActiveObject {
 	
 	public IActiveObjectDesc newDesc(ImageIcon image, String name, int x, int y) {
 		description = new MotDescription(image, name, x, y);
+		description.setOwner(this);
 		return description; 
 	}
 	

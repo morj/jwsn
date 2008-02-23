@@ -9,6 +9,7 @@ public class MotDescription implements IActiveObjectDesc {
 	protected String name;
 	protected int x;
 	protected int y;
+	protected Mot owner;
 
 	/* package-private */ MotDescription(ImageIcon image, String name, int x, int y) {
 		this.image = image;
@@ -31,6 +32,21 @@ public class MotDescription implements IActiveObjectDesc {
 
 	public int getY() {
 		return y;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	void setOwner(Mot owner) {
+		this.owner = owner;
+	}
+
+	public void invalidate() {
 	}
 
 }
