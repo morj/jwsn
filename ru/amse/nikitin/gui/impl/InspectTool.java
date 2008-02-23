@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.gui.ITool;
 
-public class SampleTool1 implements ITool {
+public class InspectTool implements ITool {
 
 	/* (non-Javadoc)
 	 * @see ru.amse.nikitin.gui.ITool#mouseDragged(java.awt.event.MouseEvent)

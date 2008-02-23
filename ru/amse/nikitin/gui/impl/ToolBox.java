@@ -70,8 +70,8 @@ public class ToolBox {
 	protected JList jList;
 	
 	protected final ITool[] tools = {
-		new SampleTool1(),
-		new SampleTool2(),
+		new InspectTool(),
+		new EditTool(),
 	};
 	
 	protected final ListSelectionListener selector = new ListSelectionListener() {
