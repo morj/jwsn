@@ -1,7 +1,5 @@
 package ru.amse.nikitin.sensnet;
 
-import ru.amse.nikitin.activeobj.IMessage;
-
 public interface IGate {
 	String getName();
 	void setFrom(IGate from);

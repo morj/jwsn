@@ -67,7 +67,7 @@ public class ConsoleUI implements IConsoleUI {
 			
 		}
 
-		public void messageRecieved(int source, int dest, int[] data) {
+		public void messageRecieved(int source, int dest, Object data) {
 		}
 
 		public void messageAccepted(int dest) {

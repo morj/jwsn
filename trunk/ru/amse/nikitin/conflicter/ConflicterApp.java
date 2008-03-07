@@ -6,9 +6,9 @@ import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 import ru.amse.nikitin.aloha.Const;
-import ru.amse.nikitin.aloha.EmptyApp;
 
 public class ConflicterApp extends EmptyApp {
 	protected final static Time period = new Time(3);

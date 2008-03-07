@@ -19,7 +19,9 @@ public interface IDispatcher {
 	void init();
 	/** simulation step */
 	void step();
-	/** message sending */
+	/** allocate message for active object */
+	IMessage allocateMessage(IActiveObject obj);
+	/** send message */
 	boolean sendMessage(IMessage m);
 	/** topology setter */
 	void setTopology(IGraph<Integer> graph);

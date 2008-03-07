@@ -80,12 +80,12 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			}
 		}
 	
-		public void messageRecieved(int source, int dest, int[] data) {
-			StringBuilder b = new StringBuilder();
+		public void messageRecieved(int source, int dest, Object data) {
+			/* StringBuilder b = new StringBuilder();
 			for (int i = 0; i < data.length; i++) {
 				b.append(data[i]);
 				b.append(' ');
-			}
+			} */
 			if (source != -1) {
 				IActiveObjectDesc d1 = descriptions.get(source);
 				IActiveObjectDesc d2 = descriptions.get(dest);

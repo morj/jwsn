@@ -5,6 +5,7 @@ import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 public class SendApp extends EmptyApp {
 	protected static int helloCount = 0;

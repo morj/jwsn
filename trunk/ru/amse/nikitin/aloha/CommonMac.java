@@ -4,13 +4,13 @@ import java.util.*;
 
 import ru.amse.nikitin.activeobj.ELogMsgType;
 import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.EMessageType;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IPacket;
+import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.impl.Packet;
 
 
@@ -76,6 +76,23 @@ public class CommonMac extends MotModule {
 		}
 	}
 	
+	class ConfirmMsg implements ISendCallback {
+		private IPacket packet;
+		
+		public ConfirmMsg(IPacket packet) {
+			this.packet = packet;
+		}
+
+		public void run (IMessage msg) {
+			// data message: wait for response
+			// System.err.println("callback");
+			int id = msg.getID();
+			CheckMsg checkMsg = new CheckMsg(id);
+			waiting.put(id, packet);
+			scheduleEvent(checkMsg, 0);
+		}
+	}
+	
 	public CommonMac(Mot m) {
 		super(m);
 	}
@@ -102,10 +119,11 @@ public class CommonMac extends MotModule {
 	public boolean upperMessage(IPacket m) {
 		IPacket msg = new Packet(m.getID());
 		msg.encapsulate(m);
+		msg.setOnSendAction(new ConfirmMsg(msg));
 		if (wasSent) {
 			return pending.add(msg);
 		} else {
-			if (pending.add(msg) ) {
+			if (pending.add(msg)) {
 				wasSent = true;
 				return sendNextMessage();
 			} else {
@@ -120,20 +138,6 @@ public class CommonMac extends MotModule {
 	
 	private boolean sendNextMessage() {
 		IPacket mmsg = pending.remove();
-		IMessage msg = mot.allocateMessage(mot);
-		msg.setType(EMessageType.DATA);
-		msg.setDest(mmsg.getID());
-		
-		if (mmsg.isEncapsulating()) { // data
-			final int id = msg.getID();
-			CheckMsg checkMsg = new CheckMsg(id);
-			waiting.put(id, mmsg);
-			scheduleEvent(checkMsg, 0);
-		}
-		
-		int[] data = new int[mmsg.getLength()];
-		mmsg.toIntArr(data, 0);
-		msg.setData(data);
-		return mot.sendMessage(msg);
+		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }

@@ -15,4 +15,5 @@ public interface IMotModule {
 	void init(IGraph<Integer> topology);
 	IGate declareGate(String name);
 	IGate getGate(String name);
+	void setArrivedOn(String arrivedOn);
 }

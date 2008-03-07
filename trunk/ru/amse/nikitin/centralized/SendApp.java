@@ -6,6 +6,7 @@ import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 public class SendApp extends EmptyApp {
 	protected final static Time someUnitsTime = new Time(15);

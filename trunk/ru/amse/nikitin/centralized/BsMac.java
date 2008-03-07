@@ -61,16 +61,6 @@ public class BsMac extends MotModule {
 	}
 	private boolean sendNextMessage() {
 		IPacket mmsg = pending.remove();
-		IMessage msg = mot.allocateMessage(mot);
-		if (msg.getID() >= 0) {
-			msg.setType(EMessageType.DATA);
-		} else {
-			msg.setType(EMessageType.BROADCAST);
-		}
-		msg.setDest(mmsg.getID());
-		int[] data = new int[mmsg.getLength()];
-		mmsg.toIntArr(data, 0);
-		msg.setData(data);
-		return mot.sendMessage(msg);
+		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }
