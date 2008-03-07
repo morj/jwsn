@@ -8,7 +8,7 @@ import ru.amse.nikitin.activeobj.EMessageType;
  * Message implementation
  *
  */
-class Message implements IMessage {
+public class Message implements IMessage {
 	protected EMessageType type = EMessageType.TIMER;
 	protected Time timer;
 	protected int source;

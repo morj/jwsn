@@ -18,10 +18,15 @@ public class SendApp extends EmptyApp {
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated " + helloCount);
 			packet.setData(data);
-			lower.sendMessage(packet);
+			sendMsgToLower(packet);
 			scheduleEvent(this, 15);
 		}
+		
 	};
+	
+	private void sendMsgToLower(Packet packet) {
+		getGate("lower").recieveMessage(packet, this);
+	}
 	
 	public SendApp(Mot m) {
 		super(m);

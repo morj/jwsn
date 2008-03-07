@@ -20,10 +20,14 @@ public class SendApp extends EmptyApp {
 					"allocated " + helloCount);
 			Packet packet = new Packet(3);
 			packet.setData(data);
-			lower.sendMessage(packet);
+			sendMsgToLower(packet);
 			scheduleEvent(this, someUnitsTime);
 		}
 	};
+	
+	private void sendMsgToLower(Packet packet) {
+		getGate("lower").recieveMessage(packet, this);
+	}
 	
 	public SendApp(Mot m) {
 		super(m);

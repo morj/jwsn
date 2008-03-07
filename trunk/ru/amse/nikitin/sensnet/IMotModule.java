@@ -9,12 +9,10 @@ import ru.amse.nikitin.graph.IGraph;
  *
  */
 public interface IMotModule {
-	/** upper and lower layer setter */
-	void setNeghbours(IMotModule u, IMotModule l);
 	/** message recieve */
 	boolean recieveMessage(IPacket m);
-	/** message send */
-	boolean sendMessage(IPacket m);
 	/** module init */
 	void init(IGraph<Integer> topology);
+	IGate declareGate(String name);
+	IGate getGate(String name);
 }

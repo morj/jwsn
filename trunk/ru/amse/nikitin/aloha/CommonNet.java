@@ -26,16 +26,16 @@ public class CommonNet extends MotModule {
 			}
 		}
 	}
-	public boolean recieveMessage(IPacket m) {
+	public boolean lowerMessage(IPacket m) {
 		if (m.getID() == mot.getID()) {
-			return upper.recieveMessage(m.decapsulate());
+			return getGate("upper").recieveMessage(m.decapsulate(), this);
 		} else {
 			return false;
 		}
 	}
-	public boolean sendMessage(IPacket m) {
+	public boolean upperMessage(IPacket m) {
 		IPacket msg = new Packet(pred);
 		msg.encapsulate(m);
-		return lower.sendMessage(msg);
+		return getGate("lower").recieveMessage(msg, this);
 	}
 }

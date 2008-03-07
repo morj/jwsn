@@ -23,10 +23,14 @@ public class SenderApp extends EmptyApp {
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated " + helloCount);
 			packet.setData(data);
-			lower.sendMessage(packet);
+			sendMsgToLower(packet);
 			scheduleEvent(this, someUnitsTime);
 		}
 	};
+	
+	private void sendMsgToLower(Packet packet) {
+		getGate("lower").recieveMessage(packet, this);
+	}
 	
 	public SenderApp(Mot m) {
 		super(m);

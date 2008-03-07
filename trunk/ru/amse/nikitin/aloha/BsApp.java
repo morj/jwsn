@@ -13,7 +13,7 @@ public class BsApp extends MotModule {
 		super(m);
 	}
 	
-	public boolean recieveMessage(IPacket m) {
+	public boolean lowerMessage(IPacket m) {
 		// AppMessage msg = new AppMessage(m);
 		if (m.getData()[0] == Const.hello) {
 			Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
@@ -23,7 +23,7 @@ public class BsApp extends MotModule {
 		return false;
 	}
 	
-	public boolean sendMessage(IPacket m) {
+	public boolean upperMessage(IPacket m) {
 		// AppMessage msg = new AppMessage(m);	
 		// return lower.sendMessage(m);
 		return true;

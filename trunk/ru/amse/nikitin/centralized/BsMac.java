@@ -25,14 +25,14 @@ public class BsMac extends MotModule {
 	public BsMac(Mot m) {
 		super(m);
 	}
-	public boolean recieveMessage(IPacket m) {
+	public boolean lowerMessage(IPacket m) {
 		if (mot.getLastMessageDest() == mot.getID()) {
-			return upper.recieveMessage(m.decapsulate());
+			return getGate("upper").recieveMessage(m.decapsulate(), this);
 		} else {
 			return false;
 		}
 	}
-	public boolean sendMessage(IPacket m) {
+	public boolean upperMessage(IPacket m) {
 		IPacket msg = new Packet(m.getID());
 		msg.encapsulate(m);
 		return pending.add(msg);
