@@ -9,7 +9,7 @@ import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.cui.IConsoleUI;
 import ru.amse.nikitin.cui.impl.BasicUI;
 import ru.amse.nikitin.cui.impl.ConsoleUI;
-import ru.amse.nikitin.sensnet.impl.Radio;
+import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.sensnet.impl.Mot;
 
 public class Test {
@@ -19,7 +19,7 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		Dispatcher disp = Dispatcher.getInstance(); 
-		disp.setMessageFilter(Radio.getInstance());
+		disp.addMessageFilter(Wireless.getInstance());
 		
 		IConsoleUI dispc = new ConsoleUI(disp);
 		

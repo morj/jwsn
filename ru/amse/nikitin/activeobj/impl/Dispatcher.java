@@ -2,24 +2,18 @@ package ru.amse.nikitin.activeobj.impl;
 
 import java.util.*;
 
-import ru.amse.nikitin.activeobj.IActiveObject;
-import ru.amse.nikitin.activeobj.IDispatcher;
-import ru.amse.nikitin.activeobj.IDisplayListener;
-import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.IMessageFilter;
-import ru.amse.nikitin.activeobj.EMessageType;
-import ru.amse.nikitin.activeobj.ELogMsgType;
+import ru.amse.nikitin.activeobj.*;
 import ru.amse.nikitin.graph.IGraph;
 
 public class Dispatcher implements IDispatcher {
 	private static Dispatcher instance;
-	protected IMessageFilter messageFilter;
+	protected List<IMessageFilter> messageFilters = new LinkedList<IMessageFilter>();
 	protected int listenersCount = 0;
 	protected int messageCount = 0;
-	protected List<IActiveObject> listeners = new ArrayList<IActiveObject>();
+	protected List<IActiveObject> listeners = new LinkedList<IActiveObject>();
 	protected List<IDisplayListener> dispListeners = new LinkedList<IDisplayListener>();
 	protected Queue<IMessage> messages = new PriorityQueue<IMessage>();
-	protected Queue<IMessage> dropped = new ArrayDeque<IMessage>();
+	// protected Queue<IMessage> dropped = new ArrayDeque<IMessage>();
 	protected Queue<IMessage> timered = new ArrayDeque<IMessage>();
 	protected Queue<IMessage> pending = new ArrayDeque<IMessage>();
 	protected Time time;
@@ -27,11 +21,6 @@ public class Dispatcher implements IDispatcher {
 	
 	protected Dispatcher() {
 		time = new Time();
-	}
-	
-	protected IMessage allocateMessage(Time t, int i) {
-		IMessage m = new Message(t, i);
-		return m;
 	}
 	
 	/* package-private */ Time getTime() {
@@ -50,8 +39,8 @@ public class Dispatcher implements IDispatcher {
 		listenersCount = 0;
 	}
 	
-	public void setMessageFilter(IMessageFilter m) {
-		messageFilter = m;
+	public void addMessageFilter(IMessageFilter m) {
+		messageFilters.add(m);
 	}
 	
 	public void init() {
@@ -59,18 +48,17 @@ public class Dispatcher implements IDispatcher {
 			i.stepStarted();
 		}
 		for (IActiveObject obj: listeners) {
-			IMessage m = allocateMessage(new Time(time),
-				++messageCount);
+			IMessage m = new Message(getMessageInitData());
 			m.setType(EMessageType.INIT);
 			obj.recieveMessage(m);
-			dropped.add(m);
+			// dropped.add(m);
 		}
 		for (IDisplayListener i: dispListeners) {
 			i.stepPerformed();
 		}
 	}
 	
-	public IMessage allocateMessage(IActiveObject obj) {
+	/* public IMessage allocateMessage(IActiveObject obj) {
 		if (!dropped.isEmpty()) {
 			Message m = (Message)dropped.peek();
 			m.setID(++messageCount);
@@ -82,9 +70,9 @@ public class Dispatcher implements IDispatcher {
 			res.setSource(obj.getID());
 			return res;
 		}
-	}
+	} */
 	
-	public void changeDesc(IActiveObject obj) {
+	/* public void changeDesc(IActiveObject obj) {
 		for (IDisplayListener i: dispListeners) {
 			i.descChanged(obj.getID());
 		}
@@ -94,7 +82,7 @@ public class Dispatcher implements IDispatcher {
 		for (IDisplayListener i: dispListeners) {
 			i.notificationArrived(obj.getID(), message);
 		}
-	}
+	} */
 	
 	public void addActiveObjectListener(IActiveObject obj) {
 		obj.setID(listenersCount);
@@ -161,7 +149,9 @@ public class Dispatcher implements IDispatcher {
 		
 		Logger.getInstance().logMessage(ELogMsgType.INFORMATION, "notify");
 		
-		messageFilter.Filter(listeners, pending, dropped, dispListeners);
+		for (IMessageFilter filter: messageFilters) {
+			filter.Filter(listeners, pending, dispListeners);
+		}
 		assert pending.isEmpty();
 		/* for (IMessage message: pending) {
 			listeners.get(message.getDest()).recieveMessage(message);
@@ -187,5 +177,13 @@ public class Dispatcher implements IDispatcher {
 
 	public int getListenersCount() {
 		return listenersCount;
+	}
+
+	public MessageInitData getMessageInitData() {
+		return new MessageInitData(new Time(time), ++messageCount);
+	}
+
+	public void assignMessage(IActiveObject owner, IMessage m) {
+		((Message)m).setSource(owner.getID());
 	}
 }

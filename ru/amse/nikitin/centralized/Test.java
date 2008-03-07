@@ -1,7 +1,7 @@
 package ru.amse.nikitin.centralized;
 
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.Radio;
+import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.activeobj.impl.Dispatcher;
 import ru.amse.nikitin.graph.*;
 import ru.amse.nikitin.graph.impl.*;
@@ -11,7 +11,7 @@ public class Test {
 		System.out.println("Testing centralized algoritm!");
 		
 		Dispatcher disp = Dispatcher.getInstance(); 
-		disp.setMessageFilter(Radio.getInstance());
+		disp.addMessageFilter(Wireless.getInstance());
 		
 		Mot a = new Mot( 0, 40, 100, 0, SendMotFactory.getInstance());
 		Mot b = new Mot(10, 30, 100, 0, MotFactory.getInstance());

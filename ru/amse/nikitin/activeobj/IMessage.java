@@ -7,17 +7,13 @@ package ru.amse.nikitin.activeobj;
  * Message interface
  *
  */
-public interface IMessage extends Comparable {
-	/* private boolean isOnTime(Time t); */ 
+public interface IMessage extends Comparable { 
 	EMessageType getType();
 	void setType(EMessageType t);
-	/* private void setTimer(Time t); */
-	/* private void delay(Time t); */
 	int getSource();
 	int getDest();
-	void setDest(int id);
 	int getID();
-	void setID(int i);
+	void setDest(int id);
 	void setData(Object d);
 	Object getData();
 }

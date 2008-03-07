@@ -14,7 +14,7 @@ import ru.amse.nikitin.activeobj.impl.Dispatcher;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.Radio;
+import ru.amse.nikitin.sensnet.impl.Wireless;
 
 /** 
  * Simple UI implementation
@@ -53,7 +53,7 @@ public class BasicUI {
 		JTextArea logTextArea = new JTextArea(11, 1);
 		logTextArea.setFont(new Font("Arial", Font.PLAIN, 11));
 		Dispatcher disp = Dispatcher.getInstance(); 
-		disp.setMessageFilter(Radio.getInstance());
+		disp.addMessageFilter(Wireless.getInstance());
 		DisplayComponent dispc = new DisplayComponent(disp, logTextArea);
 		
 		JScrollPane logPane = new JScrollPane(logTextArea);
