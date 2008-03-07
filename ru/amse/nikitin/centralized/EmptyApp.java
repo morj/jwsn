@@ -12,11 +12,11 @@ public class EmptyApp extends MotModule {
 	public EmptyApp(Mot m) {
 		super(m);
 	}
-	public boolean recieveMessage(IPacket m) {
+	public boolean lowerMessage(IPacket m) {
 		// AppMessage msg = new AppMessage(m);
-		return lower.sendMessage(m); // just resend
+		return getGate("lower").recieveMessage(m, this); // just resend
 	}
-	public boolean sendMessage(IPacket m) {
+	public boolean upperMessage(IPacket m) {
 		// AppMessage msg = new AppMessage(m);
 		// return lower.sendMessage(m);
 		return true;

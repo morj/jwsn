@@ -80,7 +80,7 @@ public class CommonMac extends MotModule {
 		super(m);
 	}
 	
-	public boolean recieveMessage(IPacket m) {
+	public boolean lowerMessage(IPacket m) {
 		if (mot.getLastMessageDest() == mot.getID()) {
 			if (m.isEncapsulating()) { // data
 				int[] reciever = new int [1];
@@ -88,7 +88,7 @@ public class CommonMac extends MotModule {
 				Packet confirmMsg = new Packet(mot.getLastMessageSource());
 				confirmMsg.setData(reciever);
 				pending.add(confirmMsg); // sending confirmation
-				return upper.recieveMessage(m.decapsulate());
+				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // confirm
 				waiting.remove(m.getData()[0]);
 				Logger.getInstance().logMessage(ELogMsgType.INFORMATION, "rem " + m.getData()[0]);
@@ -99,7 +99,7 @@ public class CommonMac extends MotModule {
 		}
 	}
 	
-	public boolean sendMessage(IPacket m) {
+	public boolean upperMessage(IPacket m) {
 		IPacket msg = new Packet(m.getID());
 		msg.encapsulate(m);
 		if (wasSent) {

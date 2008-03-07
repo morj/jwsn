@@ -6,8 +6,7 @@ import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.IActiveObject;
 import ru.amse.nikitin.activeobj.impl.*;
-import ru.amse.nikitin.sensnet.IBattery;
-import ru.amse.nikitin.sensnet.IMotModuleFactory;
+import ru.amse.nikitin.sensnet.*;
 
 public class Mot implements IActiveObject {
 	protected Dispatcher s;
@@ -24,28 +23,62 @@ public class Mot implements IActiveObject {
 	
 	protected MotDescription description;
 	
+	protected Map<Class<? extends IMessage>, IGate> gates
+		= new HashMap<Class<? extends IMessage>, IGate>();
+	protected IGate outputGate;
+	
+	/**
+	 * All gate links here are 1-1 links without channels.
+	 * This is the original internal topology of each mot,
+	 * hence this constructor supports such connection.
+	 */
 	public Mot(int x_, int y_,
 			double power, double threshold, IMotModuleFactory f) {
 		x = x_; y = y_;
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		mac = f.createModule(this, 0);
-		for (int i = f.getModuleCount()-1; i > 0; i--) {
-			modules.add(f.createModule(this, i));
-		}
-		modules.add(mac);
-		Iterator<MotModule> i = modules.iterator();
-		MotModule prev = null;
-		MotModule next = i.hasNext() ? i.next() : null;
-		while (i.hasNext()) {
-			MotModule tmp = i.next();
-			next.setNeghbours(prev, tmp);
-			prev = next;
-			next = tmp;
-		}
-		next.setNeghbours(prev, null);
+		createLinearTopology(f);
 		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
+	}
+	
+	public Mot(int x_, int y_, double power, double threshold) {
+		x = x_; y = y_;
+		s = Dispatcher.getInstance();
+		transmitterPower = power;
+		this.threshold = threshold;
+		outputGate = new Gate(null, "mot output gate");
+		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
+	}
+
+	private void createLinearTopology(IMotModuleFactory f) {
+		IGate inputGate = declareInputGate(Message.class);
+		
+		MotModule module = f.createModule(this, 0);
+		modules.add(module);
+		
+		IGate gate = module.declareGate(Const.lowerGateName);
+		// inputGate -> gate
+		inputGate.setTo(gate);
+		gate.setFrom(inputGate);
+		// gate -> outputGate
+		outputGate = new Gate(null, "mot linear output gate");
+		gate.setTo(outputGate);
+		outputGate.setFrom(gate);
+		
+		gate = module.declareGate(Const.upperGateName);
+		for (int i = 1; i < f.getModuleCount(); i++) { 
+			module = f.createModule(this, i);
+			modules.add(module);
+			IGate dest = module.declareGate(Const.lowerGateName);
+			// gate <-> dest
+			// if (dest == null) System.err.print("null dest");
+			gate.setTo(dest);
+			dest.setFrom(gate);
+			gate.setFrom(dest);
+			dest.setTo(gate);
+			gate = module.declareGate(Const.upperGateName);
+		}	
 	}
 	
 	public double squaredDistanceTo(Mot m) {
@@ -79,7 +112,16 @@ public class Mot implements IActiveObject {
 				return true;
 			default:
 				if (b.drain()) {
-					return mac.recieveMessage(new Packet(m.getData(), 0));
+					// return mac.recieveMessage(new Packet(m.getData(), 0));
+					
+					IGate in = gates.get(m.getClass());
+					if (in != null) {
+						// System.err.println("recv on " + in.getName());
+						return in.recieveMessage(new Packet(m.getData(), 0), null);
+					} else {
+						// System.err.println("no apropriate input gate for " + m.getClass());
+						return false;
+					}
 				} else {
 					return false;
 				}
@@ -141,5 +183,20 @@ public class Mot implements IActiveObject {
 	
 	public double getThreshold() {
 		return threshold;
+	}
+	
+	public IGate declareInputGate(Class<? extends IMessage> msgClass) {
+		IGate newGate = null;
+		if (!gates.containsKey(msgClass)) {
+			String name = "mot input gate for " + msgClass.getName();
+			// System.err.println(name);
+			newGate = new Gate(null, name);
+			gates.put(msgClass, newGate);
+		}
+		return newGate;
+	}
+	
+	public IGate getInputGate(Class<? extends IMessage> msgClass) {
+		return gates.get(msgClass);
 	}
 }

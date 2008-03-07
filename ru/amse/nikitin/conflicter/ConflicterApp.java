@@ -24,10 +24,14 @@ public class ConflicterApp extends EmptyApp {
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated conflicter message");
 			packet.setData(data);
-			lower.sendMessage(packet);
+			sendMsgToLower(packet);
 			scheduleEvent(this, period);
 		}
 	};
+	
+	private void sendMsgToLower(Packet packet) {
+		getGate("lower").recieveMessage(packet, this);
+	}
 	
 	public ConflicterApp(Mot m) {
 		super(m);

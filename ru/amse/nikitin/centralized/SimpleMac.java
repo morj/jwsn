@@ -26,11 +26,11 @@ public class SimpleMac extends MotModule {
 	public SimpleMac(Mot m) {
 		super(m);
 	}
-	public boolean recieveMessage(IPacket m) {
+	public boolean lowerMessage(IPacket m) {
 		int lastdest = mot.getLastMessageDest();
 		if ((lastdest == mot.getID()) || (lastdest == -1)) {
 			if (m.isEncapsulating()) { // data
-				return upper.recieveMessage(m.decapsulate());
+				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // hop
 				int[] timings = m.getData();
 				int id = mot.getID();
@@ -44,13 +44,13 @@ public class SimpleMac extends MotModule {
 				routingInfo.setData(data);
 				
 				scheduleEvent(step, slotTime);
-				return upper.recieveMessage(routingInfo);
+				return getGate("upper").recieveMessage(routingInfo, this);
 			}
 		} else {
 			return false;
 		}
 	}
-	public boolean sendMessage(IPacket m) {
+	public boolean upperMessage(IPacket m) {
 		IPacket msg = new Packet(m.getID());
 		msg.encapsulate(m);
 		return pending.add(msg);
