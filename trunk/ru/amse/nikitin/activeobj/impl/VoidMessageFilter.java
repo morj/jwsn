@@ -17,7 +17,8 @@ import ru.amse.nikitin.activeobj.IMessageFilter;
 public class VoidMessageFilter implements IMessageFilter {
 	/** void filtering method */
 	public void Filter(List<IActiveObject> objs, Queue<IMessage> messages,
-			Queue<IMessage> dropped, List<IDisplayListener> displisteners) {
+			// Queue<IMessage> dropped,
+			List<IDisplayListener> displisteners) {
 		Iterator<IMessage> i = messages.iterator();
 		Iterator<IActiveObject> j;
 		IMessage m;
@@ -27,7 +28,7 @@ public class VoidMessageFilter implements IMessageFilter {
 			while(j.hasNext()) {
 				j.next().recieveMessage(m);
 			}
-			dropped.add(m);
+			// dropped.add(m);
 			i.remove();
 		}
 	}

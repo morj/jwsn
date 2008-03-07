@@ -9,5 +9,6 @@ import java.util.*;
 public interface IMessageFilter {
 	/** message filtering */
 	void Filter(List<IActiveObject> objs, Queue<IMessage> messages,
-			Queue<IMessage> dropped, List<IDisplayListener> dispListeners);
+			// Queue<IMessage> dropped,
+			List<IDisplayListener> dispListeners);
 }

@@ -15,7 +15,7 @@ public class TestDispatcher extends TestCase {
 	
 	public TestDispatcher() {
 		disp = Dispatcher.getInstance();
-		disp.setMessageFilter(new VoidMessageFilter());
+		disp.addMessageFilter(new VoidMessageFilter());
 	}
 	
 	protected void setUp() throws Exception {
@@ -83,7 +83,8 @@ public class TestDispatcher extends TestCase {
 		public boolean recieveMessage(IMessage m) {
 			if (m.getType() == EMessageType.INIT) {
 				for (int i = 1; i < 15; i++) {
-					IMessage msg = disp.allocateMessage(this);
+					IMessage msg = new Message(disp.getMessageInitData());
+					disp.assignMessage(this, m);
 					msg.setDest(i);
 					msg.setType(EMessageType.DATA);
 					disp.sendMessage(msg);
@@ -110,7 +111,8 @@ public class TestDispatcher extends TestCase {
 	class TimerMsgTester extends MsgTester {
 		public boolean recieveMessage(IMessage m) {
 			if (m.getType() == EMessageType.INIT) {
-				IMessage msg = disp.allocateMessage(this);
+				IMessage msg = new Message(disp.getMessageInitData());
+				disp.assignMessage(this, m);
 				disp.scheduleMessage(msg, new Time(8));
 			}
 			if (m.getType() == EMessageType.TIMER) {

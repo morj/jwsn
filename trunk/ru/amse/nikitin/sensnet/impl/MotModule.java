@@ -35,7 +35,7 @@ public class MotModule implements IMotModule {
 	}
 	
 	protected void scheduleEvent(Runnable r, int t) {
-		IMessage msg = mot.allocateMessage();
+		IMessage msg = mot.newMessage();
 		Integer id = msg.getID();
 		// System.err.println(id + " allocated");
 		assert events.containsKey(id);
@@ -57,7 +57,7 @@ public class MotModule implements IMotModule {
 	}
 
 	protected void scheduleEvent(Runnable r, Time t) {
-		IMessage msg = mot.allocateMessage();
+		IMessage msg = mot.newMessage();
 		Integer id = msg.getID();
 		// System.out.println(id + " allocated");
 		assert events.containsKey(id);

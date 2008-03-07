@@ -17,7 +17,7 @@ public class Mot implements IActiveObject {
 	private double transmitterPower;
 	private double threshold;
 	// private double ratioX; private double ratioY;
-	private IMotModule sendModule = new TransmitterModule();
+	private IMotModule transmitterModule = new TransmitterModule(this);
 	private List<MotModule> modules = new LinkedList<MotModule>();
 	private IBattery b = new Battery (100000000);
 	private MotDescription description;
@@ -54,7 +54,7 @@ public class Mot implements IActiveObject {
 	}
 
 	private void createLinearTopology(IMotModuleFactory f) {
-		IGate inputGate = declareInputGate(Message.class);
+		IGate inputGate = declareInputGate(WirelessMessage.class);
 		
 		MotModule module = f.createModule(this, 0);
 		modules.add(module);
@@ -64,7 +64,7 @@ public class Mot implements IActiveObject {
 		inputGate.setTo(gate);
 		gate.setFrom(inputGate);
 		// gate -> outputGate
-		outputGate = new Gate(sendModule, "mot linear output gate");
+		outputGate = new Gate(transmitterModule, "mot linear output gate");
 		gate.setTo(outputGate);
 		outputGate.setFrom(gate);
 		
@@ -135,6 +135,12 @@ public class Mot implements IActiveObject {
 		s.scheduleMessage(msg, t);
 	}
 	
+	/* package-private */ IMessage newMessage() {
+		IMessage msg = new Message(s.getMessageInitData());
+		s.assignMessage(this, msg);
+		return msg;
+	}
+	
 	public int getLastMessageID() {
 		return lastMessageID;
 	}
@@ -188,10 +194,6 @@ public class Mot implements IActiveObject {
 		return gates.get(msgClass);
 	}
 	
-	public IMessage allocateMessage() {
-		return s.allocateMessage(this);
-	}
-	
 	private boolean sendMessage(IMessage m) {
 		if (b.drain()) {
 			// m.setDest(0);
@@ -204,14 +206,17 @@ public class Mot implements IActiveObject {
 	}
 	
 	private class TransmitterModule implements IMotModule {
-		Gate input;
-		public TransmitterModule() {
+		private Gate input;
+		private Mot mot;
+		public TransmitterModule(Mot m) {
 			input = new Gate(this, "input");
+			this.mot = m;
 		}
 		/** message recieve wrapper */
 		public boolean recieveMessage(IPacket m) {
 			// System.err.println("babax");
-			IMessage msg = allocateMessage();
+			IMessage msg = new WirelessMessage(s.getMessageInitData());
+			s.assignMessage(mot, msg);
 			msg.setType(EMessageType.DATA);
 			msg.setDest(m.getID());
 			ISendCallback action = m.getOnSendAction();
