@@ -10,12 +10,12 @@ public interface IPacket {
 	boolean encapsulate(IPacket p);
 	IPacket decapsulate();
 	boolean isEncapsulating();
-	String getName();
+	
 	int getID();
 	int getLength();
-	int[] getData();
-	void setData(int[] data);
-	void toIntArr(int[] arr, int offset);
+	Object getData();
+	void setData(Object data);
+	
 	ISendCallback getOnSendAction();
 	void setOnSendAction(ISendCallback onSendAction);
 }

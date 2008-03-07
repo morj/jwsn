@@ -3,7 +3,7 @@ package ru.amse.nikitin.sensnet.impl;
 import ru.amse.nikitin.sensnet.IPacket;
 import ru.amse.nikitin.sensnet.ISendCallback;
 
-public class Packet implements IPacket {
+/* public class Packet implements IPacket {
 	protected int dest;
 	protected int[] data;
 	protected int length;
@@ -15,7 +15,7 @@ public class Packet implements IPacket {
 		this.dest = dest;
 	}
 	
-	/* package-private */ Packet(int[] memo, int offset) {
+	Packet(int[] memo, int offset) {
 		dest = memo[offset];
 		int datalen = memo[offset + 1];
 		if (memo.length >= offset + datalen + 2) {
@@ -102,58 +102,71 @@ public class Packet implements IPacket {
 		this.onSendAction = onSendAction;
 	}
 	
-}
-
-/* import ru.amse.nikitin.sensnet.IPacketInfo;
+} */
 
 public class Packet implements IPacket {
-	private String name = "";
-	private IPacket data = null;
-	private IPacketInfo info;
-	private int length = 0;
+	private Object data = null;
+	private int length;
+	private int id = 0;
+	private boolean isIncapsulating = false;
 	
-	public Packet(String name) {
-		this.name = name;
+	protected ISendCallback onSendAction = null;
+	
+	public Packet(int id) {
+		this.id = id;
+		length = 1;
 	}
 	
 	public boolean encapsulate(IPacket p) {
-		if (data == null) {
+		if (!isIncapsulating) {
 			data = p;
 			length += p.getLength();
+			isIncapsulating = true;
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
 	public IPacket decapsulate() {
-		if (data != null) {
-			length -= data.getLength();
+		if (isIncapsulating) {
+			IPacket p = (IPacket)data;
+			length -= p.getLength();
+			data = null;
+			isIncapsulating = false;
+			return p;
+		} else {
+			return null;
 		}
-		IPacket p = data;
-		data = null;
-		return p;
 	}
 	
 	public boolean isEncapsulating() {
-		return (data == null);
-	}
-	
-	public IPacketInfo getInfo() {
-		return info;
-	}
-	
-	public void setInfo(IPacketInfo i) {
-		info = i;
+		return isIncapsulating;
 	}
 	
 	public int getLength() {
-		return length + info.getLength();
+		return length;
 	}
-}
+	
+	public ISendCallback getOnSendAction() {
+		return onSendAction;
+	}
 
-*/
+	public void setOnSendAction(ISendCallback onSendAction) {
+		this.onSendAction = onSendAction;
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		System.err.println(data.getClass());
+		this.data = data;
+	}
+
+}

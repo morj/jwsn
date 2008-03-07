@@ -12,6 +12,7 @@ import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IPacket;
 import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.util.MacData;
 
 
 public class CommonMac extends MotModule {
@@ -100,15 +101,20 @@ public class CommonMac extends MotModule {
 	public boolean lowerMessage(IPacket m) {
 		if (mot.getLastMessageDest() == mot.getID()) {
 			if (m.isEncapsulating()) { // data
-				int[] reciever = new int [1];
-				reciever[0] = mot.getLastMessageID();
+				// int[] reciever = new int [1];
+				// reciever[0] = mot.getLastMessageID();
+				MacData reciever = new MacData(mot.getLastMessageID());
 				Packet confirmMsg = new Packet(mot.getLastMessageSource());
 				confirmMsg.setData(reciever);
 				pending.add(confirmMsg); // sending confirmation
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // confirm
-				waiting.remove(m.getData()[0]);
-				Logger.getInstance().logMessage(ELogMsgType.INFORMATION, "rem " + m.getData()[0]);
+				MacData reciever = ((MacData)m.getData()); 
+				waiting.remove(reciever.getMessageId());
+				Logger.getInstance().logMessage(
+					ELogMsgType.INFORMATION, 
+					"rem " + reciever.getMessageId()
+				);
 				return true;
 			}
 		} else {

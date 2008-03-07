@@ -12,7 +12,7 @@ public class AlohaRandTest {
 	public static void main(String[] args) {
 		
 		Mot[] mots = RandomArea.getInstance().getArea(
-			1024, 480, 30,
+			Const.fieldX, Const.fieldY, 30,
 			SendMotFactory.getInstance(),
 			MotFactory.getInstance(),
 			BsMotFactory.getInstance(),

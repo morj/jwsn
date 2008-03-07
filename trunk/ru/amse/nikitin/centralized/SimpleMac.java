@@ -2,15 +2,12 @@ package ru.amse.nikitin.centralized;
 
 import java.util.*;
 
-import ru.amse.nikitin.activeobj.EMessageType;
-import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IPacket;
 import ru.amse.nikitin.sensnet.impl.Packet;
-
 
 public class SimpleMac extends MotModule {
 	protected Queue<IPacket> pending = new LinkedList<IPacket>();
@@ -32,14 +29,15 @@ public class SimpleMac extends MotModule {
 			if (m.isEncapsulating()) { // data
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // hop
-				int[] timings = m.getData();
+				int[] timings = (int[])m.getData();
 				int id = mot.getID();
 				waitTime = new Time(timings[0]);
 				slotTime = new Time(timings[2 * id + 1]);
 				
 				IPacket routingInfo = new Packet(id);
-				int[]data = new int[1];
-				data[0] = timings[2 * id + 2]; // rooting pred.
+				// int[]data = new int[1];
+				// data[0] = timings[2 * id + 2]; // rooting pred.
+				NetData data = new NetData(timings[2 * id + 2]);
 				// System.out.println("pred for " + p.getID() + " = " + data[0]);
 				routingInfo.setData(data);
 				

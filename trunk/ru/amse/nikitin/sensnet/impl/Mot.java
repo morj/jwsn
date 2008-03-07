@@ -119,7 +119,8 @@ public class Mot implements IActiveObject {
 					IGate in = gates.get(m.getClass());
 					if (in != null) {
 						// System.err.println("recv on " + in.getName());
-						return in.recieveMessage(new Packet((int[])m.getData(), 0), null);
+						IPacket p = (IPacket)m.getData();
+						return in.recieveMessage(p, null);
 					} else {
 						// System.err.println("no apropriate input gate for " + m.getClass());
 						return false;
@@ -217,9 +218,7 @@ public class Mot implements IActiveObject {
 			if (action != null) {
 				action.run(msg);
 			}
-			int[] data = new int[m.getLength()];
-			m.toIntArr(data, 0);
-			msg.setData(data);
+			msg.setData(m);
 			return sendMessage(msg);
 		}
 		public IGate declareGate(String name) {
