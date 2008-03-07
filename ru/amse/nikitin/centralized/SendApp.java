@@ -3,9 +3,11 @@ package ru.amse.nikitin.centralized;
 import ru.amse.nikitin.activeobj.ELogMsgType;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.impl.Time;
+import ru.amse.nikitin.aloha.Const;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.util.BsData;
 import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 public class SendApp extends EmptyApp {
@@ -14,9 +16,10 @@ public class SendApp extends EmptyApp {
 	
 	final Runnable step = new Runnable() {
 		public void run () {
-			int[] data = new int [2];
-			data[0] = Const.hello;
-			data[1] = ++helloCount;
+			// int[] data = new int [2];
+			// data[0] = Const.hello;
+			// data[1] = ++helloCount;
+			BsData data = new BsData(Const.hello, ++helloCount);
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated " + helloCount);
 			Packet packet = new Packet(3);

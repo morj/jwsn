@@ -6,15 +6,17 @@ import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Packet;
 import ru.amse.nikitin.sensnet.util.EmptyApp;
+import ru.amse.nikitin.sensnet.util.BsData;
 
 public class SendApp extends EmptyApp {
 	protected static int helloCount = 0;
 	
 	final Runnable step = new Runnable() {
 		public void run () {
-			int[] data = new int [2];
-			data[0] = Const.hello;
-			data[1] = ++helloCount;
+			// int[] data = new int [2];
+			// data[0] = Const.hello;
+			// data[1] = ++helloCount;
+			BsData data = new BsData(Const.hello, ++helloCount);
 			Packet packet = new Packet(3);
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated " + helloCount);

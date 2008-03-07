@@ -2,8 +2,6 @@ package ru.amse.nikitin.centralized;
 
 import java.util.*;
 
-import ru.amse.nikitin.activeobj.EMessageType;
-import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.graph.IVertex;

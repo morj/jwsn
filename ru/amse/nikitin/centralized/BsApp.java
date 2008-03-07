@@ -6,6 +6,7 @@ import ru.amse.nikitin.aloha.Const;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
+import ru.amse.nikitin.sensnet.util.BsData;
 import ru.amse.nikitin.sensnet.IPacket;
 
 public class BsApp extends MotModule {
@@ -15,10 +16,10 @@ public class BsApp extends MotModule {
 	}
 	
 	public boolean lowerMessage(IPacket m) {
-		// AppMessage msg = new AppMessage(m);
-		if (m.getData()[0] == Const.hello) {
+		BsData data = (BsData)m.getData();
+		if (data.getType() == Const.hello) {
 			Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
-				"hello message " + m.getData()[1] + " recieved by BS");
+				"hello message " + data.getIndex() + " recieved by BS");
 			return true;
 		}
 		return false;

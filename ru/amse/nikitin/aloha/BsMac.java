@@ -22,7 +22,11 @@ public class BsMac extends MotModule {
 	}
 	public boolean lowerMessage(IPacket m) {
 		if (mot.getLastMessageDest() == mot.getID()) {
-			return getGate("upper").recieveMessage(m.decapsulate(), this);
+			if (m.isEncapsulating()) {
+				return getGate("upper").recieveMessage(m.decapsulate(), this);
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
