@@ -1,6 +1,7 @@
 package ru.amse.nikitin.sensnet.impl;
 
 import ru.amse.nikitin.sensnet.IPacket;
+import ru.amse.nikitin.sensnet.ISendCallback;
 
 public class Packet implements IPacket {
 	protected int dest;
@@ -8,6 +9,7 @@ public class Packet implements IPacket {
 	protected int length;
 	protected IPacket packet = null;
 	protected String name;
+	protected ISendCallback onSendAction = null;
 	
 	public Packet(int dest) {
 		this.dest = dest;
@@ -91,6 +93,15 @@ public class Packet implements IPacket {
 		int datalen = (data == null) ? 0 : data.length;
 		return length + datalen + 2;
 	}
+
+	public ISendCallback getOnSendAction() {
+		return onSendAction;
+	}
+
+	public void setOnSendAction(ISendCallback onSendAction) {
+		this.onSendAction = onSendAction;
+	}
+	
 }
 
 /* import ru.amse.nikitin.sensnet.IPacketInfo;

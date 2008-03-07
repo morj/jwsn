@@ -1,4 +1,4 @@
-package ru.amse.nikitin.aloha;
+package ru.amse.nikitin.sensnet.util;
 
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;

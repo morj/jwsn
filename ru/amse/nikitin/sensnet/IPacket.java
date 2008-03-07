@@ -16,4 +16,6 @@ public interface IPacket {
 	int[] getData();
 	void setData(int[] data);
 	void toIntArr(int[] arr, int offset);
+	ISendCallback getOnSendAction();
+	void setOnSendAction(ISendCallback onSendAction);
 }

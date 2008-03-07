@@ -16,8 +16,6 @@ public interface IActiveObject {
 	IActiveObjectDesc newDesc(ImageIcon image, String name, int x, int y);
 	/** description getter */
 	IActiveObjectDesc getDesc();
-	/** message sender */
-	boolean sendMessage(IMessage m);
 	/** message reciever */
 	boolean recieveMessage(IMessage m);
 }

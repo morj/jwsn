@@ -72,13 +72,13 @@ public class Dispatcher implements IDispatcher {
 	
 	public IMessage allocateMessage(IActiveObject obj) {
 		if (!dropped.isEmpty()) {
-			IMessage m = dropped.peek();
+			Message m = (Message)dropped.peek();
 			m.setID(++messageCount);
 			m.setSource(obj.getID());
 			m.setTimer(time);
 			return dropped.remove();
 		} else {
-			IMessage res = allocateMessage(new Time(time), ++messageCount);
+			Message res = (Message)allocateMessage(new Time(time), ++messageCount);
 			res.setSource(obj.getID());
 			return res;
 		}
@@ -117,9 +117,7 @@ public class Dispatcher implements IDispatcher {
 				 */
 				return false;
 			// break;
-			case BROADCAST:
-				messages.add(m);
-			// break;
+			// case BROADCAST: messages.add(m); break;
 			default:
 				messages.add(m);
 		}
@@ -127,7 +125,7 @@ public class Dispatcher implements IDispatcher {
 	}
 	
 	public void scheduleMessage(IMessage m, Time t) {
-		m.delay(t);
+		((Message)m).delay(t);
 		m.setDest(m.getSource());
 		m.setType(EMessageType.TIMER);
 		// System.out.println("time = " + t.getTime());
@@ -142,17 +140,17 @@ public class Dispatcher implements IDispatcher {
 		time.tick();
 		while(!messages.isEmpty()) {
 			m = messages.peek();
-			if (m.isOnTime(time)) {
+			if (((Message)m).isOnTime(time)) {
 				switch (m.getType()) {
 					case TIMER:
 						timered.add(messages.remove());
 					break;
-					case BROADCAST:
+					/* case BROADCAST:
 						for (IActiveObject obj: listeners) {
 							obj.recieveMessage(m);
 						}
 						dropped.add(messages.remove());
-					break;
+					break; */
 					default:
 						pending.add(messages.remove());
 				}

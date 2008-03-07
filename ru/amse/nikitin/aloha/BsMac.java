@@ -2,8 +2,6 @@ package ru.amse.nikitin.aloha;
 
 import java.util.*;
 
-import ru.amse.nikitin.activeobj.EMessageType;
-import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -39,16 +37,6 @@ public class BsMac extends MotModule {
 	}
 	private boolean sendNextMessage() {
 		IPacket mmsg = pending.remove();
-		IMessage msg = mot.allocateMessage(mot);
-		if (msg.getID() >= 0) {
-			msg.setType(EMessageType.DATA);
-		} else {
-			msg.setType(EMessageType.BROADCAST);
-		}
-		msg.setDest(mmsg.getID());
-		int[] data = new int[mmsg.getLength()];
-		mmsg.toIntArr(data, 0);
-		msg.setData(data);
-		return mot.sendMessage(msg);
+		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }

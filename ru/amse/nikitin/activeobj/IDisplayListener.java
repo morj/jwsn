@@ -13,7 +13,7 @@ public interface IDisplayListener {
 	/** on message conflicted */
 	void messageConflicted(int source, int dest);
 	/** on message recieved */
-	void messageRecieved(int source, int dest, int[] data);
+	void messageRecieved(int source, int dest, Object data);
 	/** on message accepted by dest object */
 	void messageAccepted(int dest);
 	/** on notification from mot arrived */

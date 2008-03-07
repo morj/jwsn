@@ -8,6 +8,5 @@ package ru.amse.nikitin.activeobj;
 public enum EMessageType {
 	INIT,
 	TIMER,
-	DATA,
-	BROADCAST
+	DATA //, BROADCAST
 };

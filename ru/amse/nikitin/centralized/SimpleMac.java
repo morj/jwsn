@@ -59,12 +59,6 @@ public class SimpleMac extends MotModule {
 	}
 	private boolean sendNextMessage() {
 		IPacket mmsg = pending.remove();
-		IMessage msg = mot.allocateMessage(mot);
-		msg.setType(EMessageType.DATA);
-		msg.setDest(mmsg.getID());
-		int[] data = new int[mmsg.getLength()];
-		mmsg.toIntArr(data, 0);
-		msg.setData(data);
-		return mot.sendMessage(msg);
+		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }

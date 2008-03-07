@@ -1,6 +1,6 @@
 package ru.amse.nikitin.sensnet.impl;
 
-import ru.amse.nikitin.activeobj.IMessage;
+// import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.sensnet.IGate;
 import ru.amse.nikitin.sensnet.IPacket;
 import ru.amse.nikitin.sensnet.IMotModule;
@@ -8,14 +8,14 @@ import ru.amse.nikitin.sensnet.IMotModule;
 public class Gate implements IGate {
 	private IGate from;
 	private IGate to;
-	private MotModule owner;
+	private IMotModule owner;
 	private String name;
 
 	public String getName() {
 		return name;
 	}
 
-	public Gate(MotModule owner, String name) {
+	public Gate(IMotModule owner, String name) {
 		this.owner = owner;
 		this.name = name;
 	}
@@ -45,7 +45,7 @@ public class Gate implements IGate {
 			if (from != null) {
 				if (owner != null) {
 					// System.err.println(pwner + "->" + owner);
-					owner.arrivedOn = name;
+					owner.setArrivedOn(name);
 					return owner.recieveMessage(msg);
 				} else {
 					System.err.println("Null owner! " + msg.getID());
@@ -55,5 +55,5 @@ public class Gate implements IGate {
 		System.err.println("bad gate logic");
 		return false;
 	}
-
+	
 }

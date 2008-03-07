@@ -11,23 +11,15 @@ import ru.amse.nikitin.sensnet.IMotModule;
 import ru.amse.nikitin.sensnet.IPacket;
 
 public class MotModule implements IMotModule {
-	// protected IMotModule upper; protected IMotModule lower;
 	protected Mot mot;
-	
-	protected Map<Integer, Runnable> events = new HashMap<Integer, Runnable>();
-	protected Map<String, IGate> gates = new HashMap<String, IGate>();
-	
-	/* package-private */ String arrivedOn;
+	private Map<Integer, Runnable> events = new HashMap<Integer, Runnable>();
+	private Map<String, IGate> gates = new HashMap<String, IGate>();
+	private String arrivedOn;
 	
 	public MotModule(Mot m) {
 		mot = m;
 	}
-	
-	/* public void setNeghbours(IMotModule u, IMotModule l) {
-		upper = u; // Reciever
-		lower = l; // Sender
-	} */
-	
+
 	public boolean lowerMessage(IPacket m) { return false; }
 	public boolean upperMessage(IPacket m) { return false; }
 	
@@ -43,9 +35,9 @@ public class MotModule implements IMotModule {
 	}
 	
 	protected void scheduleEvent(Runnable r, int t) {
-		IMessage msg = mot.allocateMessage(mot);
+		IMessage msg = mot.allocateMessage();
 		Integer id = msg.getID();
-		// System.out.println(id + " allocated");
+		// System.err.println(id + " allocated");
 		assert events.containsKey(id);
 		mot.scheduleMessage(msg, new Time(t));
 		events.put(id, r);
@@ -65,7 +57,7 @@ public class MotModule implements IMotModule {
 	}
 
 	protected void scheduleEvent(Runnable r, Time t) {
-		IMessage msg = mot.allocateMessage(mot);
+		IMessage msg = mot.allocateMessage();
 		Integer id = msg.getID();
 		// System.out.println(id + " allocated");
 		assert events.containsKey(id);
@@ -80,12 +72,10 @@ public class MotModule implements IMotModule {
 		}
 	}
 	
-	/* public int getID() {
-		return p.getID();
-	}
-	public void setID(int newID) {
-	} */
-	
 	public void init(IGraph<Integer> topology) {
+	}
+
+	public void setArrivedOn(String arrivedOn) {
+		this.arrivedOn = arrivedOn;
 	}
 }

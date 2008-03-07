@@ -3,6 +3,7 @@ package ru.amse.nikitin.aloha;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
+import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 public class MotFactory implements IMotModuleFactory {
 	private static IMotModuleFactory instance = null;

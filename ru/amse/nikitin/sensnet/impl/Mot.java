@@ -1,31 +1,29 @@
 package ru.amse.nikitin.sensnet.impl;
 
-import javax.swing.ImageIcon;
 import java.util.*;
+import javax.swing.ImageIcon;
+
+import ru.amse.nikitin.activeobj.EMessageType;
 import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.IActiveObject;
 import ru.amse.nikitin.activeobj.impl.*;
+import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.*;
 
 public class Mot implements IActiveObject {
-	protected Dispatcher s;
-	protected int id, x, y, lastMessageID, lastMessageSource, lastMessageDest;
-	protected double transmitterPower;
-	protected double threshold;
-	protected double ratioX;
-	protected double ratioY;
-
-	protected MotModule mac; // just for quick reference
-	protected List<MotModule> modules = new LinkedList<MotModule>();
-	
-	protected IBattery b = new Battery (100000000);
-	
-	protected MotDescription description;
-	
-	protected Map<Class<? extends IMessage>, IGate> gates
+	private Dispatcher s;
+	private int id, x, y, lastMessageID, lastMessageSource, lastMessageDest;
+	private double transmitterPower;
+	private double threshold;
+	// private double ratioX; private double ratioY;
+	private IMotModule sendModule = new TransmitterModule();
+	private List<MotModule> modules = new LinkedList<MotModule>();
+	private IBattery b = new Battery (100000000);
+	private MotDescription description;
+	private Map<Class<? extends IMessage>, IGate> gates
 		= new HashMap<Class<? extends IMessage>, IGate>();
-	protected IGate outputGate;
+	private IGate outputGate;
 	
 	/**
 	 * All gate links here are 1-1 links without channels.
@@ -51,6 +49,10 @@ public class Mot implements IActiveObject {
 		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
 	}
 
+	public IGate getOutputGate() {
+		return outputGate;
+	}
+
 	private void createLinearTopology(IMotModuleFactory f) {
 		IGate inputGate = declareInputGate(Message.class);
 		
@@ -62,7 +64,7 @@ public class Mot implements IActiveObject {
 		inputGate.setTo(gate);
 		gate.setFrom(inputGate);
 		// gate -> outputGate
-		outputGate = new Gate(null, "mot linear output gate");
+		outputGate = new Gate(sendModule, "mot linear output gate");
 		gate.setTo(outputGate);
 		outputGate.setFrom(gate);
 		
@@ -117,7 +119,7 @@ public class Mot implements IActiveObject {
 					IGate in = gates.get(m.getClass());
 					if (in != null) {
 						// System.err.println("recv on " + in.getName());
-						return in.recieveMessage(new Packet(m.getData(), 0), null);
+						return in.recieveMessage(new Packet((int[])m.getData(), 0), null);
 					} else {
 						// System.err.println("no apropriate input gate for " + m.getClass());
 						return false;
@@ -130,21 +132,6 @@ public class Mot implements IActiveObject {
 	
 	/* package-private */ void scheduleMessage(IMessage msg, Time t) {
 		s.scheduleMessage(msg, t);
-	}
-	
-	public boolean sendMessage(IMessage m) {
-		if (b.drain()) {
-			// m.setDest(0);
-			// m.setData(null);
-			// Logger.getInstance().logMessage(m.toString());
-			return s.sendMessage(m);
-		} else {
-			return false;
-		}
-	}
-	
-	public IMessage allocateMessage(IActiveObject obj) {
-		return s.allocateMessage(obj);
 	}
 	
 	public int getLastMessageID() {
@@ -198,5 +185,54 @@ public class Mot implements IActiveObject {
 	
 	public IGate getInputGate(Class<? extends IMessage> msgClass) {
 		return gates.get(msgClass);
+	}
+	
+	public IMessage allocateMessage() {
+		return s.allocateMessage(this);
+	}
+	
+	private boolean sendMessage(IMessage m) {
+		if (b.drain()) {
+			// m.setDest(0);
+			// m.setData(null);
+			// Logger.getInstance().logMessage(m.toString());
+			return s.sendMessage(m);
+		} else {
+			return false;
+		}
+	}
+	
+	private class TransmitterModule implements IMotModule {
+		Gate input;
+		public TransmitterModule() {
+			input = new Gate(this, "input");
+		}
+		/** message recieve wrapper */
+		public boolean recieveMessage(IPacket m) {
+			// System.err.println("babax");
+			IMessage msg = allocateMessage();
+			msg.setType(EMessageType.DATA);
+			msg.setDest(m.getID());
+			ISendCallback action = m.getOnSendAction();
+			if (action != null) {
+				action.run(msg);
+			}
+			int[] data = new int[m.getLength()];
+			m.toIntArr(data, 0);
+			msg.setData(data);
+			return sendMessage(msg);
+		}
+		public IGate declareGate(String name) {
+			if (name.equals("input")) {
+				return input;
+			} else {
+				return null;
+			}
+		}
+		public IGate getGate(String name) {
+			return input;
+		}
+		public void init(IGraph<Integer> topology) { /* :-) */ }
+		public void setArrivedOn(String arrivedOn) { /* ;-] */ }
 	}
 }
