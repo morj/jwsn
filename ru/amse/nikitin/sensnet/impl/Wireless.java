@@ -13,8 +13,8 @@ import ru.amse.nikitin.activeobj.IMessageFilter;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.ELogMsgType;
 
-public class Radio implements IMessageFilter {
-	private static Radio instance = null;
+public class Wireless implements IMessageFilter {
+	private static Wireless instance = null;
 	
 	private class PoweredMessage implements Comparable<PoweredMessage> {
 		IMessage m; // encapsulates SensnetMessage
@@ -26,8 +26,8 @@ public class Radio implements IMessageFilter {
 		}
 	}
 	
-	public static Radio getInstance () {
-		return (instance == null ? new Radio() : instance);
+	public static Wireless getInstance () {
+		return (instance == null ? new Wireless() : instance);
 	}
 	
 	protected void recieve(Mot mot, IMessage m, List<IDisplayListener> displisteners) {
@@ -40,12 +40,18 @@ public class Radio implements IMessageFilter {
 	}
 	
 	public void Filter(List<IActiveObject> objs, Queue<IMessage> messages,
-			Queue<IMessage> dropped, List<IDisplayListener> displisteners) {
+			// Queue<IMessage> dropped,
+			List<IDisplayListener> displisteners) {
 		Logger l = Logger.getInstance();
 		int size = messages.size();
 		List<PoweredMessage> msg = new ArrayList<PoweredMessage>();
 		// draining messages to this list
-		while (!messages.isEmpty()) msg.add (new PoweredMessage(messages.poll()));
+		while (!messages.isEmpty()) {
+			if(messages.peek().getClass() == WirelessMessage.class) {
+				PoweredMessage pw = new PoweredMessage(messages.poll());
+				msg.add (pw);
+			}
+		}
 		Iterator i = objs.iterator();
 		if (size > 0) while (i.hasNext()) { // for each mot
 			Mot currmot = (Mot)i.next();
@@ -116,10 +122,10 @@ public class Radio implements IMessageFilter {
 				}
 			}
 		}
-		Iterator<PoweredMessage> j = msg.iterator();
+		/* Iterator<PoweredMessage> j = msg.iterator();
 		while(j.hasNext()) {
 			dropped.add(j.next().m);
 			j.remove();
-		}
+		} */ msg.clear();
 	}
 }
