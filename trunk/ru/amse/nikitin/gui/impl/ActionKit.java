@@ -43,19 +43,27 @@ class RunSimulationAction extends AbstractAction {
 	protected DisplayComponent component;
 	protected long rate;
 	protected TimeUnit units;
+	protected boolean running = false; 
 
 	/* package-private */ RunSimulationAction(DisplayComponent component,
 			long rate, TimeUnit units) {
 		// super("Run");
 		putValue(SHORT_DESCRIPTION, "Run simulation");
-        putValue(SMALL_ICON, new ImageIcon("icons\\run.png"));
+        putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
 		this.component = component;
 		this.rate = rate;
 		this.units = units;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		component.runSimulation(rate, units);
+		if (running) {
+			component.stopSimulation();
+			putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
+		} else {
+			component.runSimulation(rate, units);
+			putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+		}
+		running = !running;
 	}
 }
 
@@ -66,7 +74,7 @@ class StopSimulationAction extends AbstractAction {
 	/* package-private */ StopSimulationAction(DisplayComponent component) {
 		// super("Stop");
 		putValue(SHORT_DESCRIPTION, "Stop simulation");
-        putValue(SMALL_ICON, new ImageIcon("icons\\stop.png"));
+        putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
 		this.component = component;
 	}
 	
@@ -82,7 +90,7 @@ class StepSimulationAction extends AbstractAction {
 	/* package-private */ StepSimulationAction(DisplayComponent component) {
 		// super("Step");
 		putValue(SHORT_DESCRIPTION, "Step simulation");
-        putValue(SMALL_ICON, new ImageIcon("icons\\step.png"));
+        putValue(SMALL_ICON, new ImageIcon("icons\\icon_step.png"));
 		this.component = component;
 	}
 	

@@ -5,11 +5,11 @@ import java.util.*;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.IPacket;
-import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
+import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 
 public class BsMac extends MotModule {
-	protected Queue<IPacket> pending = new LinkedList<IPacket>();
+	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
 	
 	final Runnable step = new Runnable() {
 		public void run () {
@@ -20,7 +20,7 @@ public class BsMac extends MotModule {
 	public BsMac(Mot m) {
 		super(m);
 	}
-	public boolean lowerMessage(IPacket m) {
+	public boolean lowerMessage(IWirelessPacket m) {
 		if (mot.getLastMessageDest() == mot.getID()) {
 			if (m.isEncapsulating()) {
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
@@ -31,8 +31,8 @@ public class BsMac extends MotModule {
 			return false;
 		}
 	}
-	public boolean upperMessage(IPacket m) {
-		IPacket msg = new Packet(m.getID());
+	public boolean upperMessage(IWirelessPacket m) {
+		IWirelessPacket msg = new WirelessPacket(m.getID());
 		msg.encapsulate(m);
 		return pending.add(msg);
 	}
@@ -40,7 +40,7 @@ public class BsMac extends MotModule {
 		step.run();
 	}
 	private boolean sendNextMessage() {
-		IPacket mmsg = pending.remove();
+		IWirelessPacket mmsg = pending.remove();
 		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }

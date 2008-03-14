@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
-
 import ru.amse.nikitin.activeobj.IActiveObject;
 import ru.amse.nikitin.activeobj.IDisplayListener;
 import ru.amse.nikitin.activeobj.IMessage;
@@ -47,9 +46,12 @@ public class Wireless implements IMessageFilter {
 		List<PoweredMessage> msg = new ArrayList<PoweredMessage>();
 		// draining messages to this list
 		while (!messages.isEmpty()) {
-			if(messages.peek().getClass() == WirelessMessage.class) {
-				PoweredMessage pw = new PoweredMessage(messages.poll());
-				msg.add (pw);
+			Object peek = messages.peek().getData();
+			if(peek != null) {
+				if(peek instanceof WirelessPacket) {
+					PoweredMessage pw = new PoweredMessage(messages.poll());
+					msg.add (pw);
+				}
 			}
 		}
 		Iterator i = objs.iterator();

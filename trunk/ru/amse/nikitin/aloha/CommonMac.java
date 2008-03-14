@@ -9,15 +9,15 @@ import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.IPacket;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.ISendCallback;
-import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.sensnet.util.MacData;
 
 
 public class CommonMac extends MotModule {
-	protected Queue<IPacket> pending = new LinkedList<IPacket>();
-	protected Map<Integer, IPacket> waiting = new HashMap<Integer, IPacket>();
+	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
+	protected Map<Integer, IWirelessPacket> waiting = new HashMap<Integer, IWirelessPacket>();
 	
 	protected boolean wasSent = false;
 	
@@ -78,9 +78,9 @@ public class CommonMac extends MotModule {
 	}
 	
 	class ConfirmMsg implements ISendCallback {
-		private IPacket packet;
+		private IWirelessPacket packet;
 		
-		public ConfirmMsg(IPacket packet) {
+		public ConfirmMsg(IWirelessPacket packet) {
 			this.packet = packet;
 		}
 
@@ -98,13 +98,13 @@ public class CommonMac extends MotModule {
 		super(m);
 	}
 	
-	public boolean lowerMessage(IPacket m) {
+	public boolean lowerMessage(IWirelessPacket m) {
 		if (mot.getLastMessageDest() == mot.getID()) {
 			if (m.isEncapsulating()) { // data
 				// int[] reciever = new int [1];
 				// reciever[0] = mot.getLastMessageID();
 				MacData reciever = new MacData(mot.getLastMessageID());
-				Packet confirmMsg = new Packet(mot.getLastMessageSource());
+				WirelessPacket confirmMsg = new WirelessPacket(mot.getLastMessageSource());
 				confirmMsg.setData(reciever);
 				pending.add(confirmMsg); // sending confirmation
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
@@ -122,8 +122,8 @@ public class CommonMac extends MotModule {
 		}
 	}
 	
-	public boolean upperMessage(IPacket m) {
-		IPacket msg = new Packet(m.getID());
+	public boolean upperMessage(IWirelessPacket m) {
+		IWirelessPacket msg = new WirelessPacket(m.getID());
 		msg.encapsulate(m);
 		msg.setOnSendAction(new ConfirmMsg(msg));
 		if (wasSent) {
@@ -143,7 +143,7 @@ public class CommonMac extends MotModule {
 	}
 	
 	private boolean sendNextMessage() {
-		IPacket mmsg = pending.remove();
+		IWirelessPacket mmsg = pending.remove();
 		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }

@@ -63,7 +63,7 @@ public class BasicUI {
 		Action runAction  = ActionKit.createRunSimulationAction (dispc,
 			500, TimeUnit.MILLISECONDS);
 		Action stepAction = ActionKit.createStepSimulationAction(dispc);
-		Action stopAction = ActionKit.createStopSimulationAction(dispc);
+		// Action stopAction = ActionKit.createStopSimulationAction(dispc);
 		
 		JPanel dispPanel = new JPanel(new BorderLayout());
         dispPanel.add(dispc);
@@ -71,13 +71,13 @@ public class BasicUI {
        
 		JButton runButton = new JButton(runAction);
 		JButton stepButton = new JButton(stepAction);
-		JButton stopButton = new JButton(stopAction);
+		// JButton stopButton = new JButton(stopAction);
 
 	    JPanel opPanel = new JPanel();
 	    opPanel.setLayout(new BoxLayout(opPanel, BoxLayout.X_AXIS));
 	    opPanel.add(runButton);
         opPanel.add(stepButton);
-        opPanel.add(stopButton);
+        // opPanel.add(stopButton);
         opPanel.setBorder(BorderFactory.createTitledBorder("Process control"));
  
         ToolBox tools = new ToolBox(dispc);

@@ -6,7 +6,7 @@ import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.util.BsData;
-import ru.amse.nikitin.sensnet.IPacket;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
 
 public class BsApp extends MotModule {
 	
@@ -14,7 +14,7 @@ public class BsApp extends MotModule {
 		super(m);
 	}
 	
-	public boolean lowerMessage(IPacket m) {
+	public boolean lowerMessage(IWirelessPacket m) {
 		BsData data = (BsData)m.getData();
 		if (data.getType() == Const.hello) {
 			Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
@@ -24,7 +24,7 @@ public class BsApp extends MotModule {
 		return false;
 	}
 	
-	public boolean upperMessage(IPacket m) {
+	public boolean upperMessage(IWirelessPacket m) {
 		// AppMessage msg = new AppMessage(m);	
 		// return lower.sendMessage(m);
 		return true;

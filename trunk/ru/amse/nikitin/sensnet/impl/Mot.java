@@ -1,29 +1,30 @@
 package ru.amse.nikitin.sensnet.impl;
 
-import java.util.*;
 import javax.swing.ImageIcon;
 
 import ru.amse.nikitin.activeobj.EMessageType;
 import ru.amse.nikitin.activeobj.IActiveObjectDesc;
 import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.IActiveObject;
-import ru.amse.nikitin.activeobj.impl.*;
+import ru.amse.nikitin.activeobj.impl.Time;
+import ru.amse.nikitin.activeobj.impl.Message;
+import ru.amse.nikitin.activeobj.impl.Dispatcher;
 import ru.amse.nikitin.graph.IGraph;
+import ru.amse.nikitin.net.IGate;
+import ru.amse.nikitin.net.IModule;
+import ru.amse.nikitin.net.IPacket;
+import ru.amse.nikitin.net.impl.Gate;
+import ru.amse.nikitin.net.impl.NetObject;
 import ru.amse.nikitin.sensnet.*;
 
-public class Mot implements IActiveObject {
+public class Mot extends NetObject {
 	private Dispatcher s;
-	private int id, x, y, lastMessageID, lastMessageSource, lastMessageDest;
+	private int x, y;
 	private double transmitterPower;
 	private double threshold;
 	// private double ratioX; private double ratioY;
 	private IMotModule transmitterModule = new TransmitterModule(this);
-	private List<MotModule> modules = new LinkedList<MotModule>();
 	private IBattery b = new Battery (100000000);
 	private MotDescription description;
-	private Map<Class<? extends IMessage>, IGate> gates
-		= new HashMap<Class<? extends IMessage>, IGate>();
-	private IGate outputGate;
 	
 	/**
 	 * All gate links here are 1-1 links without channels.
@@ -54,10 +55,10 @@ public class Mot implements IActiveObject {
 	}
 
 	private void createLinearTopology(IMotModuleFactory f) {
-		IGate inputGate = declareInputGate(WirelessMessage.class);
+		IGate inputGate = declareInputGate(WirelessPacket.class);
 		
 		MotModule module = f.createModule(this, 0);
-		modules.add(module);
+		addModule("m0", module);
 		
 		IGate gate = module.declareGate(Const.lowerGateName);
 		// inputGate -> gate
@@ -71,7 +72,7 @@ public class Mot implements IActiveObject {
 		gate = module.declareGate(Const.upperGateName);
 		for (int i = 1; i < f.getModuleCount(); i++) { 
 			module = f.createModule(this, i);
-			modules.add(module);
+			addModule("m" + i, module);
 			IGate dest = module.declareGate(Const.lowerGateName);
 			// gate <-> dest
 			// if (dest == null) System.err.print("null dest");
@@ -95,36 +96,28 @@ public class Mot implements IActiveObject {
 			case TIMER:
 				int id = m.getID();
 				// System.out.println(id + " recieved");
-				for (MotModule module: modules) {
-					module.fireEvent(id);
+				for (IModule module: modules.values()) {
+					((MotModule)module).fireEvent(id);
 				}
 				return true;
 			case INIT:
-				/* sheduleEvent(new Runnable() {
-					public void run() {
-						System.out.println("PREVED");
-					}
-				}, Time.randTime(5));
-				int[] t = new int [2];
-				t[1] = 0;
-				app.sendMessage(t); */
-				for (MotModule module: modules) {
-					module.init(s.getTopology());
+				for (IModule module: modules.values()) {
+					((MotModule)module).init(s.getTopology());
 				}
 				return true;
 			default:
 				if (b.drain()) {
 					// return mac.recieveMessage(new Packet(m.getData(), 0));
 					
-					IGate in = gates.get(m.getClass());
-					if (in != null) {
-						// System.err.println("recv on " + in.getName());
-						IPacket p = (IPacket)m.getData();
-						return in.recieveMessage(p, null);
-					} else {
-						// System.err.println("no apropriate input gate for " + m.getClass());
-						return false;
-					}
+					if (m.getData() != null) {
+						IGate in = gates.get(m.getData().getClass());
+						if (in != null) {
+							// System.err.println("recv on " + in.getName());
+							IWirelessPacket p = (IWirelessPacket)m.getData();
+							return in.recieveMessage(p, null);
+						} // else
+					} // else
+					return false;
 				} else {
 					return false;
 				}
@@ -139,26 +132,6 @@ public class Mot implements IActiveObject {
 		IMessage msg = new Message(s.getMessageInitData());
 		s.assignMessage(this, msg);
 		return msg;
-	}
-	
-	public int getLastMessageID() {
-		return lastMessageID;
-	}
-	
-	public int getLastMessageSource() {
-		return lastMessageSource;
-	}
-	
-	public int getLastMessageDest() {
-		return lastMessageDest;
-	}
-	
-	public int getID() {
-		return id;
-	}
-	
-	public void setID(int newID) {
-		id = newID;
 	}
 	
 	public IActiveObjectDesc newDesc(ImageIcon image, String name, int x, int y) {
@@ -177,21 +150,6 @@ public class Mot implements IActiveObject {
 	
 	public double getThreshold() {
 		return threshold;
-	}
-	
-	public IGate declareInputGate(Class<? extends IMessage> msgClass) {
-		IGate newGate = null;
-		if (!gates.containsKey(msgClass)) {
-			String name = "mot input gate for " + msgClass.getName();
-			// System.err.println(name);
-			newGate = new Gate(null, name);
-			gates.put(msgClass, newGate);
-		}
-		return newGate;
-	}
-	
-	public IGate getInputGate(Class<? extends IMessage> msgClass) {
-		return gates.get(msgClass);
 	}
 	
 	private boolean sendMessage(IMessage m) {
@@ -213,9 +171,10 @@ public class Mot implements IActiveObject {
 			this.mot = m;
 		}
 		/** message recieve wrapper */
-		public boolean recieveMessage(IPacket m) {
+		public boolean recieveMessage(IPacket m1) {
 			// System.err.println("babax");
-			IMessage msg = new WirelessMessage(s.getMessageInitData());
+			IWirelessPacket m = (IWirelessPacket)m1;
+			IMessage msg = new Message(s.getMessageInitData());
 			s.assignMessage(mot, msg);
 			msg.setType(EMessageType.DATA);
 			msg.setDest(m.getID());
