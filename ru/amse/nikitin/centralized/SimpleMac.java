@@ -6,11 +6,11 @@ import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.IPacket;
-import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
+import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 
 public class SimpleMac extends MotModule {
-	protected Queue<IPacket> pending = new LinkedList<IPacket>();
+	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
 	protected Time slotTime = null;
 	protected Time waitTime = null;
 	
@@ -23,7 +23,7 @@ public class SimpleMac extends MotModule {
 	public SimpleMac(Mot m) {
 		super(m);
 	}
-	public boolean lowerMessage(IPacket m) {
+	public boolean lowerMessage(IWirelessPacket m) {
 		int lastdest = mot.getLastMessageDest();
 		if ((lastdest == mot.getID()) || (lastdest == -1)) {
 			if (m.isEncapsulating()) { // data
@@ -34,7 +34,7 @@ public class SimpleMac extends MotModule {
 				waitTime = new Time(timings[0]);
 				slotTime = new Time(timings[2 * id + 1]);
 				
-				IPacket routingInfo = new Packet(id);
+				IWirelessPacket routingInfo = new WirelessPacket(id);
 				// int[]data = new int[1];
 				// data[0] = timings[2 * id + 2]; // rooting pred.
 				NetData data = new NetData(timings[2 * id + 2]);
@@ -48,15 +48,15 @@ public class SimpleMac extends MotModule {
 			return false;
 		}
 	}
-	public boolean upperMessage(IPacket m) {
-		IPacket msg = new Packet(m.getID());
+	public boolean upperMessage(IWirelessPacket m) {
+		IWirelessPacket msg = new WirelessPacket(m.getID());
 		msg.encapsulate(m);
 		return pending.add(msg);
 	}
 	public void init(IGraph<Integer> topology) {
 	}
 	private boolean sendNextMessage() {
-		IPacket mmsg = pending.remove();
+		IWirelessPacket mmsg = pending.remove();
 		return getGate("lower").recieveMessage(mmsg, this);
 	}
 }

@@ -6,29 +6,28 @@ import java.util.Map;
 import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
-import ru.amse.nikitin.sensnet.IGate;
-import ru.amse.nikitin.sensnet.IMotModule;
-import ru.amse.nikitin.sensnet.IPacket;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
+import ru.amse.nikitin.net.IPacket;
+import ru.amse.nikitin.net.IModule;
+import ru.amse.nikitin.net.impl.NetModule;
 
-public class MotModule implements IMotModule {
+public class MotModule extends NetModule implements IModule {
 	protected Mot mot;
-	private Map<Integer, Runnable> events = new HashMap<Integer, Runnable>();
-	private Map<String, IGate> gates = new HashMap<String, IGate>();
-	private String arrivedOn;
+	protected Map<Integer, Runnable> events = new HashMap<Integer, Runnable>();
 	
 	public MotModule(Mot m) {
 		mot = m;
 	}
 
-	public boolean lowerMessage(IPacket m) { return false; }
-	public boolean upperMessage(IPacket m) { return false; }
+	public boolean lowerMessage(IWirelessPacket m) { return false; }
+	public boolean upperMessage(IWirelessPacket m) { return false; }
 	
 	public boolean recieveMessage(IPacket m) {
 		if (arrivedOn.equals("upper")) {
-			return upperMessage(m);
+			return upperMessage((IWirelessPacket)m);
 		}
 		if (arrivedOn.equals("lower")) {
-			return lowerMessage(m);
+			return lowerMessage((IWirelessPacket)m);
 		}
 		System.err.println("bad gate");
 		return false;
@@ -41,19 +40,6 @@ public class MotModule implements IMotModule {
 		assert events.containsKey(id);
 		mot.scheduleMessage(msg, new Time(t));
 		events.put(id, r);
-	}
-	
-	public IGate declareGate(String name) {
-		IGate newGate = null;
-		if (!gates.containsKey(name)) {
-			newGate = new Gate(this, name);
-			gates.put(name, newGate);
-		}
-		return newGate;
-	}
-
-	public IGate getGate(String name) {
-		return gates.get(name);
 	}
 
 	protected void scheduleEvent(Runnable r, Time t) {
@@ -75,7 +61,4 @@ public class MotModule implements IMotModule {
 	public void init(IGraph<Integer> topology) {
 	}
 
-	public void setArrivedOn(String arrivedOn) {
-		this.arrivedOn = arrivedOn;
-	}
 }

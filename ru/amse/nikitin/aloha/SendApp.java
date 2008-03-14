@@ -4,7 +4,7 @@ import ru.amse.nikitin.activeobj.ELogMsgType;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.sensnet.util.EmptyApp;
 import ru.amse.nikitin.sensnet.util.BsData;
 
@@ -17,7 +17,7 @@ public class SendApp extends EmptyApp {
 			// data[0] = Const.hello;
 			// data[1] = ++helloCount;
 			BsData data = new BsData(Const.hello, ++helloCount);
-			Packet packet = new Packet(3);
+			WirelessPacket packet = new WirelessPacket(3);
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated " + helloCount);
 			packet.setData(data);
@@ -27,7 +27,7 @@ public class SendApp extends EmptyApp {
 		
 	};
 	
-	private void sendMsgToLower(Packet packet) {
+	private void sendMsgToLower(WirelessPacket packet) {
 		getGate("lower").recieveMessage(packet, this);
 	}
 	

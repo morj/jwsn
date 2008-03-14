@@ -5,7 +5,7 @@ import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 import ru.amse.nikitin.aloha.Const;
@@ -20,7 +20,7 @@ public class ConflicterApp extends EmptyApp {
 			int[] data = new int [2];
 			data[0] = Const.hello;
 			data[1] = 0;
-			Packet packet = new Packet(1);
+			WirelessPacket packet = new WirelessPacket(1);
 			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"allocated conflicter message");
 			packet.setData(data);
@@ -29,7 +29,7 @@ public class ConflicterApp extends EmptyApp {
 		}
 	};
 	
-	private void sendMsgToLower(Packet packet) {
+	private void sendMsgToLower(WirelessPacket packet) {
 		getGate("lower").recieveMessage(packet, this);
 	}
 	

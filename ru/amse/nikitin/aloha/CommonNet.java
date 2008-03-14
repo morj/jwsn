@@ -6,8 +6,8 @@ import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.graph.IVertex;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.IPacket;
-import ru.amse.nikitin.sensnet.impl.Packet;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
+import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 
 public class CommonNet extends MotModule {
 	protected int pred = 0;
@@ -26,15 +26,15 @@ public class CommonNet extends MotModule {
 			}
 		}
 	}
-	public boolean lowerMessage(IPacket m) {
+	public boolean lowerMessage(IWirelessPacket m) {
 		if (m.getID() == mot.getID()) {
 			return getGate("upper").recieveMessage(m.decapsulate(), this);
 		} else {
 			return false;
 		}
 	}
-	public boolean upperMessage(IPacket m) {
-		IPacket msg = new Packet(pred);
+	public boolean upperMessage(IWirelessPacket m) {
+		IWirelessPacket msg = new WirelessPacket(pred);
 		msg.encapsulate(m);
 		return getGate("lower").recieveMessage(msg, this);
 	}

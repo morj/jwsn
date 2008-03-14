@@ -1,6 +1,7 @@
 package ru.amse.nikitin.sensnet;
 
 import ru.amse.nikitin.graph.IGraph;
+import ru.amse.nikitin.net.IModule;
 
 /** 
  * mot module
@@ -8,12 +9,6 @@ import ru.amse.nikitin.graph.IGraph;
  * @author Pavel A. Nikitin
  *
  */
-public interface IMotModule {
-	/** message recieve */
-	boolean recieveMessage(IPacket m);
-	/** module init */
+public interface IMotModule extends IModule {
 	void init(IGraph<Integer> topology);
-	IGate declareGate(String name);
-	IGate getGate(String name);
-	void setArrivedOn(String arrivedOn);
 }
