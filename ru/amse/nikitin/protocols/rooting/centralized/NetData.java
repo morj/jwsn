@@ -1,5 +1,7 @@
 package ru.amse.nikitin.protocols.rooting.centralized;
 
+import java.util.Arrays;
+
 /* public */ class NetData {
 	private int[] predecessors;
 
@@ -10,5 +12,11 @@ package ru.amse.nikitin.protocols.rooting.centralized;
 	public int getPredecessor(int index) {
 		return predecessors[index];
 	}
+
+	public String toString() {
+		return "[CND " + Arrays.toString(predecessors) + " ]";
+	}
+	
+	
 	
 }

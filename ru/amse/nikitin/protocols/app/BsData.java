@@ -24,4 +24,9 @@ public class BsData {
 	public void setType(int type) {
 		this.type = type;
 	}
+
+	public String toString() {
+		return "[BD " + index + " (" + type + ") ]";
+	}
+	
 }

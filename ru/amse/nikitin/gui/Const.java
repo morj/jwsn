@@ -31,4 +31,6 @@ public class Const {
 	public static final int TOOLBOX_ELEMENT_WIDTH = 40;
 	/** toolbox element width */
 	public static final int TOOLBOX_ELEMENT_HEIGHT = 40;
+	/** simulation rate */
+	public static final int SIM_RATE = 500;
 }

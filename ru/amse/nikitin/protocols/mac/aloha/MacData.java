@@ -10,5 +10,9 @@ package ru.amse.nikitin.protocols.mac.aloha;
 	public int getMessageId() {
 		return messageId;
 	}
-	
+
+	public String toString() {
+		return "[AMD " + messageId + " ]";
+	}
+
 }

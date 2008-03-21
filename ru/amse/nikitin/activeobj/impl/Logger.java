@@ -45,7 +45,7 @@ public class Logger {
 	/** compound message logging */
 	public void logMessage(ELogMsgType type, String pack, IMessage msg) {
 		String logMessage = Dispatcher.getInstance().getTime()
-		+ " " + type + ": " + pack + " - " + msg;
+		+ " " + type + ": " + pack + " - " + msg + " ";
 		for (ILoggerListener l: listeners) {
 			l.stringLogged(logMessage);
 		}

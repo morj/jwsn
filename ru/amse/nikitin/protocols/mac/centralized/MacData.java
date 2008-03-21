@@ -1,5 +1,7 @@
 package ru.amse.nikitin.protocols.mac.centralized;
 
+import java.util.Arrays;
+
 /* public */ class MacData {
 	private int count;
 	private int[] predecessors;
@@ -19,5 +21,9 @@ package ru.amse.nikitin.protocols.mac.centralized;
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+	
+	public String toString() {
+		return "[CMD (" + count + ") " + Arrays.toString(predecessors) + " ]";
 	}
 }

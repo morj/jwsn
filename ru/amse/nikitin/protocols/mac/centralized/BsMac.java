@@ -31,7 +31,7 @@ public class BsMac extends MotModule {
 		}
 	}
 	public boolean upperMessage(IWirelessPacket m) {
-		IWirelessPacket msg = new WirelessPacket(m.getID());
+		IWirelessPacket msg = new WirelessPacket(m.getID(), mot);
 		msg.encapsulate(m);
 		return pending.add(msg);
 	}
@@ -45,7 +45,7 @@ public class BsMac extends MotModule {
 			int i = v.getData();
 			data [i] = v.getColor() + 1; // wait one more tick for net init
 		}
-		IWirelessPacket msg = new WirelessPacket(-1);
+		IWirelessPacket msg = new WirelessPacket(-1, mot);
 		msg.setData(new MacData(topology.getColorsCount(), data));
 		pending.add(msg);
 		step.run();

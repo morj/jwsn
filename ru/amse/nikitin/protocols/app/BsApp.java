@@ -14,11 +14,15 @@ public class BsApp extends MotModule {
 	}
 	
 	public boolean lowerMessage(IWirelessPacket m) {
-		BsData data = (BsData)m.getData();
-		if (data.getType() == Const.hello) {
-			Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
-				"hello message " + data.getIndex() + " recieved by BS");
-			return true;
+		if (m.getData() != null) {
+			BsData data = (BsData)m.getData();
+			if (data.getType() == Const.hello) {
+				Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
+					"hello message " + data.getIndex() + " recieved by BS");
+				return true;
+			}
+		} else {
+			System.err.println("null data for bs");
 		}
 		return false;
 	}

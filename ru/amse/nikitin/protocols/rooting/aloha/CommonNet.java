@@ -39,7 +39,7 @@ public class CommonNet extends MotModule {
 			System.err.println("bad pred");
 			return false;
 		} else {
-			IWirelessPacket msg = new WirelessPacket(pred);
+			IWirelessPacket msg = new WirelessPacket(pred, mot);
 			msg.encapsulate(m);
 			return getGate("lower").recieveMessage(msg, this);
 		}

@@ -42,7 +42,7 @@ public class SimpleMac extends MotModule {
 		}
 	}
 	public boolean upperMessage(IWirelessPacket m) {
-		IWirelessPacket msg = new WirelessPacket(m.getID());
+		IWirelessPacket msg = new WirelessPacket(m.getID(), mot);
 		msg.encapsulate(m);
 		return pending.add(msg);
 	}

@@ -10,7 +10,8 @@ public class WirelessPacket extends Packet implements IWirelessPacket {
 	
 	protected ISendCallback onSendAction = null;
 	
-	public WirelessPacket(int id) {
+	public WirelessPacket(int id, Mot owner) {
+		super(owner);
 		this.id = id;
 		length = 1;
 	}
@@ -37,6 +38,11 @@ public class WirelessPacket extends Packet implements IWirelessPacket {
 
 	public int getID() {
 		return id;
+	}
+
+	public String toString() {
+		return (isLocked ? "![WP " : "[WP") + id + ", "
+		            + (data == null ? "no data" : data.toString()) + " ]";
 	}
 
 }

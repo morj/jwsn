@@ -61,7 +61,7 @@ public class BasicUI {
 		logPane.setBorder(BorderFactory.createTitledBorder("Log"));
 		
 		Action runAction  = ActionKit.createRunSimulationAction (dispc,
-			500, TimeUnit.MILLISECONDS);
+				Const.SIM_RATE, TimeUnit.MILLISECONDS);
 		Action stepAction = ActionKit.createStepSimulationAction(dispc);
 		// Action stopAction = ActionKit.createStopSimulationAction(dispc);
 		
