@@ -1,36 +1,41 @@
-package ru.amse.nikitin.centralized;
+package ru.amse.nikitin.protocols.app;
 
 import ru.amse.nikitin.activeobj.ELogMsgType;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.aloha.Const;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
-import ru.amse.nikitin.sensnet.util.BsData;
-import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 public class SendApp extends EmptyApp {
 	protected final static Time someUnitsTime = new Time(15);
-	protected static int helloCount = 0;
+	protected final static Time oneUnitTime = new Time(0);
+	
+	protected static int helloCount = 1;
 	
 	final Runnable step = new Runnable() {
 		public void run () {
 			// int[] data = new int [2];
 			// data[0] = Const.hello;
 			// data[1] = ++helloCount;
-			BsData data = new BsData(Const.hello, ++helloCount);
-			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
-					"allocated " + helloCount);
+			BsData data = new BsData(Const.hello, helloCount);
 			WirelessPacket packet = new WirelessPacket(3);
 			packet.setData(data);
 			sendMsgToLower(packet);
-			scheduleEvent(this, someUnitsTime);
+			if(sendMsgToLower(packet)) {
+				scheduleEvent(this, someUnitsTime); // wait for next resend
+				Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
+						"allocated " + helloCount);
+				helloCount++;
+			} else {
+				scheduleEvent(this, oneUnitTime); // resend
+			}
 		}
+		
 	};
 	
-	private void sendMsgToLower(WirelessPacket packet) {
-		getGate("lower").recieveMessage(packet, this);
+	private boolean sendMsgToLower(WirelessPacket packet) {
+		return getGate("lower").recieveMessage(packet, this);
 	}
 	
 	public SendApp(Mot m) {
@@ -39,6 +44,6 @@ public class SendApp extends EmptyApp {
 	public void init(IGraph<Integer> topology) {
 		Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 			"snd init " + mot.getID());
-		scheduleEvent(step, new Time(0));
+		step.run();
 	}
 }

@@ -1,4 +1,4 @@
-package ru.amse.nikitin.sensnet.util;
+package ru.amse.nikitin.protocols.app;
 
 public class BsData {
 	int type;

@@ -1,9 +1,11 @@
 package ru.amse.nikitin.centralized;
 
+import ru.amse.nikitin.protocols.app.EmptyApp;
+import ru.amse.nikitin.protocols.mac.centralized.SimpleMac;
+import ru.amse.nikitin.protocols.rooting.centralized.CommonNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.util.EmptyApp;
 
 public class MotFactory implements IMotModuleFactory {
 	private static IMotModuleFactory instance = null;

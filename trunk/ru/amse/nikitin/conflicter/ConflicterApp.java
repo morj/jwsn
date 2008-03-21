@@ -4,11 +4,11 @@ import ru.amse.nikitin.activeobj.ELogMsgType;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
+import ru.amse.nikitin.protocols.app.Const;
+import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
-import ru.amse.nikitin.sensnet.util.EmptyApp;
 
-import ru.amse.nikitin.aloha.Const;
 
 public class ConflicterApp extends EmptyApp {
 	protected final static Time period = new Time(3);

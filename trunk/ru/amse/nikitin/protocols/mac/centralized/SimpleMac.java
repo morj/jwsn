@@ -1,4 +1,4 @@
-package ru.amse.nikitin.centralized;
+package ru.amse.nikitin.protocols.mac.centralized;
 
 import java.util.*;
 
@@ -8,7 +8,6 @@ import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
-import ru.amse.nikitin.sensnet.util.NetData;
 
 public class SimpleMac extends MotModule {
 	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
@@ -30,20 +29,13 @@ public class SimpleMac extends MotModule {
 			if (m.isEncapsulating()) { // data
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // hop
-				int[] timings = (int[])m.getData();
+				MacData timings = (MacData)m.getData();
 				int id = mot.getID();
-				waitTime = new Time(timings[0]);
-				slotTime = new Time(timings[2 * id + 1]);
-				
-				IWirelessPacket routingInfo = new WirelessPacket(id);
-				// int[]data = new int[1];
-				// data[0] = timings[2 * id + 2]; // rooting pred.
-				NetData data = new NetData(timings[2 * id + 2]);
-				// System.out.println("pred for " + p.getID() + " = " + data[0]);
-				routingInfo.setData(data);
+				waitTime = new Time(timings.getCount());
+				slotTime = new Time(timings.getColor(id));
 				
 				scheduleEvent(step, slotTime);
-				return getGate("upper").recieveMessage(routingInfo, this);
+				return true;
 			}
 		} else {
 			return false;

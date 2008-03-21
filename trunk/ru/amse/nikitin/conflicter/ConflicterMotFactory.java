@@ -1,11 +1,11 @@
 package ru.amse.nikitin.conflicter;
 
+import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
+import ru.amse.nikitin.protocols.rooting.aloha.CommonNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 
-import ru.amse.nikitin.aloha.CommonNet;
-import ru.amse.nikitin.aloha.CommonMac;
 
 public class ConflicterMotFactory implements IMotModuleFactory {
 	private static IMotModuleFactory instance = null;
