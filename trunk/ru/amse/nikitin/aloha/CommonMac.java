@@ -7,12 +7,14 @@ import ru.amse.nikitin.activeobj.IMessage;
 import ru.amse.nikitin.activeobj.impl.Logger;
 import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
+import ru.amse.nikitin.graph.IVertex;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.sensnet.util.MacData;
+import ru.amse.nikitin.sensnet.util.NetData;
 
 
 public class CommonMac extends MotModule {
@@ -140,6 +142,19 @@ public class CommonMac extends MotModule {
 	
 	public void init(IGraph<Integer> topology) {
 		step.run();
+		Collection<IVertex<Integer>> vertices = topology.getVertices();
+		for (IVertex<Integer> v: vertices) {
+			int i = v.getData();
+			if (i == mot.getID()) {
+				IVertex<Integer> w = v.getPredecessor();
+				if (w != null) { 
+					IWirelessPacket routingInfo = new WirelessPacket(mot.getID());
+					NetData data = new NetData(w.getData());
+					routingInfo.setData(data);
+					getGate("upper").recieveMessage(routingInfo, this);
+				}
+			}
+		}
 	}
 	
 	private boolean sendNextMessage() {

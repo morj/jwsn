@@ -42,7 +42,7 @@ public class MotDescription implements IActiveObjectDesc {
 		this.y = y;
 	}
 	
-	void setOwner(Mot owner) {
+	/* package-private */ void setOwner(Mot owner) {
 		this.owner = owner;
 	}
 
