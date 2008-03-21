@@ -1,5 +1,8 @@
 package ru.amse.nikitin.centralized;
 
+import ru.amse.nikitin.protocols.app.SendApp;
+import ru.amse.nikitin.protocols.mac.centralized.SimpleMac;
+import ru.amse.nikitin.protocols.rooting.centralized.CommonNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;

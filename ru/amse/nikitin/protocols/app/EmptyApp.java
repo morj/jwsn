@@ -1,4 +1,4 @@
-package ru.amse.nikitin.sensnet.util;
+package ru.amse.nikitin.protocols.app;
 
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -13,12 +13,9 @@ public class EmptyApp extends MotModule {
 		super(m);
 	}
 	public boolean lowerMessage(IWirelessPacket m) {
-		// AppMessage msg = new AppMessage(m);
 		return getGate("lower").recieveMessage(m, this); // just resend
 	}
 	public boolean upperMessage(IWirelessPacket m) {
-		// AppMessage msg = new AppMessage(m);
-		// return lower.sendMessage(m);
 		return true;
 	}
 	public void init(IGraph<Integer> topology) {

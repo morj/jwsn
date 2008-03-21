@@ -1,5 +1,8 @@
 package ru.amse.nikitin.centralized;
 
+import ru.amse.nikitin.protocols.app.BsApp;
+import ru.amse.nikitin.protocols.mac.centralized.BsMac;
+import ru.amse.nikitin.protocols.rooting.centralized.BsNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -32,7 +35,7 @@ public class BsMotFactory implements IMotModuleFactory {
 	}
 
 	protected MotModule Net(Mot m) {
-		return new CommonNet(m);
+		return new BsNet(m);
 	}
 
 	protected MotModule Mac(Mot m) {

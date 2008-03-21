@@ -1,12 +1,10 @@
-package ru.amse.nikitin.centralized;
+package ru.amse.nikitin.protocols.app;
 
 import ru.amse.nikitin.activeobj.ELogMsgType;
 import ru.amse.nikitin.activeobj.impl.Logger;
-import ru.amse.nikitin.aloha.Const;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.util.BsData;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 
 public class BsApp extends MotModule {

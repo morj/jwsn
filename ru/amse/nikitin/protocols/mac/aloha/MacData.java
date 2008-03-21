@@ -1,6 +1,6 @@
-package ru.amse.nikitin.sensnet.util;
+package ru.amse.nikitin.protocols.mac.aloha;
 
-public class MacData {
+/* public */ class MacData {
 	int messageId;
 	
 	public MacData(int messageId) {

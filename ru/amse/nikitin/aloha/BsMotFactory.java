@@ -1,5 +1,8 @@
 package ru.amse.nikitin.aloha;
 
+import ru.amse.nikitin.protocols.app.BsApp;
+import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
+import ru.amse.nikitin.protocols.rooting.aloha.CommonNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;

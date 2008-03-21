@@ -1,4 +1,4 @@
-package ru.amse.nikitin.centralized;
+package ru.amse.nikitin.protocols.app;
 
 public class Const {
 	public final static Integer hello = 239; 
