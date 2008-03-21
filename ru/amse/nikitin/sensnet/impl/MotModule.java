@@ -8,29 +8,15 @@ import ru.amse.nikitin.activeobj.impl.Time;
 import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.net.IPacket;
-import ru.amse.nikitin.net.IModule;
+import ru.amse.nikitin.sensnet.IMotModule;
 import ru.amse.nikitin.net.impl.NetModule;
 
-public class MotModule extends NetModule implements IModule {
+public class MotModule extends NetModule implements IMotModule {
 	protected Mot mot;
 	protected Map<Integer, Runnable> events = new HashMap<Integer, Runnable>();
 	
 	public MotModule(Mot m) {
 		mot = m;
-	}
-
-	public boolean lowerMessage(IWirelessPacket m) { return false; }
-	public boolean upperMessage(IWirelessPacket m) { return false; }
-	
-	public boolean recieveMessage(IPacket m) {
-		if (arrivedOn.equals("upper")) {
-			return upperMessage((IWirelessPacket)m);
-		}
-		if (arrivedOn.equals("lower")) {
-			return lowerMessage((IWirelessPacket)m);
-		}
-		System.err.println("bad gate");
-		return false;
 	}
 	
 	protected void scheduleEvent(Runnable r, int t) {
@@ -50,12 +36,26 @@ public class MotModule extends NetModule implements IModule {
 		mot.scheduleMessage(msg, t);
 		events.put(id, r);
 	}
+
+	protected boolean lowerMessage(IWirelessPacket m) { return false; }
+	protected boolean upperMessage(IWirelessPacket m) { return false; }
 	
-	/* package-private */ public void fireEvent(int id) {
+	/* package-private */ void fireEvent(int id) {
 		if (events.containsKey(id)) {
 			Runnable r = events.remove(id);
 			r.run();
 		}
+	}
+	
+	public boolean recieveMessage(IPacket m) {
+		if (arrivedOn.equals("upper")) {
+			return upperMessage((IWirelessPacket)m);
+		}
+		if (arrivedOn.equals("lower")) {
+			return lowerMessage((IWirelessPacket)m);
+		}
+		System.err.println("bad gate");
+		return false;
 	}
 	
 	public void init(IGraph<Integer> topology) {

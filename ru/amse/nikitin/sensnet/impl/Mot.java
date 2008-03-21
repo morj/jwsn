@@ -17,14 +17,15 @@ import ru.amse.nikitin.net.impl.NetObject;
 import ru.amse.nikitin.sensnet.*;
 
 public class Mot extends NetObject {
-	private Dispatcher s;
-	private int x, y;
-	private double transmitterPower;
-	private double threshold;
+	protected Dispatcher s;
+	protected int x, y;
+	protected double transmitterPower;
+	protected double threshold;
 	// private double ratioX; private double ratioY;
-	private IMotModule transmitterModule = new TransmitterModule(this);
-	private IBattery b = new Battery (100000000);
-	private MotDescription description;
+	protected IMotModule transmitterModule = new TransmitterModule(this);
+	protected IBattery b = new Battery (100000000);
+	protected MotDescription description;
+	protected int linearModuleCount;
 	
 	/**
 	 * All gate links here are 1-1 links without channels.
@@ -37,7 +38,11 @@ public class Mot extends NetObject {
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		createLinearTopology(f);
+		linearModuleCount = f.getModuleCount();
+		for (int i = 0; i < linearModuleCount; i++) {
+			addModule(Util.moduleName(i), f.createModule(this, i));
+		}
+		createLinearTopology();
 		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
 	}
 	
@@ -54,11 +59,10 @@ public class Mot extends NetObject {
 		return outputGate;
 	}
 
-	private void createLinearTopology(IMotModuleFactory f) {
+	private void createLinearTopology() {
 		IGate inputGate = declareInputGate(WirelessPacket.class);
 		
-		MotModule module = f.createModule(this, 0);
-		addModule("m0", module);
+		IMotModule module = (IMotModule)modules.get(Util.moduleName(0));
 		
 		IGate gate = module.declareGate(Const.lowerGateName);
 		// inputGate -> gate
@@ -70,9 +74,8 @@ public class Mot extends NetObject {
 		outputGate.setFrom(gate);
 		
 		gate = module.declareGate(Const.upperGateName);
-		for (int i = 1; i < f.getModuleCount(); i++) { 
-			module = f.createModule(this, i);
-			addModule("m" + i, module);
+		for (int i = 1; i < linearModuleCount; i++) { 
+			module = (IMotModule)modules.get(Util.moduleName(i));
 			IGate dest = module.declareGate(Const.lowerGateName);
 			// gate <-> dest
 			// if (dest == null) System.err.print("null dest");

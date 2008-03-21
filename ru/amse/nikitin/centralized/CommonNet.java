@@ -4,6 +4,7 @@ import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
+import ru.amse.nikitin.sensnet.util.NetData;
 
 public class CommonNet extends MotModule {
 	protected int pred = 0;
