@@ -25,7 +25,7 @@ public class Mot extends NetObject {
 	protected IMotModule transmitterModule = new TransmitterModule(this);
 	protected IBattery b = new Battery (100000000);
 	protected MotDescription description;
-	protected int linearModuleCount;
+	// protected int linearModuleCount;
 	
 	/**
 	 * All gate links here are 1-1 links without channels.
@@ -38,11 +38,12 @@ public class Mot extends NetObject {
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		linearModuleCount = f.getModuleCount();
-		for (int i = 0; i < linearModuleCount; i++) {
+		int count = f.getModuleCount();
+		for (int i = 0; i < count; i++) {
 			addModule(Util.moduleName(i), f.createModule(this, i));
 		}
-		createLinearTopology();
+		outputGate = new Gate(transmitterModule, "mot output gate");
+		createLinearTopology(count);
 		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
 	}
 	
@@ -51,7 +52,7 @@ public class Mot extends NetObject {
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		outputGate = new Gate(null, "mot output gate");
+		outputGate = new Gate(transmitterModule, "mot output gate");
 		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
 	}
 
@@ -59,7 +60,7 @@ public class Mot extends NetObject {
 		return outputGate;
 	}
 
-	private void createLinearTopology() {
+	public void createLinearTopology(int count) {
 		IGate inputGate = declareInputGate(WirelessPacket.class);
 		
 		IMotModule module = (IMotModule)modules.get(Util.moduleName(0));
@@ -69,12 +70,11 @@ public class Mot extends NetObject {
 		inputGate.setTo(gate);
 		gate.setFrom(inputGate);
 		// gate -> outputGate
-		outputGate = new Gate(transmitterModule, "mot linear output gate");
 		gate.setTo(outputGate);
 		outputGate.setFrom(gate);
 		
 		gate = module.declareGate(Const.upperGateName);
-		for (int i = 1; i < linearModuleCount; i++) { 
+		for (int i = 1; i < count; i++) { 
 			module = (IMotModule)modules.get(Util.moduleName(i));
 			IGate dest = module.declareGate(Const.lowerGateName);
 			// gate <-> dest
@@ -175,7 +175,6 @@ public class Mot extends NetObject {
 		}
 		/** message recieve wrapper */
 		public boolean recieveMessage(IPacket m1) {
-			// System.err.println("babax");
 			IWirelessPacket m = (IWirelessPacket)m1;
 			IMessage msg = new Message(s.getMessageInitData());
 			s.assignMessage(mot, msg);

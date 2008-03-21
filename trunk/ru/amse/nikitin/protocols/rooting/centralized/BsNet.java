@@ -27,7 +27,7 @@ public class BsNet extends MotModule {
 		}
 	}
 	public boolean upperMessage(IWirelessPacket m) {
-		IWirelessPacket msg = new WirelessPacket(pred);
+		IWirelessPacket msg = new WirelessPacket(pred, mot);
 		msg.encapsulate(m);
 		return getGate("lower").recieveMessage(msg, this);
 	}
@@ -47,7 +47,7 @@ public class BsNet extends MotModule {
 			}
 		}
 		pred = data[mot.getID()];
-		IWirelessPacket m = new WirelessPacket(-1);
+		IWirelessPacket m = new WirelessPacket(-1, mot);
 		m.setData(new NetData(data));
 		getGate("lower").recieveMessage(m, this);
 	}

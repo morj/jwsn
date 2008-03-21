@@ -3,6 +3,7 @@ package ru.amse.nikitin.sensnet.random;
 import ru.amse.nikitin.sensnet.IRandomArea;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.application.IMotGenerator;
 
 import javax.swing.ImageIcon;
 
@@ -27,15 +28,46 @@ public class RandomArea implements IRandomArea {
 	}
 	
 	public Mot[] getArea(int x, int y, int count,
+			IMotGenerator sg,
+			IMotGenerator cg,
+			IMotGenerator bg, double bsPower) {
+		Mot[] mots = new Mot[count];
+		CoordInfo coordInfo = new CoordInfo(x, y, count, commonMotPower);
+		
+		int sendCount = 2;
+		double t;
+		for (int i = 0; i < sendCount; i++) {
+			t = coordInfo.getThreshold(i);
+			mots[i] = sg.generateMot(
+				coordInfo.motsX[i], coordInfo.motsY[i],
+				commonMotPower, t
+			);
+		}
+		for (int i = sendCount; i < count - 1; i++) {
+			t = coordInfo.getThreshold(i);
+			mots[i] = cg.generateMot(
+				coordInfo.motsX[i], coordInfo.motsY[i],
+				commonMotPower, t
+			);
+		}
+		t = coordInfo.getThreshold(count - 1);
+		mots[count-1] = bg.generateMot(
+			coordInfo.motsX[count-1], coordInfo.motsY[count-1],
+			bsPower, t
+		);
+		
+		createDescs(count, mots, coordInfo, sendCount);
+		
+		return mots;
+	}
+	
+	public Mot[] getArea(int x, int y, int count,
 			IMotModuleFactory sf,
 			IMotModuleFactory cf,
 			IMotModuleFactory bf, double bsPower) {
 		Mot[] mots = new Mot[count];
 		CoordInfo coordInfo = new CoordInfo(x, y, count, commonMotPower);
 		
-		// for (int i = 0; i < coordInfo.cellX; i++) {}
-		
-		// int sendCount = coordInfo.cellX;
 		int sendCount = 2;
 		double t;
 		for (int i = 0; i < sendCount; i++) {
@@ -58,7 +90,12 @@ public class RandomArea implements IRandomArea {
 			bsPower, t, bf
 		);
 		
+		createDescs(count, mots, coordInfo, sendCount);
 		
+		return mots;
+	}
+
+	private void createDescs(int count, Mot[] mots, CoordInfo coordInfo, int sendCount) {
 		for (int i = 0; i < sendCount; i++) {
 			mots[i].newDesc(new ImageIcon(
 				"icons\\terminal_vs.gif"), "send " + i,
@@ -75,8 +112,6 @@ public class RandomArea implements IRandomArea {
 			"icons\\laptop_vs.gif"), "bs " + (count-1),
 			coordInfo.motsX[count-1], coordInfo.motsY[count-1]
 		);
-		
-		return mots;
 	}
 
 }

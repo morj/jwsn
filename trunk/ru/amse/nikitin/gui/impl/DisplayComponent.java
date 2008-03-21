@@ -46,7 +46,11 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	/** a runnable, performing steps */
 	class SimulationRunnable implements Runnable {
 		public void run() {
-			step();
+			try {
+				step();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

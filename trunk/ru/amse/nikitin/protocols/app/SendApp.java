@@ -19,7 +19,7 @@ public class SendApp extends EmptyApp {
 			// data[0] = Const.hello;
 			// data[1] = ++helloCount;
 			BsData data = new BsData(Const.hello, helloCount);
-			WirelessPacket packet = new WirelessPacket(3);
+			WirelessPacket packet = new WirelessPacket(3, mot);
 			packet.setData(data);
 			sendMsgToLower(packet);
 			if(sendMsgToLower(packet)) {
