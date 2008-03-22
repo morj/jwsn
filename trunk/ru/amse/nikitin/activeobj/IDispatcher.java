@@ -22,6 +22,7 @@ public interface IDispatcher {
 	void step();
 	/** allocate message for active object */
 	MessageInitData getMessageInitData();
+	
 	void assignMessage(IActiveObject owner, IMessage m);
 	/** send message */
 	boolean sendMessage(IMessage m);
