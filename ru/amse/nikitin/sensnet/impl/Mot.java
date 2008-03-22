@@ -84,7 +84,7 @@ public class Mot extends NetObject {
 			gate.setFrom(dest);
 			dest.setTo(gate);
 			gate = module.declareGate(Const.upperGateName);
-		}	
+		}
 	}
 	
 	public double squaredDistanceTo(Mot m) {
