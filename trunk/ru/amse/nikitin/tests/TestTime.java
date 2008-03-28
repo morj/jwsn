@@ -1,7 +1,7 @@
 package ru.amse.nikitin.tests;
 
 import junit.framework.TestCase;
-import ru.amse.nikitin.activeobj.impl.Time;
+import ru.amse.nikitin.simulator.impl.Time;
 
 public class TestTime extends TestCase {
 	public void testTime() {

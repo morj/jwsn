@@ -1,9 +1,9 @@
 package ru.amse.nikitin.sensnet.random;
 
+import ru.amse.nikitin.models.IMotGenerator;
 import ru.amse.nikitin.sensnet.IRandomArea;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.application.IMotGenerator;
 
 import javax.swing.ImageIcon;
 

@@ -3,8 +3,8 @@ package ru.amse.nikitin.tests;
 import javax.swing.ImageIcon;
 
 import junit.framework.TestCase;
-import ru.amse.nikitin.activeobj.*;
-import ru.amse.nikitin.activeobj.impl.*;
+import ru.amse.nikitin.simulator.*;
+import ru.amse.nikitin.simulator.impl.*;
 
 public class TestDispatcher extends TestCase {
 	protected Dispatcher disp;

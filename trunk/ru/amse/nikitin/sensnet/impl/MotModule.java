@@ -3,12 +3,12 @@ package ru.amse.nikitin.sensnet.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.net.IPacket;
 import ru.amse.nikitin.sensnet.IMotModule;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.net.impl.NetModule;
 
 public class MotModule extends NetModule implements IMotModule {

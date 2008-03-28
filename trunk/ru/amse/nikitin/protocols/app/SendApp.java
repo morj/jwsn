@@ -1,11 +1,11 @@
 package ru.amse.nikitin.protocols.app;
 
-import ru.amse.nikitin.activeobj.ELogMsgType;
-import ru.amse.nikitin.activeobj.impl.Logger;
-import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
+import ru.amse.nikitin.simulator.ELogMsgType;
+import ru.amse.nikitin.simulator.impl.Logger;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class SendApp extends EmptyApp {
 	protected final static Time someUnitsTime = new Time(15);

@@ -2,8 +2,8 @@ package ru.amse.nikitin.sensnet.impl;
 
 import javax.swing.ImageIcon;
 
-import ru.amse.nikitin.activeobj.*;
-import ru.amse.nikitin.activeobj.impl.*;
+import ru.amse.nikitin.simulator.*;
+import ru.amse.nikitin.simulator.impl.*;
 
 public class MonitoredObject implements IActiveObject {
 	protected int id;

@@ -2,12 +2,12 @@ package ru.amse.nikitin.protocols.mac.centralized;
 
 import java.util.*;
 
-import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class SimpleMac extends MotModule {
 	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();

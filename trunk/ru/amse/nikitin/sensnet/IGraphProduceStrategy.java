@@ -1,7 +1,7 @@
 package ru.amse.nikitin.sensnet;
 
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 /** 
  * Graph producing strategy

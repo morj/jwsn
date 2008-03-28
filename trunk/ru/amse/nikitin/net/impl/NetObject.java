@@ -3,13 +3,13 @@ package ru.amse.nikitin.net.impl;
 import java.util.*;
 import javax.swing.ImageIcon;
 
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
-import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.impl.Dispatcher;
 import ru.amse.nikitin.net.IModule;
 import ru.amse.nikitin.net.INetObject;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.net.IPacket;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
 
 public class NetObject implements INetObject {
 	protected Dispatcher s;
@@ -21,7 +21,10 @@ public class NetObject implements INetObject {
 	protected Map<Class<? extends IPacket>, IGate> gates
 		= new HashMap<Class<? extends IPacket>, IGate>();
 	protected IGate outputGate;
-		
+	
+	public void createTopology() {
+	}
+
 	public NetObject() {
 		s = Dispatcher.getInstance();
 		outputGate = new Gate(null, "net object output gate");

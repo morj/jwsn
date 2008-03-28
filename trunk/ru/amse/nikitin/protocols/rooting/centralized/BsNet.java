@@ -2,12 +2,12 @@ package ru.amse.nikitin.protocols.rooting.centralized;
 
 import java.util.Collection;
 
-import ru.amse.nikitin.graph.IGraph;
-import ru.amse.nikitin.graph.IVertex;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.util.graph.IVertex;
 
 public class BsNet extends MotModule {
 	protected int pred = 0;

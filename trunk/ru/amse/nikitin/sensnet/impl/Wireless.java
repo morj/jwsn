@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
-import ru.amse.nikitin.activeobj.IActiveObject;
-import ru.amse.nikitin.activeobj.IDisplayListener;
-import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.IMessageFilter;
-import ru.amse.nikitin.activeobj.impl.Logger;
-import ru.amse.nikitin.activeobj.ELogMsgType;
+import ru.amse.nikitin.simulator.ELogMsgType;
+import ru.amse.nikitin.simulator.IActiveObject;
+import ru.amse.nikitin.simulator.IDisplayListener;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.IMessageFilter;
+import ru.amse.nikitin.simulator.impl.Logger;
 
 public class Wireless implements IMessageFilter {
 	private static Wireless instance = null;
