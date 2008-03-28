@@ -1,4 +1,4 @@
-package ru.amse.nikitin.centralized;
+package ru.amse.nikitin.models.centralized;
 
 import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.mac.centralized.SimpleMac;

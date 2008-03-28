@@ -1,8 +1,8 @@
-package ru.amse.nikitin.aloha;
+package ru.amse.nikitin.models.aloha;
 
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
-import ru.amse.nikitin.activeobj.impl.Dispatcher;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
 
 public class Test {
 	public static void main(String[] args) {

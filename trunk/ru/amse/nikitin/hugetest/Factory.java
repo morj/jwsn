@@ -1,4 +1,4 @@
-package ru.amse.nikitin.hugetest;
+package ru.amse.nikitin.models.hugetest;
 
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;

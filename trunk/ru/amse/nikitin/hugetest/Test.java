@@ -1,16 +1,16 @@
-package ru.amse.nikitin.hugetest;
+package ru.amse.nikitin.models.hugetest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import ru.amse.nikitin.activeobj.impl.Dispatcher;
-import ru.amse.nikitin.activeobj.impl.Logger;
-import ru.amse.nikitin.cui.IConsoleUI;
-import ru.amse.nikitin.cui.impl.BasicUI;
-import ru.amse.nikitin.cui.impl.ConsoleUI;
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.impl.Logger;
+import ru.amse.nikitin.ui.cui.IConsoleUI;
+import ru.amse.nikitin.ui.cui.impl.BasicUI;
+import ru.amse.nikitin.ui.cui.impl.ConsoleUI;
 
 public class Test {
 
@@ -28,7 +28,7 @@ public class Test {
 		}
 		
 		try {
-			Logger.getInstance().setOutputStream(new PrintStream(new File(Const.fileName)));
+			Logger.getInstance().addOutputStream(new PrintStream(new File(Const.fileName)));
 		} catch (FileNotFoundException fnfe) {
 			System.err.println("Output file not found!");
 		}

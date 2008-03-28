@@ -1,11 +1,11 @@
-package ru.amse.nikitin.aloha;
+package ru.amse.nikitin.models.aloha;
 
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
-import ru.amse.nikitin.graph.IGraph;
-import ru.amse.nikitin.graph.impl.Graph;
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.random.RandomArea;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.util.graph.impl.Graph;
 
 public class GraphProduceStrategy implements IGraphProduceStrategy {
 	private static GraphProduceStrategy instance = null;

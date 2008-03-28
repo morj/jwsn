@@ -1,4 +1,4 @@
-package ru.amse.nikitin.aloha;
+package ru.amse.nikitin.models.aloha;
 
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;

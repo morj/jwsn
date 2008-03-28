@@ -1,4 +1,4 @@
-package ru.amse.nikitin.hugetest;
+package ru.amse.nikitin.models.hugetest;
 
 public class Const {
 	public static final int offset = 5;

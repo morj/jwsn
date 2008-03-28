@@ -1,10 +1,10 @@
-package ru.amse.nikitin.centralized;
+package ru.amse.nikitin.models.centralized;
 
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
-import ru.amse.nikitin.activeobj.impl.Dispatcher;
-import ru.amse.nikitin.graph.*;
-import ru.amse.nikitin.graph.impl.*;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.util.graph.*;
+import ru.amse.nikitin.simulator.util.graph.impl.*;
 
 public class Test {
 	public static void main(String[] args) {
