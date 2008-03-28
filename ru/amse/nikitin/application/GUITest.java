@@ -1,13 +1,13 @@
-package ru.amse.nikitin.application;
+package ru.amse.nikitin.models;
 
 import javax.swing.*;
 
-import ru.amse.nikitin.aloha.*;
+import ru.amse.nikitin.models.aloha.*;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
-import ru.amse.nikitin.graph.IGraph;
-import ru.amse.nikitin.graph.impl.Graph;
-import ru.amse.nikitin.gui.impl.BasicUI;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.util.graph.impl.Graph;
+import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
 class MyGraphProduceStrategy implements IGraphProduceStrategy {
 	private static MyGraphProduceStrategy instance = null;

@@ -1,4 +1,4 @@
-package ru.amse.nikitin.application;
+package ru.amse.nikitin.models;
 
 import java.util.Random;
 
