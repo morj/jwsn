@@ -1,10 +1,10 @@
-package ru.amse.nikitin.cui.impl;
+package ru.amse.nikitin.ui.cui.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import ru.amse.nikitin.cui.IConsoleUI;
+import ru.amse.nikitin.ui.cui.IConsoleUI;
 
 
 /**

@@ -1,4 +1,4 @@
-package ru.amse.nikitin.gui;
+package ru.amse.nikitin.ui.gui;
 
 import java.awt.Color;
 

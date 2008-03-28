@@ -1,4 +1,4 @@
-package ru.amse.nikitin.gui.impl;
+package ru.amse.nikitin.ui.gui.impl;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;

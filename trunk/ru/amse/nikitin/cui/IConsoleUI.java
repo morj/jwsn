@@ -1,4 +1,4 @@
-package ru.amse.nikitin.cui;
+package ru.amse.nikitin.ui.cui;
 
 
 /**

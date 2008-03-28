@@ -1,27 +1,34 @@
-package ru.amse.nikitin.gui.impl;
+package ru.amse.nikitin.ui.gui.impl;
 
+import java.text.DateFormat;
 import java.util.*;
 import java.util.concurrent.*;
+
+import java.text.DateFormat;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 import javax.swing.event.MouseInputListener;
 
 // import javax.swing.JToolTip;
 import javax.swing.JTextArea;
 import javax.swing.JComponent;
 
-import ru.amse.nikitin.activeobj.IDispatcher;
-import ru.amse.nikitin.activeobj.ILoggerListener;
-import ru.amse.nikitin.activeobj.IDisplayListener;
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
-import ru.amse.nikitin.activeobj.impl.Logger;
-import ru.amse.nikitin.gui.Const;
-import ru.amse.nikitin.gui.ITool;
-import ru.amse.nikitin.gui.IShape;
-import ru.amse.nikitin.gui.IDisplayComponent;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.simulator.IDisplayListener;
+import ru.amse.nikitin.simulator.ILoggerListener;
+import ru.amse.nikitin.simulator.impl.Logger;
+import ru.amse.nikitin.ui.gui.Const;
+import ru.amse.nikitin.ui.gui.IDisplayComponent;
+import ru.amse.nikitin.ui.gui.IShape;
+import ru.amse.nikitin.ui.gui.ITool;
 
 /**
  * @author Pavel A. Nikitin
@@ -229,8 +236,21 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	/** constructor */
 	public DisplayComponent(IDispatcher d,  JTextArea logOutput) {
 		dispatcher = d;
+		
 		this.logOutput = logOutput;
 		Logger.getInstance().addListener(displayListener);
+		try {
+			Calendar c = Calendar.getInstance(); 
+			String s = c.get(Calendar.DAY_OF_YEAR) + " - " +
+			           c.get(Calendar.HOUR_OF_DAY) + "_" +
+			           c.get(Calendar.MINUTE) + "_" +
+			           c.get(Calendar.SECOND) + ".log";
+			logMessage("Saving log to: " + s);
+			PrintStream p = new PrintStream(new File(s));;
+			Logger.getInstance().addOutputStream(p);
+		} catch (FileNotFoundException fnfe) {
+			logMessage("Output file not found!");
+		}
 		d.addDisplayListener(displayListener);
 		// enableEvents(AWTEvent.MOUSE_EVENT_MASK);
 		MouseInputListener listener = new MyMouseListener();

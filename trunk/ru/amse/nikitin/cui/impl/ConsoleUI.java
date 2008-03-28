@@ -1,11 +1,11 @@
-package ru.amse.nikitin.cui.impl;
+package ru.amse.nikitin.ui.cui.impl;
 
 import java.util.concurrent.*;
 
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
-import ru.amse.nikitin.activeobj.IDispatcher;
-import ru.amse.nikitin.activeobj.IDisplayListener;
-import ru.amse.nikitin.cui.IConsoleUI;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.simulator.IDisplayListener;
+import ru.amse.nikitin.ui.cui.IConsoleUI;
 
 /**
  * @author Pavel A. Nikitin

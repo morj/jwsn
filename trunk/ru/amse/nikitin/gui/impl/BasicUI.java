@@ -1,4 +1,4 @@
-package ru.amse.nikitin.gui.impl;
+package ru.amse.nikitin.ui.gui.impl;
 
 import javax.swing.BoxLayout;
 import java.awt.Font;
@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
-import ru.amse.nikitin.gui.Const;
-import ru.amse.nikitin.activeobj.impl.Dispatcher;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.ui.gui.Const;
 
 /** 
  * Simple UI implementation
