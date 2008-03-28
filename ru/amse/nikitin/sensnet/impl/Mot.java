@@ -2,21 +2,22 @@ package ru.amse.nikitin.sensnet.impl;
 
 import javax.swing.ImageIcon;
 
-import ru.amse.nikitin.activeobj.EMessageType;
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
-import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.activeobj.impl.Message;
-import ru.amse.nikitin.activeobj.impl.Dispatcher;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.net.IModule;
 import ru.amse.nikitin.net.IPacket;
 import ru.amse.nikitin.net.impl.Gate;
 import ru.amse.nikitin.net.impl.NetObject;
+import ru.amse.nikitin.sensnet.IMot;
 import ru.amse.nikitin.sensnet.*;
+import ru.amse.nikitin.simulator.EMessageType;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.impl.Message;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 
-public class Mot extends NetObject {
+public class Mot extends NetObject implements IMot {
 	protected Dispatcher s;
 	protected int x, y;
 	protected double transmitterPower;
@@ -59,6 +60,10 @@ public class Mot extends NetObject {
 	public IGate getOutputGate() {
 		return outputGate;
 	}
+	
+	public void createTopology() {
+		createLinearTopology(3);
+	}
 
 	public void createLinearTopology(int count) {
 		IGate inputGate = declareInputGate(WirelessPacket.class);
@@ -84,7 +89,7 @@ public class Mot extends NetObject {
 			gate.setFrom(dest);
 			dest.setTo(gate);
 			gate = module.declareGate(Const.upperGateName);
-		}
+		}	
 	}
 	
 	public double squaredDistanceTo(Mot m) {
