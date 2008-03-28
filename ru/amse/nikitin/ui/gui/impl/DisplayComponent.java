@@ -221,7 +221,9 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	
 	/** logging method */
 	protected void logMessage(String msg) {
-		logOutput.append(msg + "\n");
+		logOutput.append("\n" + msg);
+		logOutput.setCaretPosition(logOutput.getText().length());
+		// logOutput.s
 	}
 	
 	/** simulation step */
@@ -246,7 +248,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			           c.get(Calendar.HOUR_OF_DAY) + "_" +
 			           c.get(Calendar.MINUTE) + "_" +
 			           c.get(Calendar.SECOND) + ".log";
-			logMessage("Saving log to: " + s);
+			logOutput.append("Saving log to: " + s);
 			PrintStream p = new PrintStream(new File(s));;
 			Logger.getInstance().addOutputStream(p);
 		} catch (FileNotFoundException fnfe) {
