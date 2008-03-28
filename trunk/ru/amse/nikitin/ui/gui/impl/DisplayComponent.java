@@ -3,6 +3,7 @@ package ru.amse.nikitin.ui.gui.impl;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -31,6 +32,15 @@ import ru.amse.nikitin.ui.gui.IDisplayComponent;
 import ru.amse.nikitin.ui.gui.IShape;
 import ru.amse.nikitin.ui.gui.ITool;
 
+class ToolTip {
+    Rectangle rect;
+    String text;
+    ToolTip(Rectangle r, String t) {
+        rect = r;
+        text = t;
+     }
+ }
+
 /**
  * @author Pavel A. Nikitin
  * GUI implementation
@@ -45,6 +55,8 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	protected final BlockingQueue<IShape> shapes = new ArrayBlockingQueue<IShape>(10000);
 	protected ScheduledExecutorService scheduler;
 	protected final JTextArea logOutput;
+	protected final Map<Integer, ToolTip> tips
+		= new HashMap<Integer, ToolTip>();
 	
 	protected boolean firstRun = true;
 	protected boolean isRunning = false;
@@ -70,12 +82,22 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	
 		public void objectAdded(int id, IActiveObjectDesc desc) {
 			descriptions.put(id, desc);
+			addToolTip(id, desc);
 			repaint();
 		}
 	
-		public void descChanged(int id) {
-			// TODO Auto-generated method stub
-			
+		public void descChanged(int id, IActiveObjectDesc desc) {
+			tips.remove(id);
+			addToolTip(id, desc);
+		}
+
+		private void addToolTip(int id, IActiveObjectDesc desc) {
+			tips.put(id, new ToolTip(new Rectangle(
+					desc.getX(),
+					desc.getY(),
+					Const.POINT_X_SIZE,
+					Const.POINT_Y_SIZE
+			), desc.getName()));
 		}
 		
 		public void messageConflicted(int source, int dest) {
@@ -197,10 +219,10 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		for (Map.Entry<Integer, IActiveObjectDesc> p: descriptions.entrySet()) {
 			IActiveObjectDesc d = p.getValue();
 			d.getImage().paintIcon(this, graphics, p.getValue().getX(), p.getValue().getY());
-			graphics.drawString(
+			/* graphics.drawString(
 				d.getName(),
 				d.getX() + Const.POINT_X_SIZE, d.getY() + Const.POINT_Y_SIZE
-			);
+			); */
 		}
 		graphics.setColor(prevColor);
 	}
@@ -260,7 +282,8 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
 		
-		this.setPreferredSize(new Dimension (1024, 768));
+		setToolTipText("outline");
+		setPreferredSize(new Dimension (1024, 768));
 	}
 	
 	/* public JToolTip createToolTip() {
@@ -268,6 +291,32 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		j.setToolTipText("sdfsdf");
 		return j;
 	} */
+	
+	public String getToolTipText(MouseEvent e) {	    
+		// get mouse position
+		Point p = e.getPoint();
+
+        // see if it's in any of the custom tooltip
+        // bounding boxes
+        for (ToolTip t: tips.values()) {
+        	if (t.rect.contains(p)) {
+            	return t.text;
+            }
+        }
+        // System.err.println("----");
+        Line l;
+        for (IShape s: shapes) {
+        	if (s instanceof Line) {
+        		l = (Line)s;
+        		if (l.contains(p)) {
+        			return "> " + l.getColor();
+        		}
+        	}
+        }
+        // if not, return default
+        // return super.getToolTipText();
+        return null;
+	}
 	
 	/* package-private */ synchronized void runSimulation(long rate, TimeUnit u) {
 		if (!isRunning) {
