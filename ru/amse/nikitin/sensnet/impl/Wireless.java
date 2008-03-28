@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+
 import ru.amse.nikitin.simulator.ELogMsgType;
 import ru.amse.nikitin.simulator.IActiveObject;
 import ru.amse.nikitin.simulator.IDisplayListener;

@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import ru.amse.nikitin.models.centralized.*;
+import ru.amse.nikitin.models.centralized.BsMotFactory;
+import ru.amse.nikitin.models.centralized.GraphProduceStrategy;
+import ru.amse.nikitin.models.centralized.MotFactory;
+import ru.amse.nikitin.models.centralized.SendMotFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.sensnet.random.RandomArea;

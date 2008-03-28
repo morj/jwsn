@@ -1,12 +1,12 @@
 package ru.amse.nikitin.simulator.util.graph.impl;
 
-import java.util.List;
-import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.HashSet;
 
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.util.graph.IVertex;

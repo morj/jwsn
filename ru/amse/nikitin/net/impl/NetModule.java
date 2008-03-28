@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.amse.nikitin.net.IGate;
-import ru.amse.nikitin.net.IPacket;
 import ru.amse.nikitin.net.IModule;
+import ru.amse.nikitin.net.IPacket;
 
 public class NetModule implements IModule {
 	protected Map<String, IGate> gates = new HashMap<String, IGate>();

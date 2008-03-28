@@ -3,8 +3,15 @@ package ru.amse.nikitin.tests;
 import javax.swing.ImageIcon;
 
 import junit.framework.TestCase;
-import ru.amse.nikitin.simulator.*;
-import ru.amse.nikitin.simulator.impl.*;
+
+import ru.amse.nikitin.simulator.EMessageType;
+import ru.amse.nikitin.simulator.IActiveObject;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.impl.Message;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.impl.VoidMessageFilter;
 
 public class TestDispatcher extends TestCase {
 	protected Dispatcher disp;

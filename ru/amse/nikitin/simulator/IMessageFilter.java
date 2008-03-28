@@ -1,5 +1,6 @@
 package ru.amse.nikitin.simulator;
-import java.util.*;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * @author Pavel A. Nikitin

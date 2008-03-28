@@ -2,19 +2,16 @@ package ru.amse.nikitin.models;
 
 import javax.swing.JFrame;
 
-import ru.amse.nikitin.models.aloha.*;
-import ru.amse.nikitin.net.IGate;
-import ru.amse.nikitin.sensnet.impl.Mot;
-import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.impl.WirelessPacket;
-import ru.amse.nikitin.sensnet.random.RandomArea;
-import ru.amse.nikitin.ui.gui.impl.BasicUI;
-
+import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.app.SendApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.rooting.aloha.CommonNet;
+import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.sensnet.impl.MotModule;
+import ru.amse.nikitin.sensnet.random.RandomArea;
+import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
 /* abstract class MotGenerator implements IMotGenerator {
 	

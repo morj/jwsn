@@ -1,25 +1,25 @@
 package ru.amse.nikitin.ui.gui.impl;
 
-import java.text.DateFormat;
-import java.util.*;
-import java.util.concurrent.*;
-
-import java.text.DateFormat;
-
-import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import javax.swing.event.MouseInputListener;
-
-// import javax.swing.JToolTip;
-import javax.swing.JTextArea;
 import javax.swing.JComponent;
+import javax.swing.JTextArea;
+import javax.swing.event.MouseInputListener;
 
 import ru.amse.nikitin.simulator.IActiveObjectDesc;
 import ru.amse.nikitin.simulator.IDispatcher;

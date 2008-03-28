@@ -1,6 +1,6 @@
 package ru.amse.nikitin.ui.cui.impl;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Semaphore;
 
 import ru.amse.nikitin.simulator.IActiveObjectDesc;
 import ru.amse.nikitin.simulator.IDispatcher;

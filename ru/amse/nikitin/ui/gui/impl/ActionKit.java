@@ -1,9 +1,10 @@
 package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.event.ActionEvent;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import java.util.concurrent.TimeUnit;
 
 /** 
  * GUI actions Kit

@@ -2,7 +2,10 @@ package ru.amse.nikitin.models;
 
 import javax.swing.JFrame;
 
-import ru.amse.nikitin.models.centralized.*;
+import ru.amse.nikitin.models.centralized.BsMotFactory;
+import ru.amse.nikitin.models.centralized.GraphProduceStrategy;
+import ru.amse.nikitin.models.centralized.MotFactory;
+import ru.amse.nikitin.models.centralized.SendMotFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.random.RandomArea;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;

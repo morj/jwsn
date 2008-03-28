@@ -1,11 +1,14 @@
 package ru.amse.nikitin.protocols.mac.aloha;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
+import ru.amse.nikitin.sensnet.ISendCallback;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.IWirelessPacket;
-import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.simulator.ELogMsgType;
 import ru.amse.nikitin.simulator.IMessage;
