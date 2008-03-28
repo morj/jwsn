@@ -1,14 +1,14 @@
-package ru.amse.nikitin.application;
+package ru.amse.nikitin.models;
 
 import javax.swing.JFrame;
 
-import ru.amse.nikitin.gui.impl.BasicUI;
+import ru.amse.nikitin.models.aloha.*;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.sensnet.random.RandomArea;
-import ru.amse.nikitin.aloha.*;
+import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.EmptyApp;
@@ -64,7 +64,7 @@ abstract class MotGenerator implements IMotGenerator {
 		m.addModule("net", net);
 		m.addModule("app", app);
 		
-		m.createLinearTopology(3);
+		m.createTopology();
 	}
 	
 	public Mot generateMot(int x, int y, double power, double threshold) {

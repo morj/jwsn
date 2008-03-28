@@ -1,11 +1,11 @@
-package ru.amse.nikitin.application;
+package ru.amse.nikitin.models;
 
 import javax.swing.JFrame;
 
-import ru.amse.nikitin.gui.impl.BasicUI;
+import ru.amse.nikitin.models.centralized.*;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.random.RandomArea;
-import ru.amse.nikitin.centralized.*;
+import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
 public class CentralizedRandTest {
 
