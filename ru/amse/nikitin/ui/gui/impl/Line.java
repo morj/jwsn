@@ -1,6 +1,7 @@
 package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Graphics;
 
 import ru.amse.nikitin.simulator.IActiveObjectDesc;
@@ -63,5 +64,25 @@ import ru.amse.nikitin.ui.gui.IShape;
 		g.setColor(bkColor);
 		paint(g);
 		g.setColor(prevColor);
+	}
+
+	public Color getColor() {
+		return color;
+	}
+	
+	public boolean contains(Point p) {
+		/* double pX = p.x - d1.getX();
+		double pY = p.y - d1.getY();
+		double x = d2.getX() - d1.getX();
+		double y = d2.getY() - d1.getY();
+		
+		// if ((pY == 0) || (y == 0)) return false;
+		
+		System.err.println(x * pY - y * pX);
+		if ((x * pX >= 0) && (y * pX >= 0) && (Math.abs(x * pY - y * pX) < 0.1)) {
+			return true; 
+		} */
+		
+		return false;
 	}
 }
