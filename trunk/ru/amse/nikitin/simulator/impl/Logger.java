@@ -1,8 +1,8 @@
 package ru.amse.nikitin.simulator.impl;
 
 import java.io.PrintStream;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import ru.amse.nikitin.simulator.ELogMsgType;
 import ru.amse.nikitin.simulator.ILoggerListener;

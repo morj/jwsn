@@ -1,7 +1,13 @@
 package ru.amse.nikitin.models;
 
-import java.io.*;
-import ru.amse.nikitin.models.aloha.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
+import ru.amse.nikitin.models.aloha.BsMotFactory;
+import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
+import ru.amse.nikitin.models.aloha.MotFactory;
+import ru.amse.nikitin.models.aloha.SendMotFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.sensnet.random.RandomArea;

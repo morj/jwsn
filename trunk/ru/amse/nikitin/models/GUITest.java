@@ -1,10 +1,13 @@
 package ru.amse.nikitin.models;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
-import ru.amse.nikitin.models.aloha.*;
-import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.models.aloha.BsMotFactory;
+import ru.amse.nikitin.models.aloha.MotFactory;
+import ru.amse.nikitin.models.aloha.SendMotFactory;
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
+import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.util.graph.impl.Graph;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;

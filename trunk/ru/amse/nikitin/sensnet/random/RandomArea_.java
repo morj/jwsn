@@ -1,10 +1,10 @@
 package ru.amse.nikitin.sensnet.random;
 
-import ru.amse.nikitin.sensnet.IRandomArea;
-import ru.amse.nikitin.sensnet.IMotModuleFactory;
-import ru.amse.nikitin.sensnet.impl.Mot;
-
 import javax.swing.ImageIcon;
+
+import ru.amse.nikitin.sensnet.IMotModuleFactory;
+import ru.amse.nikitin.sensnet.IRandomArea;
+import ru.amse.nikitin.sensnet.impl.Mot;
 
 public class RandomArea_ implements IRandomArea {
 	public static final double commonMotPower = 900;

@@ -1,13 +1,18 @@
 package ru.amse.nikitin.ui.gui.impl;
 
-import javax.swing.BoxLayout;
-import java.awt.Font;
 import java.awt.BorderLayout;
-// import java.awt.Color;
+import java.awt.Font;
 import java.awt.LayoutManager;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.*;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
 import ru.amse.nikitin.sensnet.impl.Mot;

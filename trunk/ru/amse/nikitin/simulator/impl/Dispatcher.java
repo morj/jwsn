@@ -1,8 +1,18 @@
 package ru.amse.nikitin.simulator.impl;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
-import ru.amse.nikitin.simulator.*;
+import ru.amse.nikitin.simulator.ELogMsgType;
+import ru.amse.nikitin.simulator.EMessageType;
+import ru.amse.nikitin.simulator.IActiveObject;
+import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.simulator.IDisplayListener;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.IMessageFilter;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class Dispatcher implements IDispatcher {

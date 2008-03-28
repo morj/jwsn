@@ -1,11 +1,13 @@
 package ru.amse.nikitin.net.impl;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 
+import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.net.IModule;
 import ru.amse.nikitin.net.INetObject;
-import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.net.IPacket;
 import ru.amse.nikitin.simulator.IActiveObjectDesc;
 import ru.amse.nikitin.simulator.IMessage;

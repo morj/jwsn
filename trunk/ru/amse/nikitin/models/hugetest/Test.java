@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
-import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.impl.Logger;
 import ru.amse.nikitin.ui.cui.IConsoleUI;

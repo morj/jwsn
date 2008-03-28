@@ -1,9 +1,9 @@
 package ru.amse.nikitin.simulator.util.graph.impl;
 
-import java.util.List;
-import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import ru.amse.nikitin.simulator.util.graph.IVertex;
 

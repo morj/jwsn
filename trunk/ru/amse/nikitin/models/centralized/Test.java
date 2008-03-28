@@ -3,8 +3,8 @@ package ru.amse.nikitin.models.centralized;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
-import ru.amse.nikitin.simulator.util.graph.*;
-import ru.amse.nikitin.simulator.util.graph.impl.*;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.util.graph.impl.Graph;
 
 public class Test {
 	public static void main(String[] args) {

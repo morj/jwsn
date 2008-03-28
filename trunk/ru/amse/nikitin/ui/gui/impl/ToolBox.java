@@ -1,16 +1,18 @@
 package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.Component;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import ru.amse.nikitin.ui.gui.Const;
 import ru.amse.nikitin.ui.gui.ITool;
-/* import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.ComponentOrientation;
-import javax.swing.border.LineBorder; */
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 class MyCellRenderer extends JLabel implements ListCellRenderer {
 	private static final long serialVersionUID = 239;

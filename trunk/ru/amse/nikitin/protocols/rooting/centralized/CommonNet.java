@@ -1,8 +1,8 @@
 package ru.amse.nikitin.protocols.rooting.centralized;
 
+import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 
 public class CommonNet extends MotModule {
