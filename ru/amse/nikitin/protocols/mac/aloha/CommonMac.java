@@ -2,16 +2,16 @@ package ru.amse.nikitin.protocols.mac.aloha;
 
 import java.util.*;
 
-import ru.amse.nikitin.activeobj.ELogMsgType;
-import ru.amse.nikitin.activeobj.IMessage;
-import ru.amse.nikitin.activeobj.impl.Logger;
-import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
+import ru.amse.nikitin.simulator.ELogMsgType;
+import ru.amse.nikitin.simulator.IMessage;
+import ru.amse.nikitin.simulator.impl.Logger;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class CommonMac extends MotModule {
 	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();

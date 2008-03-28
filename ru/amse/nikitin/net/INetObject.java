@@ -1,7 +1,7 @@
 package ru.amse.nikitin.net;
 
-import ru.amse.nikitin.activeobj.IActiveObject;
-import ru.amse.nikitin.activeobj.IMessage;
+import ru.amse.nikitin.simulator.IActiveObject;
+import ru.amse.nikitin.simulator.IMessage;
 
 public interface INetObject extends IActiveObject {
 	IGate getOutputGate();
@@ -15,4 +15,5 @@ public interface INetObject extends IActiveObject {
 	IGate getInputGate(Class<? extends IPacket> msgClass);
 	IModule getModule(String name);
 	IModule addModule(String name, IModule module);
+	void createTopology();
 }

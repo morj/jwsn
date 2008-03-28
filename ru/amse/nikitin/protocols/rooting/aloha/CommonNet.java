@@ -1,11 +1,12 @@
 package ru.amse.nikitin.protocols.rooting.aloha;
 
-import ru.amse.nikitin.graph.IGraph;
-import ru.amse.nikitin.graph.IVertex;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.util.graph.IVertex;
+
 import java.util.Collection;
 
 public class CommonNet extends MotModule {

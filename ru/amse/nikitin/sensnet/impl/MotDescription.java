@@ -2,7 +2,7 @@ package ru.amse.nikitin.sensnet.impl;
 
 import javax.swing.ImageIcon;
 
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
 
 public class MotDescription implements IActiveObjectDesc {
 	protected ImageIcon image;
