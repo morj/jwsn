@@ -1,9 +1,9 @@
-package ru.amse.nikitin.hugetest;
+package ru.amse.nikitin.models.hugetest;
 
-import ru.amse.nikitin.activeobj.impl.Time;
-import ru.amse.nikitin.graph.IGraph;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
+import ru.amse.nikitin.simulator.impl.Time;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 // import ru.amse.nikitin.activeobj.impl.Logger;
 // import ru.amse.nikitin.activeobj.ELogMsgType;
 
