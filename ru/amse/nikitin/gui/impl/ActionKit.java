@@ -1,4 +1,4 @@
-package ru.amse.nikitin.gui.impl;
+package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;

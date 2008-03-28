@@ -1,10 +1,10 @@
-package ru.amse.nikitin.gui.impl;
+package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.Component;
 import javax.swing.*;
 
-import ru.amse.nikitin.gui.ITool;
-import ru.amse.nikitin.gui.Const;
+import ru.amse.nikitin.ui.gui.Const;
+import ru.amse.nikitin.ui.gui.ITool;
 /* import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.ComponentOrientation;

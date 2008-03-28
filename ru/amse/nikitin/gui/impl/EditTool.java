@@ -1,10 +1,10 @@
-package ru.amse.nikitin.gui.impl;
+package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.event.MouseEvent;
 
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
-import ru.amse.nikitin.gui.ITool;
-import ru.amse.nikitin.gui.Const;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.ui.gui.Const;
+import ru.amse.nikitin.ui.gui.ITool;
 
 public class EditTool implements ITool {
 	protected IActiveObjectDesc desc = null;

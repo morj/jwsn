@@ -1,8 +1,8 @@
-package ru.amse.nikitin.gui;
+package ru.amse.nikitin.ui.gui;
 
 import java.awt.event.MouseEvent;
 
-import ru.amse.nikitin.activeobj.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IActiveObjectDesc;
 
 public interface ITool {
 	void mousePressed(MouseEvent arg0, IActiveObjectDesc affectedDesc);
