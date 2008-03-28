@@ -1,4 +1,4 @@
-package ru.amse.nikitin.graph;
+package ru.amse.nikitin.simulator.util.graph;
 
 import java.util.Collection;
 

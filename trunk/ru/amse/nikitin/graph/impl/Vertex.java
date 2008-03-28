@@ -1,11 +1,11 @@
-package ru.amse.nikitin.graph.impl;
+package ru.amse.nikitin.simulator.util.graph.impl;
 
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Collections;
 
-import ru.amse.nikitin.graph.IVertex;
+import ru.amse.nikitin.simulator.util.graph.IVertex;
 
 /**
  * @author Pavel A. Nikitin
