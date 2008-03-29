@@ -139,5 +139,5 @@ public class AlohaRandTest {
 		
 		appFrame.setVisible (true); // show frame
 	}
-
+	
 }
