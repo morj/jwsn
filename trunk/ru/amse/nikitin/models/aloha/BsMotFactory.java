@@ -2,7 +2,7 @@ package ru.amse.nikitin.models.aloha;
 
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
-import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
+import ru.amse.nikitin.protocols.routing.distributed.BsNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -35,7 +35,7 @@ public class BsMotFactory implements IMotModuleFactory {
 	}
 
 	protected MotModule Net(Mot m) {
-		return new CommonNet(m);
+		return new BsNet(m);
 	}
 
 	protected MotModule Mac(Mot m) {
