@@ -6,6 +6,7 @@ import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.app.SendApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
+import ru.amse.nikitin.protocols.routing.distributed.BsNet;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.random.RandomArea;
@@ -76,7 +77,7 @@ class BsMotGenerator extends MotGenerator {
 		Mot m = new Mot(x, y, power, threshold);
 		
 		MotModule mac = new CommonMac(m);
-		MotModule net = new CommonNet(m);
+		MotModule net = new BsNet(m);
 		MotModule app = new BsApp(m); 
 		
 		connectModules(m, mac, net, app);

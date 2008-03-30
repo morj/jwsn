@@ -88,10 +88,14 @@ public class CommonMac extends MotModule {
 		public void run (IMessage msg) {
 			// data message: wait for response
 			// System.err.println("callback");
-			int id = msg.getID();
-			CheckMsg checkMsg = new CheckMsg(id);
-			waiting.put(id, packet);
-			scheduleEvent(checkMsg, 0);
+			if (msg.getDest() != -1) {
+				int id = msg.getID();
+				CheckMsg checkMsg = new CheckMsg(id);
+				waiting.put(id, packet);
+				scheduleEvent(checkMsg, 0);
+			} else {
+				System.err.println("broadcast");
+			}
 		}
 	}
 	
