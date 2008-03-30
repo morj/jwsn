@@ -46,18 +46,20 @@ public class Wireless implements IMessageFilter {
 		int size = messages.size();
 		List<PoweredMessage> msg = new ArrayList<PoweredMessage>();
 		// draining messages to this list
-		while (!messages.isEmpty()) {
-			Object peek = messages.peek().getData();
+		Iterator<IMessage> j = messages.iterator();
+		while (j.hasNext()) {
+			IMessage tmp = j.next(); // next in iterator
+			Object peek = tmp.getData();
 			if(peek != null) {
 				if(peek instanceof WirelessPacket) {
-					PoweredMessage pw = new PoweredMessage(messages.poll());
+					PoweredMessage pw = new PoweredMessage(tmp);
 					msg.add (pw);
+					j.remove(); // removing from iterator
 				}
 			}
 		}
-		Iterator i = objs.iterator();
-		if (size > 0) while (i.hasNext()) { // for each mot
-			Mot currmot = (Mot)i.next();
+		if (size > 0) for(IActiveObject obj: objs) if (obj instanceof Mot) { // for each mot
+			Mot currmot = (Mot)obj;
 			if (currmot != null) { // filling messages power
 				for (PoweredMessage m: msg) {
 					Mot tmp = (Mot)objs.get(m.m.getSource());
