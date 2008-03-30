@@ -1,4 +1,4 @@
-package ru.amse.nikitin.protocols.rooting.aloha;
+package ru.amse.nikitin.protocols.routing.distributed;
 
 import java.util.Collection;
 

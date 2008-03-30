@@ -1,4 +1,4 @@
-package ru.amse.nikitin.protocols.rooting.centralized;
+package ru.amse.nikitin.protocols.routing.centralized;
 
 import java.util.Arrays;
 

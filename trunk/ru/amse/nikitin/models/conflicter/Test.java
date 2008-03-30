@@ -13,7 +13,7 @@ import ru.amse.nikitin.simulator.util.xml.FieldParser;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
-import ru.amse.nikitin.protocols.rooting.aloha.CommonNet;
+import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
 
 public class Test {
 	public static double power = 10;
