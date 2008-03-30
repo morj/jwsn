@@ -15,7 +15,7 @@ import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
 
-public class Test {
+public class ConflicterTest {
 	public static double power = 10;
 	public static double threshold = 0;
 
