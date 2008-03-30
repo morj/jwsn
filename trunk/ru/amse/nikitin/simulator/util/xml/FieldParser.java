@@ -29,7 +29,7 @@ class MyContentHandler extends DefaultHandler {
 	}
 	
 	public void startElement(String uri, String localName, String qName, Attributes atts) {
-		if (localName == "style") { // style record
+		if (qName == "style") { // style record
 			String name = atts.getValue("name");
 			if (!styles.containsKey(name)) {
 				styles.put(name, new Style(
@@ -38,7 +38,7 @@ class MyContentHandler extends DefaultHandler {
 			}
 		}
 		
-		if (localName == "mot") { // style record
+		if (qName == "mot") { // style record
 			int id = Integer.parseInt(atts.getValue("id"));
 			if ((0 <= id) && (id < objects.size())) {
 				String style = atts.getValue("style");
