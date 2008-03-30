@@ -1,7 +1,5 @@
 package ru.amse.nikitin.models;
 
-import javax.swing.JFrame;
-
 import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.EmptyApp;
@@ -12,6 +10,9 @@ import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.random.RandomArea;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.IDispatcher;
 
 /* abstract class MotGenerator implements IMotGenerator {
 	
@@ -125,19 +126,24 @@ public class AlohaRandTest {
 		); */
 		
 		Mot[] mots = RandomArea.getInstance().getArea(
-				Const.fieldX, Const.fieldY, 30,
-				new SendMotGenerator(),
-				new EmptyMotGenerator(),
-				new BsMotGenerator(),
-				RandomArea.commonMotPower
-			);
-		
-		JFrame appFrame = BasicUI.createUIFrame(
-			mots, GraphProduceStrategy.getInstance(),
-			mots.length - 1
+			Const.fieldX, Const.fieldY, 30,
+			new SendMotGenerator(),
+			new EmptyMotGenerator(),
+			new BsMotGenerator(),
+			RandomArea.commonMotPower
 		);
 		
-		appFrame.setVisible (true); // show frame
+		IDispatcher disp = Dispatcher.getInstance();
+			
+		IGraph<Integer> g = GraphProduceStrategy.getInstance().produceGraph(mots);
+		g.solvePaths(mots.length - 1);
+		disp.setTopology(g);
+		
+		BasicUI.createUI();
+		
+		for (int i = 0; i < mots.length; i++) {
+			disp.addActiveObjectListener(mots[i]);
+		}		
 	}
 	
 }

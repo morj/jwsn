@@ -1,30 +1,19 @@
 package ru.amse.nikitin.models;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-
 import ru.amse.nikitin.models.aloha.BsMotFactory;
 import ru.amse.nikitin.models.aloha.MotFactory;
 import ru.amse.nikitin.models.aloha.SendMotFactory;
-import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.util.graph.impl.Graph;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
-class MyGraphProduceStrategy implements IGraphProduceStrategy {
-	private static MyGraphProduceStrategy instance = null;
-	
-	private MyGraphProduceStrategy() {};
-	
-	public static MyGraphProduceStrategy getInstance () {
-		if (instance == null) {
-			instance = new MyGraphProduceStrategy();
-		}
-		return instance;
-	}
+class MyGraphProduceStrategy {
 
-	public IGraph<Integer> produceGraph(Mot[] mots) {
+	public static IGraph<Integer> produceGraph(Mot[] mots) {
 		IGraph<Integer> g = new Graph<Integer>();
 		
 		for (int i = 0; i < 5; i++) {
@@ -63,10 +52,16 @@ public class GUITest {
 		mots[3].newDesc(new ImageIcon("icons\\laptop_vs.gif"), "BS", 525, 300);
 		mots[4].newDesc(new ImageIcon("icons\\terminal_vs.gif"), "Send 2", 365, 10);
 		
-		JFrame appFrame = BasicUI.createUIFrame(
-				mots, MyGraphProduceStrategy.getInstance(), 3
-			);
+		IDispatcher disp = Dispatcher.getInstance();
+			
+		IGraph<Integer> g = MyGraphProduceStrategy.produceGraph(mots);
+		g.solvePaths(3);
+		disp.setTopology(g);
 		
-		appFrame.setVisible (true); // show frame
+		BasicUI.createUI();
+		
+		for (int i = 0; i < 5; i++) {
+			disp.addActiveObjectListener(mots[i]);
+		}
 	}
 }

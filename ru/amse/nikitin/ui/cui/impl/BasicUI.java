@@ -13,8 +13,10 @@ import ru.amse.nikitin.ui.cui.IConsoleUI;
  *
  */
 public class BasicUI {
-	public static void cuiLoop(IConsoleUI dispc) {
+	public static void createUI() {
+		IConsoleUI dispc = new ConsoleUI();
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Console UI: enter command or type 'help'");
 		try {
 			while (true) {
 				String s = in.readLine();
@@ -31,6 +33,11 @@ public class BasicUI {
 						s = in.readLine();
 						int i = Integer.parseInt(s);
 						dispc.runSimulation(i);
+					}
+					if (s.equals("help")) {
+						System.out.println("Commands:");
+						System.out.println("run: runs simulation");
+						System.out.println("stop: stops simulation");
 					}
 				}
 			}

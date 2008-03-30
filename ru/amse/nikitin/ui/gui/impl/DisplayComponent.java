@@ -86,7 +86,8 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			repaint();
 		}
 	
-		public void descChanged(int id, IActiveObjectDesc desc) {
+		public void descChanged(int id) {
+			IActiveObjectDesc desc = descriptions.get(id);
 			tips.remove(id);
 			addToolTip(id, desc);
 		}
