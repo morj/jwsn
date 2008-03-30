@@ -21,7 +21,6 @@ public class SendApp extends EmptyApp {
 			BsData data = new BsData(Const.hello, helloCount);
 			WirelessPacket packet = new WirelessPacket(3, mot);
 			packet.setData(data);
-			sendMsgToLower(packet);
 			if(sendMsgToLower(packet)) {
 				scheduleEvent(this, someUnitsTime); // wait for next resend
 				Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
