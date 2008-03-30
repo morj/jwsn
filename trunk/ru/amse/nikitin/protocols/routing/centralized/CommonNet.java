@@ -18,7 +18,7 @@ public class CommonNet extends MotModule {
 			if (m.isEncapsulating()) { // data
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else {
-				NetData data = (NetData)m.getData();
+				CentralizedNetData data = (CentralizedNetData)m.getData();
 				pred = data.getPredecessor(mot.getID());
 				// System.out.println("pred of " + p.getID() + " = " + pred);
 				return true;

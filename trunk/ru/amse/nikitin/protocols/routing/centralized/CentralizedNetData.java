@@ -2,10 +2,10 @@ package ru.amse.nikitin.protocols.routing.centralized;
 
 import java.util.Arrays;
 
-/* public */ class NetData {
+/* public */ class CentralizedNetData {
 	private int[] predecessors;
 
-	public NetData(int[] predecessors) {
+	public CentralizedNetData(int[] predecessors) {
 		this.predecessors = predecessors;
 	}
 
