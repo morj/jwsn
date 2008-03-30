@@ -48,7 +48,7 @@ public class BsNet extends MotModule {
 		}
 		pred = data[mot.getID()];
 		IWirelessPacket m = new WirelessPacket(-1, mot);
-		m.setData(new NetData(data));
+		m.setData(new CentralizedNetData(data));
 		getGate("lower").recieveMessage(m, this);
 	}
 }
