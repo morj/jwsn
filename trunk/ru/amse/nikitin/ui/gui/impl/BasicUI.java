@@ -14,11 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import ru.amse.nikitin.sensnet.IGraphProduceStrategy;
-import ru.amse.nikitin.sensnet.impl.Mot;
+
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
-import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.ui.gui.Const;
 
 /** 
@@ -30,7 +28,7 @@ import ru.amse.nikitin.ui.gui.Const;
 public class BasicUI {
 
 	/** auxilliary frame creator */
-	private static JFrame createMainFrame () {
+	protected static JFrame createMainFrame () {
 		JFrame mainFrame = new JFrame ("Random sensnet test");
 		
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,8 +41,8 @@ public class BasicUI {
 		return mainFrame;
 	}
 	
-	/** UI frame creator */
-	public static JFrame createUIFrame(Mot[] mots, IGraphProduceStrategy s, int bsIndex) {
+	/** UI */
+	public static void createUI() {
 		/* try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -101,15 +99,14 @@ public class BasicUI {
         appFrame.add(logPane, BorderLayout.SOUTH);
         appFrame.add(simPanel);
 		
-		for (int i = 0; i < mots.length; i++) {
-			disp.addActiveObjectListener(mots[i]);
-		}
+		// for (int i = 0; i < mots.length; i++) {
+		// 	disp.addActiveObjectListener(mots[i]);
+		//}
 		
-		IGraph<Integer> g = s.produceGraph(mots);
+		// IGraph<Integer> g = s.produceGraph(mots);
+		// g.solvePaths(bsIndex);
+		// disp.setTopology(g);
 		
-		g.solvePaths(bsIndex);
-		disp.setTopology(g);
-		
-		return appFrame;
+        appFrame.setVisible (true); // show frame
 	}
 }

@@ -1,13 +1,14 @@
 package ru.amse.nikitin.models;
 
-import javax.swing.JFrame;
-
 import ru.amse.nikitin.models.centralized.BsMotFactory;
 import ru.amse.nikitin.models.centralized.GraphProduceStrategy;
 import ru.amse.nikitin.models.centralized.MotFactory;
 import ru.amse.nikitin.models.centralized.SendMotFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.random.RandomArea;
+import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
 public class CentralizedRandTest {
@@ -22,12 +23,17 @@ public class CentralizedRandTest {
 			Const.bsPower
 		);
 		
-		JFrame appFrame = BasicUI.createUIFrame(
-			mots, GraphProduceStrategy.getInstance(),
-			mots.length - 1
-		);
+		IDispatcher disp = Dispatcher.getInstance();
+			
+		IGraph<Integer> g = GraphProduceStrategy.getInstance().produceGraph(mots);
+		g.solvePaths(mots.length - 1);
+		disp.setTopology(g);
 		
-		appFrame.setVisible (true); // show frame
+		BasicUI.createUI();
+		
+		for (int i = 0; i < mots.length; i++) {
+			disp.addActiveObjectListener(mots[i]);
+		}
 	}
 
 }

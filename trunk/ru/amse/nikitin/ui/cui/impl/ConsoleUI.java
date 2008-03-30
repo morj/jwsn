@@ -5,6 +5,7 @@ import java.util.concurrent.Semaphore;
 import ru.amse.nikitin.simulator.IActiveObjectDesc;
 import ru.amse.nikitin.simulator.IDispatcher;
 import ru.amse.nikitin.simulator.IDisplayListener;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.ui.cui.IConsoleUI;
 
 /**
@@ -60,7 +61,7 @@ public class ConsoleUI implements IConsoleUI {
 		public void objectAdded(int id, IActiveObjectDesc desc) {
 		}
 
-		public void descChanged(int id, IActiveObjectDesc desc) {
+		public void descChanged(int id) {
 		}
 		
 		public void messageConflicted(int source, int dest) {
@@ -90,9 +91,9 @@ public class ConsoleUI implements IConsoleUI {
 	}
 
 	/** constructor */
-	public ConsoleUI(IDispatcher d) {
-		dispatcher = d;
-		d.addDisplayListener(displayListener);
+	public ConsoleUI() {
+		dispatcher = Dispatcher.getInstance();
+		dispatcher.addDisplayListener(displayListener);
 	}
 	
 	/** run action */
