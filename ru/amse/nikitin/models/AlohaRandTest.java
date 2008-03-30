@@ -5,7 +5,7 @@ import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.app.SendApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
-import ru.amse.nikitin.protocols.rooting.aloha.CommonNet;
+import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.random.RandomArea;

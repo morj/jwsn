@@ -2,7 +2,7 @@ package ru.amse.nikitin.models.centralized;
 
 import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.mac.centralized.SimpleMac;
-import ru.amse.nikitin.protocols.rooting.centralized.CommonNet;
+import ru.amse.nikitin.protocols.routing.centralized.CommonNet;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
