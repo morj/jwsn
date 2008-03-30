@@ -130,8 +130,12 @@ public class CommonMac extends MotModule {
 					return true;
 				}
 			}
-		} else {
-			return false;
+		} else { // not our message, but what if net level wants to track it...
+			if (m.isEncapsulating()) {
+				return getGate("upper").recieveMessage(m.decapsulate(), this);
+			} else {
+				return false;
+			}
 		}
 	}
 	
