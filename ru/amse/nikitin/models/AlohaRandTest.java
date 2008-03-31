@@ -2,12 +2,15 @@ package ru.amse.nikitin.models;
 
 import javax.swing.ImageIcon;
 import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
+import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.protocols.app.BsApp;
-import ru.amse.nikitin.protocols.app.EmptyApp;
+import ru.amse.nikitin.protocols.app.SensorApp;
 import ru.amse.nikitin.protocols.app.SendApp;
+import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
 import ru.amse.nikitin.protocols.routing.distributed.BsNet;
+import ru.amse.nikitin.sensnet.impl.MonitoredPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.MonitoredObject;
@@ -96,7 +99,7 @@ class SendMotGenerator extends MotGenerator {
 		
 		MotModule mac = new CommonMac(m);
 		MotModule net = new CommonNet(m);
-		MotModule app = new SendApp(m); 
+		MotModule app = new SensorApp(m);
 		
 		connectModules(m, mac, net, app);
 		
@@ -110,7 +113,13 @@ class EmptyMotGenerator extends MotGenerator {
 		
 		MotModule mac = new CommonMac(m);
 		MotModule net = new CommonNet(m);
-		MotModule app = new EmptyApp(m); 
+		MotModule app = new SensorApp(m);
+		
+		IGate sensingGate = m.declareInputGate(MonitoredPacket.class);
+		IGate gate = app.declareGate("sensor");
+		// sensingGate -> gate
+		sensingGate.setTo(gate);
+		gate.setFrom(sensingGate);
 		
 		connectModules(m, mac, net, app);
 		

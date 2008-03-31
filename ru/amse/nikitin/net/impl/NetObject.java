@@ -86,6 +86,10 @@ public class NetObject implements INetObject {
 	public IGate getInputGate(Class<? extends IPacket> msgClass) {
 		return gates.get(msgClass);
 	}
+	
+	public boolean hasInputGate(Class<? extends IPacket> msgClass) {
+		return gates.containsKey(msgClass);
+	}
 
 	public IActiveObjectDesc getDesc() {
 		return null;

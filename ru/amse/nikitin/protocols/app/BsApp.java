@@ -15,11 +15,19 @@ public class BsApp extends MotModule {
 	
 	public boolean lowerMessage(IWirelessPacket m) {
 		if (m.getData() != null) {
-			BsData data = (BsData)m.getData();
-			if (data.getType() == Const.hello) {
+			if (m.getData() instanceof BsData) {
+				BsData data = (BsData)m.getData();
+				if (data.getType() == Const.hello) {
+					Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
+						"hello message " + data.getIndex() + " recieved by BS");
+					return true;
+				}
+			}
+			if (m.getData() instanceof CarData) {
+				CarData data = (CarData)m.getData();
 				Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
-					"hello message " + data.getIndex() + " recieved by BS");
-				return true;
+						"car seen at " + data.getX() + ", " + data.getY());
+					return true;
 			}
 		} else {
 			System.err.println("null data for bs");

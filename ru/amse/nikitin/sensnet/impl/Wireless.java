@@ -27,7 +27,10 @@ public class Wireless implements IMessageFilter {
 	}
 	
 	public static Wireless getInstance () {
-		return (instance == null ? new Wireless() : instance);
+		if (instance == null) {
+			instance = new Wireless();
+		}
+		return instance;
 	}
 	
 	protected void recieve(Mot mot, IMessage m, List<IDisplayListener> displisteners) {
@@ -43,7 +46,6 @@ public class Wireless implements IMessageFilter {
 			// Queue<IMessage> dropped,
 			List<IDisplayListener> displisteners) {
 		Logger l = Logger.getInstance();
-		int size = messages.size();
 		List<PoweredMessage> msg = new ArrayList<PoweredMessage>();
 		// draining messages to this list
 		Iterator<IMessage> j = messages.iterator();
@@ -58,6 +60,7 @@ public class Wireless implements IMessageFilter {
 				}
 			}
 		}
+		int size = msg.size();
 		if (size > 0) for(IActiveObject obj: objs) if (obj instanceof Mot) { // for each mot
 			Mot currmot = (Mot)obj;
 			if (currmot != null) { // filling messages power

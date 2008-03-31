@@ -62,6 +62,7 @@ public class Mot extends MovingObject implements IMot {
 	}
 
 	public void createLinearTopology(int count) {
+		// IGate sensingGate = declareInputGate(MonitoredPacket.class);
 		IGate inputGate = declareInputGate(WirelessPacket.class);
 		
 		IMotModule module = (IMotModule)modules.get(Util.moduleName(0));
@@ -85,7 +86,13 @@ public class Mot extends MovingObject implements IMot {
 			gate.setFrom(dest);
 			dest.setTo(gate);
 			gate = module.declareGate(Const.upperGateName);
-		}	
+		}
+		
+		// module = (IMotModule)modules.get(Util.moduleName(2));
+		// gate = module.declareGate(Const.sensingGateName);
+		// sensingGate -> gate
+		// sensingGate.setTo(gate);
+		// gate.setFrom(sensingGate);
 	}
 	
 	public boolean recieveMessage(IMessage m) {
@@ -113,7 +120,7 @@ public class Mot extends MovingObject implements IMot {
 						IGate in = gates.get(m.getData().getClass());
 						if (in != null) {
 							// System.err.println("recv on " + in.getName());
-							IWirelessPacket p = (IWirelessPacket)m.getData();
+							IPacket p = (IPacket)m.getData();
 							return in.recieveMessage(p, null);
 						} // else
 					} // else

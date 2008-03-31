@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 
 
 import ru.amse.nikitin.sensnet.impl.Wireless;
+import ru.amse.nikitin.sensnet.impl.SensingChannel;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.ui.gui.Const;
 
@@ -57,6 +58,7 @@ public class BasicUI {
 		logTextArea.setFont(new Font("Arial", Font.PLAIN, 11));
 		Dispatcher disp = Dispatcher.getInstance(); 
 		disp.addMessageFilter(Wireless.getInstance());
+		disp.addMessageFilter(SensingChannel.getInstance());
 		DisplayComponent dispc = new DisplayComponent(disp, logTextArea);
 		
 		JScrollPane logPane = new JScrollPane(logTextArea);
