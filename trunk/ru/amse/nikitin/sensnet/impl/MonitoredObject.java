@@ -18,6 +18,7 @@ public class MonitoredObject extends MovingObject {
 	protected SensingModule sensingModule = new SensingModule(this);	
 
 	public MonitoredObject(int x, int y) {
+		super(x, y);
 		s = Dispatcher.getInstance();
 		outputGate = sensingModule.declareGate("phy");
 		newDesc(null, "Sensing Object", x, y);

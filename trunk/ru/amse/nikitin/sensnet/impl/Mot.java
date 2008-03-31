@@ -33,9 +33,9 @@ public class Mot extends MovingObject implements IMot {
 	 * This is the original internal topology of each mot,
 	 * hence this constructor supports such connection.
 	 */
-	public Mot(int x_, int y_,
+	public Mot(int x, int y,
 			double power, double threshold, IMotModuleFactory f) {
-		x = x_; y = y_;
+		super(x, y);
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
@@ -48,8 +48,8 @@ public class Mot extends MovingObject implements IMot {
 		newDesc(null, "Mot", x, y);
 	}
 	
-	public Mot(int x_, int y_, double power, double threshold) {
-		x = x_; y = y_;
+	public Mot(int x, int y, double power, double threshold) {
+		super(x, y);
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
