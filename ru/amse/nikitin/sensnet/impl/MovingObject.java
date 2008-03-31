@@ -9,6 +9,12 @@ public class MovingObject extends NetObject implements IMovingObject{
 	protected MotDescription description;
 	protected int x, y;
 	
+	public MovingObject(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+
 	public IActiveObjectDesc newDesc(ImageIcon image, String name, int x, int y) {
 		description = new MotDescription(image, name, x, y);
 		description.setOwner(this);

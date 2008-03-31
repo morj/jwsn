@@ -16,6 +16,7 @@ import ru.amse.nikitin.ui.gui.impl.BasicUI;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.protocols.app.CarObject;
 import ru.amse.nikitin.protocols.app.TemperatureObject;
 
 /* abstract class MotGenerator implements IMotGenerator {
@@ -140,7 +141,12 @@ public class AlohaRandTest {
 		MonitoredObject temp = new MonitoredObject(10, 10);
 		temp.addModule("logic", new TemperatureObject(temp));
 		temp.createTopology();
-		temp.newDesc(new ImageIcon("icons\\noicon.png"), "temperature", 10, 10);
+		temp.newDesc(new ImageIcon("icons\\bs.png"), "temperature", 10, 10);
+		
+		MonitoredObject car = new MonitoredObject(100, 100);
+		car.addModule("logic", new CarObject(car));
+		car.createTopology();
+		car.newDesc(new ImageIcon("icons\\noicon.png"), "some car", 100, 100);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			
@@ -154,6 +160,7 @@ public class AlohaRandTest {
 			disp.addActiveObjectListener(mots[i]);
 		}
 		disp.addActiveObjectListener(temp);
+		disp.addActiveObjectListener(car);
 	}
 	
 }
