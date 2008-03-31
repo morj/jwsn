@@ -1,5 +1,6 @@
 package ru.amse.nikitin.models;
 
+import javax.swing.ImageIcon;
 import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.EmptyApp;
@@ -9,11 +10,13 @@ import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
 import ru.amse.nikitin.protocols.routing.distributed.BsNet;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
+import ru.amse.nikitin.sensnet.impl.MonitoredObject;
 import ru.amse.nikitin.sensnet.random.RandomArea;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.protocols.app.TemperatureObject;
 
 /* abstract class MotGenerator implements IMotGenerator {
 	
@@ -134,6 +137,11 @@ public class AlohaRandTest {
 			RandomArea.commonMotPower
 		);
 		
+		MonitoredObject temp = new MonitoredObject(10, 10);
+		temp.addModule("logic", new TemperatureObject(temp));
+		temp.createTopology();
+		temp.newDesc(new ImageIcon("icons\\noicon.png"), "temperature", 10, 10);
+		
 		IDispatcher disp = Dispatcher.getInstance();
 			
 		IGraph<Integer> g = GraphProduceStrategy.getInstance().produceGraph(mots);
@@ -141,10 +149,11 @@ public class AlohaRandTest {
 		disp.setTopology(g);
 		
 		BasicUI.createUI();
-		
+	
 		for (int i = 0; i < mots.length; i++) {
 			disp.addActiveObjectListener(mots[i]);
-		}		
+		}
+		disp.addActiveObjectListener(temp);
 	}
 	
 }

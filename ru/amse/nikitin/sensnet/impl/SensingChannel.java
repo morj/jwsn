@@ -18,7 +18,7 @@ public class SensingChannel implements IMessageFilter {
 			IMessage msg = j.next(); // next in iterator
 			Object peek = msg.getData();
 			if(peek != null) {
-				if(peek instanceof SensingPacket) {
+				if(peek instanceof MonitoredPacket) {
 					j.remove(); // removing from iterator
 				}
 			}
