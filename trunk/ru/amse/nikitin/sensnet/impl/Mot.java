@@ -1,12 +1,9 @@
 package ru.amse.nikitin.sensnet.impl;
 
-import javax.swing.ImageIcon;
-
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.net.IModule;
 import ru.amse.nikitin.net.IPacket;
 import ru.amse.nikitin.net.impl.Gate;
-import ru.amse.nikitin.net.impl.NetObject;
 import ru.amse.nikitin.sensnet.Const;
 import ru.amse.nikitin.sensnet.IBattery;
 import ru.amse.nikitin.sensnet.IMot;
@@ -15,22 +12,20 @@ import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.simulator.EMessageType;
-import ru.amse.nikitin.simulator.IActiveObjectDesc;
 import ru.amse.nikitin.simulator.IMessage;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.impl.Message;
 import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
-public class Mot extends NetObject implements IMot {
+public class Mot extends MovingObject implements IMot {
 	protected Dispatcher s;
-	protected int x, y;
+	
 	protected double transmitterPower;
 	protected double threshold;
 	// private double ratioX; private double ratioY;
 	protected IMotModule transmitterModule = new TransmitterModule(this);
 	protected IBattery b = new Battery (100000000);
-	protected MotDescription description;
 	// protected int linearModuleCount;
 	
 	/**
@@ -48,9 +43,9 @@ public class Mot extends NetObject implements IMot {
 		for (int i = 0; i < count; i++) {
 			addModule(Util.moduleName(i), f.createModule(this, i));
 		}
-		outputGate = new Gate(transmitterModule, "mot output gate");
+		outputGate = transmitterModule.declareGate("phy");
 		createLinearTopology(count);
-		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
+		newDesc(null, "Mot", x, y);
 	}
 	
 	public Mot(int x_, int y_, double power, double threshold) {
@@ -58,12 +53,8 @@ public class Mot extends NetObject implements IMot {
 		s = Dispatcher.getInstance();
 		transmitterPower = power;
 		this.threshold = threshold;
-		outputGate = new Gate(transmitterModule, "mot output gate");
-		description = new MotDescription(new ImageIcon("noicon.png"), "Mot", x, y);
-	}
-
-	public IGate getOutputGate() {
-		return outputGate;
+		outputGate = transmitterModule.declareGate("phy");
+		newDesc(null, "Mot", x, y);
 	}
 	
 	public void createTopology() {
@@ -95,10 +86,6 @@ public class Mot extends NetObject implements IMot {
 			dest.setTo(gate);
 			gate = module.declareGate(Const.upperGateName);
 		}	
-	}
-	
-	public double squaredDistanceTo(Mot m) {
-		return((x-m.x)*(x-m.x) + (y-m.y)*(y-m.y));
 	}
 	
 	public boolean recieveMessage(IMessage m) {
@@ -147,16 +134,6 @@ public class Mot extends NetObject implements IMot {
 		return msg;
 	}
 	
-	public IActiveObjectDesc newDesc(ImageIcon image, String name, int x, int y) {
-		description = new MotDescription(image, name, x, y);
-		description.setOwner(this);
-		return description; 
-	}
-	
-	public IActiveObjectDesc getDesc() {
-		return description;
-	}
-	
 	public double getTransmitterPower() {
 		return transmitterPower;
 	}
@@ -180,7 +157,6 @@ public class Mot extends NetObject implements IMot {
 		private Gate input;
 		private Mot mot;
 		public TransmitterModule(Mot m) {
-			input = new Gate(this, "input");
 			this.mot = m;
 		}
 		/** message recieve wrapper */
@@ -198,7 +174,8 @@ public class Mot extends NetObject implements IMot {
 			return sendMessage(msg);
 		}
 		public IGate declareGate(String name) {
-			if (name.equals("input")) {
+			if (name.equals("phy")) {
+				input = new Gate(this, name);
 				return input;
 			} else {
 				return null;

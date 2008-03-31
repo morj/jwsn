@@ -1,15 +1,15 @@
 package ru.amse.nikitin.sensnet.impl;
 
 import javax.swing.ImageIcon;
-
 import ru.amse.nikitin.simulator.IActiveObjectDesc;
+import ru.amse.nikitin.simulator.IActiveObject;
 
 public class MotDescription implements IActiveObjectDesc {
 	protected ImageIcon image;
 	protected String name;
 	protected int x;
 	protected int y;
-	protected Mot owner;
+	protected IActiveObject owner;
 
 	/* package-private */ MotDescription(ImageIcon image, String name, int x, int y) {
 		this.image = image;
@@ -42,7 +42,7 @@ public class MotDescription implements IActiveObjectDesc {
 		this.y = y;
 	}
 	
-	/* package-private */ void setOwner(Mot owner) {
+	/* package-private */ void setOwner(IActiveObject owner) {
 		this.owner = owner;
 	}
 

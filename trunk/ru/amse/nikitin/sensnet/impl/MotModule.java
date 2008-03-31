@@ -15,8 +15,8 @@ public class MotModule extends NetModule implements IMotModule {
 	protected Mot mot;
 	protected Map<Integer, Runnable> events = new HashMap<Integer, Runnable>();
 	
-	public MotModule(Mot m) {
-		mot = m;
+	public MotModule(Mot mot) {
+		this.mot = mot;
 	}
 	
 	protected void scheduleEvent(Runnable r, int t) {
@@ -36,9 +36,6 @@ public class MotModule extends NetModule implements IMotModule {
 		mot.scheduleMessage(msg, t);
 		events.put(id, r);
 	}
-
-	protected boolean lowerMessage(IWirelessPacket m) { return false; }
-	protected boolean upperMessage(IWirelessPacket m) { return false; }
 	
 	/* package-private */ void fireEvent(int id) {
 		if (events.containsKey(id)) {
@@ -46,6 +43,9 @@ public class MotModule extends NetModule implements IMotModule {
 			r.run();
 		}
 	}
+
+	protected boolean lowerMessage(IWirelessPacket m) { return false; }
+	protected boolean upperMessage(IWirelessPacket m) { return false; }
 	
 	public boolean recieveMessage(IPacket m) {
 		if (arrivedOn.equals("upper")) {
