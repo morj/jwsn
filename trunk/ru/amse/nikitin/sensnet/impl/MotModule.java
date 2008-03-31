@@ -5,8 +5,10 @@ import java.util.Map;
 
 import ru.amse.nikitin.net.IPacket;
 import ru.amse.nikitin.net.impl.NetModule;
+import ru.amse.nikitin.sensnet.Const;
 import ru.amse.nikitin.sensnet.IMotModule;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
+import ru.amse.nikitin.sensnet.IMonitoredPacket;
 import ru.amse.nikitin.simulator.IMessage;
 import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
@@ -46,13 +48,17 @@ public class MotModule extends NetModule implements IMotModule {
 
 	protected boolean lowerMessage(IWirelessPacket m) { return false; }
 	protected boolean upperMessage(IWirelessPacket m) { return false; }
+	protected boolean sensingMessage(IMonitoredPacket m) { return false; }
 	
 	public boolean recieveMessage(IPacket m) {
-		if (arrivedOn.equals("upper")) {
+		if (arrivedOn.equals(Const.upperGateName)) {
 			return upperMessage((IWirelessPacket)m);
 		}
-		if (arrivedOn.equals("lower")) {
+		if (arrivedOn.equals(Const.lowerGateName)) {
 			return lowerMessage((IWirelessPacket)m);
+		}
+		if (arrivedOn.equals(Const.sensingGateName)) {
+			return sensingMessage(((IMonitoredPacket)m));
 		}
 		System.err.println("bad gate");
 		return false;

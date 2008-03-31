@@ -4,12 +4,30 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
+import ru.amse.nikitin.sensnet.IMovingObject;
 import ru.amse.nikitin.simulator.IActiveObject;
 import ru.amse.nikitin.simulator.IDisplayListener;
 import ru.amse.nikitin.simulator.IMessage;
 import ru.amse.nikitin.simulator.IMessageFilter;
 
 public class SensingChannel implements IMessageFilter {
+	private static SensingChannel instance = null;
+	
+	public static SensingChannel getInstance () {
+		if (instance == null) {
+			instance = new SensingChannel();
+		}
+		return instance;
+	}
+	
+	protected void recieve(IActiveObject obj, IMessage m, List<IDisplayListener> displisteners) {
+		for (IDisplayListener i: displisteners) {
+			i.messageRecieved(m.getSource(), obj.getID(), m.getData());
+			if (obj.recieveMessage(m)) {
+				i.messageAccepted(obj.getID());
+			}
+		}
+	}
 
 	public void Filter(List<IActiveObject> objs, Queue<IMessage> messages,
 			List<IDisplayListener> dispListeners) {
@@ -23,7 +41,13 @@ public class SensingChannel implements IMessageFilter {
 				}
 			}
 			for (IActiveObject obj: objs) {
-				obj.recieveMessage(msg);
+				IMovingObject t = (IMovingObject)obj;
+				if (t.hasInputGate(MonitoredPacket.class)) {
+					if (t.squaredDistanceTo((IMovingObject)objs.get(msg.getSource()))
+							< 10000) {
+						recieve(obj, msg, dispListeners);
+					}
+				}
 			}
 		}
 	}

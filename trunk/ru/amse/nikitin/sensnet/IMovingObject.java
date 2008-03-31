@@ -1,6 +1,8 @@
 package ru.amse.nikitin.sensnet;
 
-public interface IMovingObject {
+import ru.amse.nikitin.net.INetObject;
+
+public interface IMovingObject extends INetObject {
 	double squaredDistanceTo(IMovingObject m);
 	int getX();
 	int getY();
