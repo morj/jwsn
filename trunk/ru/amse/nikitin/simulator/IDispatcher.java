@@ -5,8 +5,10 @@ import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 /**
+ * Dispatcher interface.
+ * Dispatcher is an entity that controls message flow and allows simulator to watch it
+ * 
  * @author Pavel A. Nikitin
- * Dispatcher
  *
  */
 public interface IDispatcher {

@@ -1,8 +1,9 @@
 package ru.amse.nikitin.simulator;
 
 /**
+ * UI Dispay Listener interface
+ * 
  * @author Pavel A. Nikitin
- * UI listener interface
  *
  */
 public interface IDisplayListener {

@@ -4,7 +4,8 @@ import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 /** 
- * Graph producing strategy
+ * Graph producing strategy.
+ * Producing strategy is used to determine, wich mots can send messages to each other.
  * 
  * @author Pavel A. Nikitin
  *

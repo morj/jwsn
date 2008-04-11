@@ -3,8 +3,9 @@ package ru.amse.nikitin.simulator;
 import javax.swing.ImageIcon;
 
 /**
+ * Active Object description interface.
+ * 
  * @author Pavel A. Nikitin
- * Active object description interface
  *
  */
 public interface IActiveObjectDesc {

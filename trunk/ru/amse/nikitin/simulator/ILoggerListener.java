@@ -1,8 +1,9 @@
 package ru.amse.nikitin.simulator;
 
 /**
+ * logger Listener interface
+ * 
  * @author Pavel A. Nikitin
- * logger listener interface
  *
  */
 public interface ILoggerListener {

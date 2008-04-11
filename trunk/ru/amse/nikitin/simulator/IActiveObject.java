@@ -3,8 +3,10 @@ package ru.amse.nikitin.simulator;
 import javax.swing.ImageIcon;
 
 /**
+ * Active Object interface
+ * Active Objects are elements of any simulated network.
+ * 
  * @author Pavel A. Nikitin
- * Active object interface
  *
  */
 public interface IActiveObject {

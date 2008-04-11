@@ -3,8 +3,9 @@ import java.util.List;
 import java.util.Queue;
 
 /**
+ * Message Filter interface
+ * 
  * @author Pavel A. Nikitin
- * message filter interface
  *
  */
 public interface IMessageFilter {
