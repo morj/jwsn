@@ -1,4 +1,4 @@
-package ru.amse.nikitin.models;
+package ru.amse.nikitin.sensnet;
 
 import ru.amse.nikitin.sensnet.impl.Mot;
 

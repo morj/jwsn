@@ -9,15 +9,16 @@ import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class SendApp extends EmptyApp {
+	protected int helloCount = 1;
 	protected final static Time someUnitsTime = new Time(15);
 	protected final static Time oneUnitTime = new Time(0);
 	
 	final Runnable step = new Runnable() {
 		public void run () {
-			// int[] data = new int [2];
-			// data[0] = Const.hello;
-			// data[1] = ++helloCount;
 			BsData data = (BsData)MonitoredObjectRegistry.getReading("temperature");
+			if (data == null) {
+				data = new BsData(Const.hello, ++helloCount);
+			}
 			WirelessPacket packet = new WirelessPacket(3, mot);
 			packet.setData(data);
 			if(sendMsgToLower(packet)) {
