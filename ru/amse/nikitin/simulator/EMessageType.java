@@ -1,12 +1,13 @@
 package ru.amse.nikitin.simulator;
 
 /**
- * @author Pavel A. Nikitin
  * Message types for dispatcher
+ * 
+ * @author Pavel A. Nikitin
  *
  */
 public enum EMessageType {
 	INIT,
 	TIMER,
-	DATA //, BROADCAST
+	DATA
 };

@@ -17,6 +17,4 @@ import java.util.Arrays;
 		return "[CND " + Arrays.toString(predecessors) + " ]";
 	}
 	
-	
-	
 }

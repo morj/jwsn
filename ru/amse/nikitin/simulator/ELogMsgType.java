@@ -1,8 +1,9 @@
 package ru.amse.nikitin.simulator;
 
 /**
+ * Message types for log.
+ * 
  * @author Pavel A. Nikitin
- * Message types for log
  *
  */
 public enum ELogMsgType {
