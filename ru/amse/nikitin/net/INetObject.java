@@ -6,7 +6,7 @@ import ru.amse.nikitin.simulator.IMessage;
 public interface INetObject extends IActiveObject {
 	IGate getOutputGate();
 	boolean recieveMessage(IMessage m);
-	int getLastMessageID();
+	// int getLastMessageID();
 	int getLastMessageSource();
 	int getLastMessageDest();
 	int getID();

@@ -6,18 +6,22 @@ import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 
 public class WirelessPacket extends Packet implements IWirelessPacket {
-	private int id = 0;
+	private final int dest;
+	private final int uid;
+	private static int count = 0;
 	
 	protected ISendCallback onSendAction = null;
 	
-	public WirelessPacket(int id, Mot owner) {
+	public WirelessPacket(int dest, Mot owner) {
 		super(owner);
-		this.id = id;
+		this.dest = dest;
 		length = 1;
+		uid = count;
+		count++;
 	}
 	
 	public IPacket decapsulate() {
-		if (id == -1) {
+		if (dest == -1) {
 			if (data != null) {
 				return (IPacket)data;
 			} else {
@@ -28,7 +32,16 @@ public class WirelessPacket extends Packet implements IWirelessPacket {
 		}
 	}
 	
-	public ISendCallback getOnSendAction() {
+	public int getDest() {
+		return dest;
+	}
+
+	public String toString() {
+		return (isLocked ? "![WP" : "[WP") + uid + ": " + dest + ", "
+		            + (data == null ? "no data" : data.toString()) + " ]";
+	}
+	
+	/* public ISendCallback getOnSendAction() {
 		return onSendAction;
 	}
 
@@ -36,13 +49,12 @@ public class WirelessPacket extends Packet implements IWirelessPacket {
 		this.onSendAction = onSendAction;
 	}
 
-	public int getID() {
-		return id;
-	}
-
-	public String toString() {
-		return (isLocked ? "![WP " : "[WP") + id + ", "
-		            + (data == null ? "no data" : data.toString()) + " ]";
+	public void removeOnSendAction() {
+		onSendAction = null;
+	} */
+	
+	public int hashCode() {
+		return uid;
 	}
 
 }

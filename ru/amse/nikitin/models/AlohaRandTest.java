@@ -8,8 +8,8 @@ import ru.amse.nikitin.protocols.app.SensorApp;
 import ru.amse.nikitin.protocols.app.SendApp;
 import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
-import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
-import ru.amse.nikitin.protocols.routing.distributed.BsNet;
+import ru.amse.nikitin.protocols.routing.centralized.CommonNet;
+import ru.amse.nikitin.protocols.routing.centralized.BsNet;
 import ru.amse.nikitin.sensnet.impl.MonitoredPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -144,7 +144,7 @@ public class AlohaRandTest {
 			new SendMotGenerator(),
 			new EmptyMotGenerator(),
 			new BsMotGenerator(),
-			RandomArea.commonMotPower
+			Const.bsPower
 		);
 		
 		MonitoredObject temp = new MonitoredObject(10, 10);

@@ -86,10 +86,14 @@ public class Packet implements IPacket {
 
 	public void setData(Object data) throws UnsupportedOperationException {
 		// System.err.println(data.getClass());
-		if (isIncapsulating) {
-			throw new UnsupportedOperationException();
+		if (isLocked) {
+			System.err.println("packet is locked");
 		} else {
-			this.data = data;
+			if (isIncapsulating) {
+				throw new UnsupportedOperationException();
+			} else {
+				this.data = data;
+			}
 		}
 	}
 

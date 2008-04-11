@@ -16,7 +16,7 @@ public class BsNet extends MotModule {
 		super(m);
 	}
 	public boolean lowerMessage(IWirelessPacket m) {
-		if (m.getID() == mot.getID()) {
+		if (m.getDest() == mot.getID()) {
 			if (m.isEncapsulating()) { // data
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else {
