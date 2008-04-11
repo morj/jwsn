@@ -9,7 +9,8 @@ import ru.amse.nikitin.net.IPacket;
  *
  */
 public interface IWirelessPacket extends IPacket {
-	ISendCallback getOnSendAction();
-	void setOnSendAction(ISendCallback onSendAction);
-	int getID();
+	// ISendCallback getOnSendAction();
+	// void setOnSendAction(ISendCallback onSendAction);
+	// void removeOnSendAction();
+	int getDest();
 }

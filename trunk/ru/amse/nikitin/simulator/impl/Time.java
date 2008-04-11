@@ -10,7 +10,7 @@ import java.util.Random;
 public class Time implements Comparable {
 	protected long steps = 0;
 	protected static Random randomizer = new Random();
-	protected static Time randtime = new Time();
+	// protected static Time randtime = new Time();
 	public Time() {
 		steps = 0;
 	}
@@ -39,8 +39,8 @@ public class Time implements Comparable {
 	public static Time randTime (long max) {
 		long r = randomizer.nextInt() % max;
 		if (r < 0) r = -r;
-		randtime.steps = r;
-		return randtime;
+		// randtime.steps = r; return randtime;
+		return new Time(r);
 	}
 	public String toString() {
 		return Long.valueOf(steps).toString();

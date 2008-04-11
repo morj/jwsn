@@ -9,7 +9,7 @@ import ru.amse.nikitin.sensnet.IBattery;
 import ru.amse.nikitin.sensnet.IMot;
 import ru.amse.nikitin.sensnet.IMotModule;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
-import ru.amse.nikitin.sensnet.ISendCallback;
+// import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.simulator.EMessageType;
 import ru.amse.nikitin.simulator.IMessage;
@@ -172,11 +172,12 @@ public class Mot extends MovingObject implements IMot {
 			IMessage msg = new Message(s.getMessageInitData());
 			s.assignMessage(mot, msg);
 			msg.setType(EMessageType.DATA);
-			msg.setDest(m.getID());
-			ISendCallback action = m.getOnSendAction();
+			msg.setDest(m.getDest());
+			/* ISendCallback action = m.getOnSendAction();
 			if (action != null) {
 				action.run(msg);
-			}
+				m.removeOnSendAction();
+			} */
 			msg.setData(m);
 			return sendMessage(msg);
 		}

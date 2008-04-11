@@ -52,9 +52,9 @@ public class NetObject implements INetObject {
 		}
 	}
 	
-	public int getLastMessageID() {
+	/* public int getLastMessageID() {
 		return lastMessageID;
-	}
+	} */
 	
 	public int getLastMessageSource() {
 		return lastMessageSource;

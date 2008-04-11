@@ -3,22 +3,22 @@ package ru.amse.nikitin.protocols.mac.aloha;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Deque;
 
-import ru.amse.nikitin.sensnet.ISendCallback;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.simulator.ELogMsgType;
-import ru.amse.nikitin.simulator.IMessage;
 import ru.amse.nikitin.simulator.impl.Logger;
 import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class CommonMac extends MotModule {
-	protected Queue<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
+	protected static final Time oneUnitTime = new Time(1);
+	protected Deque<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
 	protected Map<Integer, IWirelessPacket> waiting = new HashMap<Integer, IWirelessPacket>();
+	protected Map<Integer, Integer> tries = new HashMap<Integer, Integer>();
 	
 	protected boolean wasSent = false;
 	
@@ -45,56 +45,39 @@ public class CommonMac extends MotModule {
 		}
 
 		public void run () {
-			assert waiting.containsKey(id);
-			pending.add(waiting.get(id));
-			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
-				"- msg " + id + ": resubmitting");
+			if(waiting.containsKey(id)) {
+				pending.addLast(waiting.get(id));
+				Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
+						"- msg " + id + ": resubmitting");
+			} else {
+				Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
+						"- msg " + id + " sent successfully!");
+			}
 		}
 	}
 	
 	class CheckMsg implements Runnable {
 		protected final int id;
-		protected int tries = 0;
 		
 		public CheckMsg(int id) {
 			this.id = id;
 		}
 
 		public void run() {
-			tries++;
 			if (!waiting.containsKey(id)) {
 				Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 					"- msg " + id + " sent successfully!");
 			} else { // resend
-				if (tries == 3) {
-					ResendMsg resendMsg = new ResendMsg(id);
-					scheduleEvent(resendMsg, Time.randTime(4));
+				if(tries.get(id) > 0) {
+					Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
+							"- msg " + id + ": resubmit scheduled");
+					scheduleEvent(new ResendMsg(id), Time.randTime(4));
 				} else {
 					Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
-						"- msg " + id + ": waiting for response");
-					scheduleEvent(this, 0);
+							"- msg " + id + ": resubmit cancelled");
+					waiting.remove(id);
+					tries.remove(id);
 				}
-			}
-		}
-	}
-	
-	class ConfirmMsg implements ISendCallback {
-		private IWirelessPacket packet;
-		
-		public ConfirmMsg(IWirelessPacket packet) {
-			this.packet = packet;
-		}
-
-		public void run (IMessage msg) {
-			// data message: wait for response
-			// System.err.println("callback");
-			if (msg.getDest() != -1) {
-				int id = msg.getID();
-				CheckMsg checkMsg = new CheckMsg(id);
-				waiting.put(id, packet);
-				scheduleEvent(checkMsg, 0);
-			} else {
-				System.err.println("broadcast");
 			}
 		}
 	}
@@ -108,10 +91,10 @@ public class CommonMac extends MotModule {
 			if (m.isEncapsulating()) { // data
 				// int[] reciever = new int [1];
 				// reciever[0] = mot.getLastMessageID();
-				MacData reciever = new MacData(mot.getLastMessageID());
-				WirelessPacket confirmMsg = new WirelessPacket(mot.getLastMessageSource(), mot);
+				MacData reciever = new MacData(m.hashCode());
+				IWirelessPacket confirmMsg = new WirelessPacket(mot.getLastMessageSource(), mot);
 				confirmMsg.setData(reciever);
-				pending.add(confirmMsg); // sending confirmation
+				pending.addFirst(confirmMsg); // sending confirmation
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // confirm
 				if (m.getData() == null) {
@@ -119,7 +102,7 @@ public class CommonMac extends MotModule {
 						ELogMsgType.INFORMATION, 
 						"bad confirm data in msg " + m.getID()
 					); */
-					System.err.println("bad confirm data in msg " + m.getID());
+					System.err.println("bad confirm data in msg " + m.getDest());
 					return false;
 				} else {
 					MacData reciever = ((MacData)m.getData());
@@ -131,6 +114,7 @@ public class CommonMac extends MotModule {
 					if(!waiting.remove(id).releaseLock(mot)) {
 						System.err.println("not a lock owner");
 					}
+					tries.remove(id);
 					return true;
 				}
 			}
@@ -144,14 +128,15 @@ public class CommonMac extends MotModule {
 	}
 	
 	public boolean upperMessage(IWirelessPacket m) {
-		IWirelessPacket msg = new WirelessPacket(m.getID(), mot);
+		IWirelessPacket msg = new WirelessPacket(m.getDest(), mot);
 		msg.encapsulate(m);
 		if(!msg.setLock(mot)) {
 			System.err.println("not a lock owner");
 		}
-		msg.setOnSendAction(new ConfirmMsg(msg));
+		// msg.setOnSendAction(new ConfirmMsg(msg));
 		if (wasSent) {
-			return pending.add(msg);
+			pending.addLast(msg);
+			return true;
 		} else {
 			if (pending.add(msg)) {
 				wasSent = true;
@@ -175,6 +160,21 @@ public class CommonMac extends MotModule {
 		if (mmsg == null) {
 			System.err.println("null msg in queue");
 			return false;
+		} else {
+			if(mmsg.isEncapsulating()) { // not a confirm msg
+				int code = mmsg.hashCode();
+				if (!waiting.containsKey(code)) {
+					if(mmsg.getDest() != -1) {
+						waiting.put(code, mmsg);
+						tries.put(code, 3);
+					}
+				} else {
+					Integer t = tries.remove(code);
+					tries.put(code, t - 1);
+					System.err.println("tries left: " + t);
+				}
+				scheduleEvent(new CheckMsg(code), oneUnitTime);
+			}
 		}
 		return getGate("lower").recieveMessage(mmsg, this);
 	}

@@ -33,7 +33,7 @@ public class BsMac extends MotModule {
 		}
 	}
 	public boolean upperMessage(IWirelessPacket m) {
-		IWirelessPacket msg = new WirelessPacket(m.getID(), mot);
+		IWirelessPacket msg = new WirelessPacket(m.getDest(), mot);
 		msg.encapsulate(m);
 		return pending.add(msg);
 	}
