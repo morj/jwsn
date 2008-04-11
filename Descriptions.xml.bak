@@ -1,0 +1,29 @@
+<descriptions>
+	<style name = "send"
+		img = "icons\\terminal_vs.gif"
+	/>
+	<style name = "common"
+		img = "icons\\palm2_vs.gif"
+	/>
+	<style name = "bs"
+		img = "icons\\laptop_vs.gif"
+	/>
+	<mot id = "0"
+		style = "send"
+		name = "sender"
+		x = "100"
+		y = "100"
+	/>
+	<mot id = "1"
+		style = "common"
+		name = "confilcter"
+		x = "200"
+		y = "100"
+	/>
+	<mot id = "2"
+		style = "b"
+		name = "bs"
+		x = "100"
+		y = "200"
+	/>
+</descriptions>

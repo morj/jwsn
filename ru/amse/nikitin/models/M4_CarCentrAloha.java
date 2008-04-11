@@ -5,8 +5,6 @@ import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.SensorApp;
-import ru.amse.nikitin.protocols.app.SendApp;
-import ru.amse.nikitin.protocols.app.EmptyApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.routing.centralized.CommonNet;
 import ru.amse.nikitin.protocols.routing.centralized.BsNet;
@@ -127,7 +125,7 @@ class EmptyMotGenerator extends MotGenerator {
 	}
 }
 
-public class AlohaRandTest {
+public class M4_CarCentrAloha {
 
 	public static void main(String[] args) {
 		

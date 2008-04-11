@@ -91,10 +91,12 @@ public class CommonMac extends MotModule {
 			if (m.isEncapsulating()) { // data
 				// int[] reciever = new int [1];
 				// reciever[0] = mot.getLastMessageID();
-				MacData reciever = new MacData(m.hashCode());
-				IWirelessPacket confirmMsg = new WirelessPacket(mot.getLastMessageSource(), mot);
-				confirmMsg.setData(reciever);
-				pending.addFirst(confirmMsg); // sending confirmation
+				if (m.getDest() != -1) {
+					MacData reciever = new MacData(m.hashCode());
+					IWirelessPacket confirmMsg = new WirelessPacket(mot.getLastMessageSource(), mot);
+					confirmMsg.setData(reciever);
+					pending.addFirst(confirmMsg); // sending confirmation	
+				}
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else { // confirm
 				if (m.getData() == null) {

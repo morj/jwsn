@@ -1,4 +1,4 @@
-package ru.amse.nikitin.models.conflicter;
+package ru.amse.nikitin.models;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,11 +11,13 @@ import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.util.graph.impl.Graph;
 import ru.amse.nikitin.simulator.util.xml.FieldParser;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
+import ru.amse.nikitin.models.conflicter.ConflicterApp;
+import ru.amse.nikitin.models.conflicter.SenderApp;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
-import ru.amse.nikitin.protocols.routing.distributed.CommonNet;
+import ru.amse.nikitin.protocols.routing.direct.Net;
 
-public class ConflicterTest {
+public class M0_Conflicter {
 	public static double power = 10;
 	public static double threshold = 0;
 
@@ -25,15 +27,15 @@ public class ConflicterTest {
 		Mot m3 = new Mot(201, 100, power, threshold);
 		
 		m1.addModule("mac", new CommonMac(m1));
-		m1.addModule("net", new CommonNet(m1));
+		m1.addModule("net", new Net(m1));
 		m1.addModule("app", new SenderApp(m1));
 		
 		m2.addModule("mac", new CommonMac(m2));
-		m2.addModule("net", new CommonNet(m2));
+		m2.addModule("net", new Net(m2));
 		m2.addModule("app", new ConflicterApp(m2));
 		
 		m3.addModule("mac", new CommonMac(m3));
-		m3.addModule("net", new CommonNet(m3));
+		m3.addModule("net", new Net(m3));
 		m3.addModule("app", new BsApp(m3));
 		
 		m1.createTopology();
