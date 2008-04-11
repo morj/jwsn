@@ -44,7 +44,7 @@ public class SensingChannel implements IMessageFilter {
 				IMovingObject t = (IMovingObject)obj;
 				if (t.hasInputGate(MonitoredPacket.class)) {
 					if (t.squaredDistanceTo((IMovingObject)objs.get(msg.getSource()))
-							< 10000) {
+							< 2500) {
 						recieve(obj, msg, dispListeners);
 					}
 				}

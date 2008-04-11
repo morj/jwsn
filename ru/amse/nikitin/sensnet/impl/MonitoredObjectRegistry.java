@@ -10,10 +10,14 @@ public class MonitoredObjectRegistry {
 		= new HashMap<String, MonitoredObject>();
 	
 	public static Object getReading(String name) {
-		Object reading = objects.get(name).getReading();
-		Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
-				"reading from " + name + ": " + reading);
-		return reading;
+		if (objects.containsKey(name)) {
+			Object reading = objects.get(name).getReading();
+			Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
+					"reading from " + name + ": " + reading);
+			return reading;
+		} else {
+			return null;
+		}
 	}
 	
 	/* package-private */ static void registerSensingObject(String name, MonitoredObject obj) {

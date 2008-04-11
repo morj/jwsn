@@ -1,16 +1,18 @@
-package ru.amse.nikitin.models.hugetest;
+package ru.amse.nikitin.models;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
+import ru.amse.nikitin.models.hugetest.Const;
+import ru.amse.nikitin.models.hugetest.Factory;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.impl.Logger;
 import ru.amse.nikitin.ui.cui.impl.BasicUI;
 
-public class Test {
+public class M7_Huge {
 
 	/**
 	 * @param args

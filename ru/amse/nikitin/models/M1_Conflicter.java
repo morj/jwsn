@@ -17,7 +17,7 @@ import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.routing.direct.Net;
 
-public class M0_Conflicter {
+public class M1_Conflicter {
 	public static double power = 10;
 	public static double threshold = 0;
 

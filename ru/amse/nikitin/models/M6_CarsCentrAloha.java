@@ -5,13 +5,12 @@ import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.protocols.app.BsApp;
 import ru.amse.nikitin.protocols.app.SensorApp;
-import ru.amse.nikitin.protocols.app.SendApp;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
 import ru.amse.nikitin.protocols.routing.centralized.CommonNet;
 import ru.amse.nikitin.protocols.routing.centralized.BsNet;
-import ru.amse.nikitin.sensnet.IMotGenerator;
 import ru.amse.nikitin.sensnet.impl.MonitoredPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.sensnet.impl.MotGenerator;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.MonitoredObject;
 import ru.amse.nikitin.sensnet.random.RandomArea;
@@ -19,25 +18,51 @@ import ru.amse.nikitin.ui.gui.impl.BasicUI;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.IDispatcher;
+import ru.amse.nikitin.protocols.app.CarObject;
 import ru.amse.nikitin.protocols.app.TemperatureObject;
 
-abstract class MotGenerator1 implements IMotGenerator {
+/* abstract class MotGenerator implements IMotGenerator {
 	
+	protected void connectDuplexGates(IGate a, IGate b) {
+		a.setFrom(b);
+		a.setTo(b);
+		b.setTo(a);
+		b.setFrom(a);
+	}
+	
+	protected void declareDuplexGates(MotModule a, MotModule b) {
+		IGate u = a.declareGate("upper");
+		IGate l = b.declareGate("lower");
+		connectDuplexGates(u, l);
+	}
+
+
 	protected void connectModules(Mot m, MotModule mac, MotModule net, MotModule app) {
 		m.addModule("mac", mac);
 		m.addModule("net", net);
 		m.addModule("app", app);
 		
-		m.createTopology();
+		IGate gate = mac.declareGate("lower");
+		
+		IGate input = m.declareInputGate(WirelessPacket.class);
+		input.setTo(gate);
+		gate.setFrom(input);
+		
+		IGate output = m.getOutputGate();
+		gate.setTo(output);
+		output.setFrom(gate);
+		
+		declareDuplexGates(mac, net);
+		declareDuplexGates(net, app);
 	}
 	
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		return null;
 	}
 	
-}
+} /**/
 
-class BsMotGenerator1 extends MotGenerator1 {
+class BsMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		Mot m = new Mot(x, y, power, threshold);
 		
@@ -51,13 +76,13 @@ class BsMotGenerator1 extends MotGenerator1 {
 	}
 }
 
-class SendMotGenerator1 extends MotGenerator1 {
+class SendMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		Mot m = new Mot(x, y, power, threshold);
 		
 		MotModule mac = new CommonMac(m);
 		MotModule net = new CommonNet(m);
-		MotModule app = new SendApp(m);
+		MotModule app = new SensorApp(m);
 		
 		connectModules(m, mac, net, app);
 		
@@ -65,7 +90,7 @@ class SendMotGenerator1 extends MotGenerator1 {
 	}
 }
 
-class EmptyMotGenerator1 extends MotGenerator1 {
+class EmptyMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		Mot m = new Mot(x, y, power, threshold);
 		
@@ -85,8 +110,7 @@ class EmptyMotGenerator1 extends MotGenerator1 {
 	}
 }
 
-
-public class M5_Temperature {
+public class M6_CarsCentrAloha {
 
 	public static void main(String[] args) {
 		
@@ -100,16 +124,21 @@ public class M5_Temperature {
 		
 		Mot[] mots = RandomArea.getInstance().getArea(
 			Const.fieldX, Const.fieldY, 30,
-			new SendMotGenerator1(),
-			new EmptyMotGenerator1(),
-			new BsMotGenerator1(),
-			2*Const.bsPower
+			new SendMotGenerator(),
+			new EmptyMotGenerator(),
+			new BsMotGenerator(),
+			Const.bsPower
 		);
 		
 		MonitoredObject temp = new MonitoredObject(10, 10);
 		temp.addModule("logic", new TemperatureObject(temp));
 		temp.createTopology();
 		temp.newDesc(new ImageIcon("icons\\bs.png"), "temperature", 10, 10);
+		
+		MonitoredObject car = new MonitoredObject(100, 100);
+		car.addModule("logic", new CarObject(car));
+		car.createTopology();
+		car.newDesc(new ImageIcon("icons\\noicon.png"), "some car", 100, 100);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			
@@ -123,6 +152,7 @@ public class M5_Temperature {
 			disp.addActiveObjectListener(mots[i]);
 		}
 		disp.addActiveObjectListener(temp);
+		disp.addActiveObjectListener(car);
 	}
 	
 }
