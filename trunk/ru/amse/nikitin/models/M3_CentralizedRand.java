@@ -11,7 +11,7 @@ import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
 
-public class CentralizedRandTest {
+public class M3_CentralizedRand {
 
 	public static void main(String[] args) {
 		
