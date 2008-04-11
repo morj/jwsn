@@ -9,7 +9,7 @@ public interface IDisplayListener {
 	/** on object add */
 	void objectAdded(int id, IActiveObjectDesc desc);
 	/** on decription changed */
-	void descChanged(int id);
+	void descChanged(int id, int oldX, int oldY);
 	/** on message conflicted */
 	void messageConflicted(int source, int dest);
 	/** on message recieved */

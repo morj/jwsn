@@ -82,11 +82,11 @@ public class Dispatcher implements IDispatcher {
 		}
 	} */
 	
-	/* public void notification(IActiveObject obj, String message) {
+	public void notification(IActiveObject obj, String message) {
 		for (IDisplayListener i: dispListeners) {
 			i.notificationArrived(obj.getID(), message);
 		}
-	} */
+	}
 	
 	public void addActiveObjectListener(IActiveObject obj) {
 		obj.setID(listenersCount);
@@ -191,9 +191,9 @@ public class Dispatcher implements IDispatcher {
 		((Message)m).setSource(owner.getID());
 	}
 
-	public void changeDesc(IActiveObject owner) {
+	public void changeDesc(IActiveObject owner, int oldX, int oldY) {
 		for (IDisplayListener i: dispListeners) {
-			i.descChanged(owner.getID());
+			i.descChanged(owner.getID(), oldX, oldY);
 		}
 	}
 }

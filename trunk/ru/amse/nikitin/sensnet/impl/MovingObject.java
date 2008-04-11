@@ -35,8 +35,9 @@ public class MovingObject extends NetObject implements IMovingObject{
 
 	public void setX(int x) {
 		if (this.x != x) {
+			int oldX = this.x;
 			description.setX(x);
-			s.changeDesc(this);
+			s.changeDesc(this, oldX, y);
 		}
 		this.x = x;
 	}
@@ -47,8 +48,9 @@ public class MovingObject extends NetObject implements IMovingObject{
 
 	public void setY(int y) {
 		if (this.y != y) {
+			int oldY = this.y;
 			description.setY(y);
-			s.changeDesc(this);
+			s.changeDesc(this, x, oldY);
 		}
 		this.y = y;
 	}

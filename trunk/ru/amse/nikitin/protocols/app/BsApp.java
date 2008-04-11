@@ -14,6 +14,7 @@ public class BsApp extends MotModule {
 	}
 	
 	public boolean lowerMessage(IWirelessPacket m) {
+		mot.notification("Привет!!!");
 		if (m.getData() != null) {
 			if (m.getData() instanceof BsData) {
 				BsData data = (BsData)m.getData();

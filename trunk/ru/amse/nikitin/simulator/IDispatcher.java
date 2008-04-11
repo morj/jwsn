@@ -20,10 +20,11 @@ public interface IDispatcher {
 	void init();
 	/** simulation step */
 	void step();
+	void notification(IActiveObject obj, String message);
 	/** allocate message for active object */
 	MessageInitData getMessageInitData();
 	void assignMessage(IActiveObject owner, IMessage m);
-	void changeDesc(IActiveObject owner);
+	void changeDesc(IActiveObject owner, int oldX, int oldY);
 	/** send message */
 	boolean sendMessage(IMessage m);
 	/** topology setter */

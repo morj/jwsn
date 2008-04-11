@@ -106,5 +106,9 @@ public class NetObject implements INetObject {
 	public IModule getModule(String name) {
 		return modules.get(name);
 	}
+
+	public void notification(String text) {
+		s.notification(this, text);
+	}
 	
 }

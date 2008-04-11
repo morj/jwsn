@@ -86,10 +86,15 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			repaint();
 		}
 	
-		public void descChanged(int id) {
+		public void descChanged(int id, int oldX, int oldY) {
 			IActiveObjectDesc desc = descriptions.get(id);
 			tips.remove(id);
 			addToolTip(id, desc);
+			Graphics g = getGraphics();
+			Color prevColor = g.getColor();
+			g.setColor(Const.BK_COLOR);
+			g.fillRect(oldX, oldY, Const.POINT_X_SIZE, Const.POINT_Y_SIZE);
+			g.setColor(prevColor);
 		}
 
 		private void addToolTip(int id, IActiveObjectDesc desc) {
@@ -148,7 +153,13 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	
 		public void notificationArrived(int id, String notification) {
 			//	TODO Auto-generated method stub
-			
+			IActiveObjectDesc d = descriptions.get(id);
+			try {
+				shapes.put(new Notification(
+					d.getX(), d.getY(), notification, Color.BLACK, Const.BK_COLOR
+				));
+			} catch (InterruptedException ie) {
+			}
 		}
 		
 		public void stringLogged(String s) {
@@ -285,6 +296,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		
 		setToolTipText("outline");
 		setPreferredSize(new Dimension (1024, 768));
+		setBackground(Const.BK_COLOR);
 	}
 	
 	/* public JToolTip createToolTip() {

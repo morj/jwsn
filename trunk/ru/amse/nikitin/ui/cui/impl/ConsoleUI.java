@@ -61,7 +61,7 @@ public class ConsoleUI implements IConsoleUI {
 		public void objectAdded(int id, IActiveObjectDesc desc) {
 		}
 
-		public void descChanged(int id) {
+		public void descChanged(int id, int oldX, int oldY) {
 		}
 		
 		public void messageConflicted(int source, int dest) {

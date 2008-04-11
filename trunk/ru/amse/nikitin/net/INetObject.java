@@ -17,4 +17,5 @@ public interface INetObject extends IActiveObject {
 	IModule getModule(String name);
 	IModule addModule(String name, IModule module);
 	void createTopology();
+	void notification(String text);
 }
