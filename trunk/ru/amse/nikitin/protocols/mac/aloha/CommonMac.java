@@ -15,29 +15,28 @@ import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class CommonMac extends MotModule {
-	protected static final Time oneUnitTime = new Time(1);
+	protected static final Time oneUnitTime = new Time(0);
 	protected Deque<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
-	protected Map<Integer, IWirelessPacket> waiting = new HashMap<Integer, IWirelessPacket>();
-	protected Map<Integer, Integer> tries = new HashMap<Integer, Integer>();
-	
+	protected IWirelessPacket lastMsg = null;
+	protected int tries = 0;
+	protected boolean isBlocked = false;
 	protected boolean wasSent = false;
 	
 	final Runnable step = new Runnable() {
 		public void run () {
 			// System.out.println("mac step " + mot.getID());
-			
 			if (pending.isEmpty() || wasSent) {
+				mot.notification("msg queue size = " + pending.size());
 				wasSent = false;
 			} else {
+				isBlocked = false;
 				wasSent = true;
 				sendNextMessage(); // sending one next message
 			}
-			
-			scheduleEvent(this, 0);
 		}
 	};
 	
-	class ResendMsg implements Runnable {
+	/* class ResendMsg implements Runnable {
 		protected final int id;
 		
 		public ResendMsg(int id) {
@@ -80,7 +79,7 @@ public class CommonMac extends MotModule {
 				}
 			}
 		}
-	}
+	} */
 	
 	public CommonMac(Mot m) {
 		super(m);
@@ -109,14 +108,23 @@ public class CommonMac extends MotModule {
 				} else {
 					MacData reciever = ((MacData)m.getData());
 					int id = reciever.getMessageId();
-					Logger.getInstance().logMessage(
-						ELogMsgType.INFORMATION, 
-						"rem " + id
-					);
-					if(!waiting.remove(id).releaseLock(mot)) {
-						System.err.println("not a lock owner");
+					if (lastMsg != null) {
+						if (lastMsg.hashCode() == id) {
+							Logger.getInstance().logMessage(
+								ELogMsgType.INFORMATION, 
+								"rem " + id
+							);
+							if (!lastMsg.releaseLock(mot)) {
+								System.err.println("not a lock owner");
+							}
+							lastMsg = null;
+						} else {
+							Logger.getInstance().logMessage(
+								ELogMsgType.INFORMATION, 
+								"unknown confirm id " + id
+							);
+						}
 					}
-					tries.remove(id);
 					return true;
 				}
 			}
@@ -136,20 +144,17 @@ public class CommonMac extends MotModule {
 			System.err.println("not a lock owner");
 		}
 		// msg.setOnSendAction(new ConfirmMsg(msg));
-		if (wasSent) {
-			pending.addLast(msg);
-			return true;
-		} else {
-			if (pending.add(msg)) {
-				wasSent = true;
-				if (msg == null) {
-					System.err.println("putting null msg in queue");
-					return false;
-				}
-				return sendNextMessage();
+		pending.addLast(msg);
+		if(!isBlocked) {
+			if (wasSent) {
+				wasSent = false;
+				return true;
 			} else {
-				return false;
+				wasSent = true;
+				return sendNextMessage();
 			}
+		} else {
+			return false;
 		}
 	}
 	
@@ -158,26 +163,46 @@ public class CommonMac extends MotModule {
 	}
 	
 	private boolean sendNextMessage() {
-		IWirelessPacket mmsg = pending.remove();
-		if (mmsg == null) {
-			System.err.println("null msg in queue");
-			return false;
-		} else {
-			if(mmsg.isEncapsulating()) { // not a confirm msg
-				int code = mmsg.hashCode();
-				if (!waiting.containsKey(code)) {
-					if(mmsg.getDest() != -1) {
-						waiting.put(code, mmsg);
-						tries.put(code, 3);
+		System.err.println("sendNextMessage on " + mot.getID());
+		if (!isBlocked) {
+			IWirelessPacket mmsg = pending.getFirst();
+
+			if(mmsg.isEncapsulating() && (mmsg.getDest() != -1)) { // msg needs confirmation
+				// send and care about resend
+				
+				if(mmsg == lastMsg) { // resend
+					if(tries > 0) { // do resend
+						Logger.getInstance().logMessage(
+							ELogMsgType.INFORMATION, 
+							"resubmit scheduled for WP " + mmsg.hashCode()
+						);
+						isBlocked = true;
+						scheduleEvent(step, Time.randTime(4));
+						return false;
+					} else { // discard
+						pending.removeFirst();
+						mmsg = null;
+						if(!pending.isEmpty()) { // get next newcomer
+							mmsg = pending.removeFirst();
+							lastMsg = mmsg;
+							tries = 3;
+						}
 					}
-				} else {
-					Integer t = tries.remove(code);
-					tries.put(code, t - 1);
-					System.err.println("tries left: " + t);
+					tries--;
+				} else { // newcomer in line
+					lastMsg = mmsg;
+					tries = 3;
 				}
-				scheduleEvent(new CheckMsg(code), oneUnitTime);
+				
+				// isBlocked = true;
+			} else { // confirm msg
+				// just send
+				pending.removeFirst();
 			}
+			
+			scheduleEvent(step, oneUnitTime);
+			if (mmsg != null) return getGate("lower").recieveMessage(mmsg, this);
 		}
-		return getGate("lower").recieveMessage(mmsg, this);
+		return false;
 	}
 }
