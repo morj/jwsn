@@ -1,10 +1,7 @@
 package ru.amse.nikitin.protocols.mac.aloha;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Deque;
-
+import java.util.LinkedList;
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -25,7 +22,7 @@ public class CommonMac extends MotModule {
 	final Runnable step = new Runnable() {
 		public void run () {
 			// System.out.println("mac step " + mot.getID());
-			if (pending.isEmpty() || wasSent) {
+			if (wasSent) {
 				mot.notification("msg queue size = " + pending.size());
 				wasSent = false;
 			} else {
@@ -150,10 +147,12 @@ public class CommonMac extends MotModule {
 				wasSent = false;
 				return true;
 			} else {
+				mot.notification("msg queue size = " + pending.size());
 				wasSent = true;
 				return sendNextMessage();
 			}
 		} else {
+			mot.notification("blocked, msg queue size = " + pending.size());
 			return false;
 		}
 	}
@@ -163,46 +162,56 @@ public class CommonMac extends MotModule {
 	}
 	
 	private boolean sendNextMessage() {
-		System.err.println("sendNextMessage on " + mot.getID());
-		if (!isBlocked) {
-			IWirelessPacket mmsg = pending.getFirst();
-
-			if(mmsg.isEncapsulating() && (mmsg.getDest() != -1)) { // msg needs confirmation
-				// send and care about resend
-				
-				if(mmsg == lastMsg) { // resend
-					if(tries > 0) { // do resend
-						Logger.getInstance().logMessage(
-							ELogMsgType.INFORMATION, 
-							"resubmit scheduled for WP " + mmsg.hashCode()
-						);
-						isBlocked = true;
-						scheduleEvent(step, Time.randTime(4));
-						return false;
-					} else { // discard
-						pending.removeFirst();
-						mmsg = null;
-						if(!pending.isEmpty()) { // get next newcomer
-							mmsg = pending.removeFirst();
-							lastMsg = mmsg;
-							tries = 3;
+		if(pending.isEmpty()) {
+			scheduleEvent(step, oneUnitTime);
+			return false;
+		} else {
+			System.err.println("sendNextMessage on " + mot.getID());
+			if (!isBlocked) {
+				IWirelessPacket mmsg = pending.getFirst();
+	
+				if(mmsg.isEncapsulating() && (mmsg.getDest() != -1)) { // msg needs confirmation
+					// send and care about resend
+					
+					if(mmsg == lastMsg) { // resend
+						if(tries > 0) { // do resend
+							Logger.getInstance().logMessage(
+								ELogMsgType.INFORMATION,
+								"resubmit scheduled for WP " + mmsg.hashCode()
+							);
+							isBlocked = true;
+							scheduleEvent(step, Time.randTime(4));
+							return true;
+						} else { // discard
+							pending.removeFirst();
+							mmsg = null;
+							if(!pending.isEmpty()) { // get next newcomer
+								mmsg = pending.removeFirst();
+								lastMsg = mmsg;
+								tries = 3;
+							}
 						}
+						tries--;
+					} else { // newcomer in line
+						lastMsg = mmsg;
+						tries = 3;
 					}
-					tries--;
-				} else { // newcomer in line
-					lastMsg = mmsg;
-					tries = 3;
+					
+					// isBlocked = true;
+				} else { // confirm msg
+					// just send
+					pending.removeFirst();
 				}
 				
-				// isBlocked = true;
-			} else { // confirm msg
-				// just send
-				pending.removeFirst();
+				scheduleEvent(step, oneUnitTime);
+				Logger.getInstance().logMessage(
+					ELogMsgType.INFORMATION,
+					"regular step scheduled for mot " + mot.getID() +
+					"; isBlocked = " + isBlocked + ", lastMsg = " + lastMsg
+				);
+				if (mmsg != null) return getGate("lower").recieveMessage(mmsg, this);
 			}
-			
-			scheduleEvent(step, oneUnitTime);
-			if (mmsg != null) return getGate("lower").recieveMessage(mmsg, this);
+			return false;
 		}
-		return false;
 	}
 }
