@@ -2,6 +2,8 @@ package ru.amse.nikitin.protocols.mac.aloha;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Random;
+
 import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
@@ -16,20 +18,27 @@ public class CommonMac extends MotModule {
 	protected Deque<IWirelessPacket> pending = new LinkedList<IWirelessPacket>();
 	protected IWirelessPacket lastMsg = null;
 	protected int tries = 0;
-	protected boolean isBlocked = false;
+	protected int isBlocked = 0;
 	protected boolean wasSent = false;
+	protected boolean resubmit = false;
+	protected static Random randomizer = new Random();
 	
 	final Runnable step = new Runnable() {
 		public void run () {
+			/* if(mot.getID() == 1) {
+				System.out.println("step for 1, tries = " + tries +
+						"; isBlocked = " + isBlocked + ", lastMsg = " + lastMsg);
+			} */
 			// System.out.println("mac step " + mot.getID());
+			if(isBlocked > 0) isBlocked--;
 			if (wasSent) {
 				mot.notification("msg queue size = " + pending.size());
 				wasSent = false;
 			} else {
-				isBlocked = false;
 				wasSent = true;
 				sendNextMessage(); // sending one next message
 			}
+			scheduleEvent(this, oneUnitTime);
 		}
 	};
 	
@@ -135,6 +144,10 @@ public class CommonMac extends MotModule {
 	}
 	
 	public boolean upperMessage(IWirelessPacket m) {
+		/* if(mot.getID() == 1) {
+			System.out.println("upperMessage for 1, tries = " + tries +
+					"; isBlocked = " + isBlocked + ", lastMsg = " + lastMsg);
+		} */
 		IWirelessPacket msg = new WirelessPacket(m.getDest(), mot);
 		msg.encapsulate(m);
 		if(!msg.setLock(mot)) {
@@ -142,7 +155,7 @@ public class CommonMac extends MotModule {
 		}
 		// msg.setOnSendAction(new ConfirmMsg(msg));
 		pending.addLast(msg);
-		if(!isBlocked) {
+		if(isBlocked == 0) {
 			if (wasSent) {
 				wasSent = false;
 				return true;
@@ -162,26 +175,40 @@ public class CommonMac extends MotModule {
 	}
 	
 	private boolean sendNextMessage() {
+		/* if(mot.getID() == 1) {
+			System.out.println("sendNextMessage for 1, tries = " + tries +
+					"; isBlocked = " + isBlocked + ", lastMsg = " + lastMsg);
+		} */
 		if(pending.isEmpty()) {
-			scheduleEvent(step, oneUnitTime);
 			return false;
 		} else {
-			System.err.println("sendNextMessage on " + mot.getID());
-			if (!isBlocked) {
+			if (isBlocked == 0) {
 				IWirelessPacket mmsg = pending.getFirst();
 	
 				if(mmsg.isEncapsulating() && (mmsg.getDest() != -1)) { // msg needs confirmation
 					// send and care about resend
 					
 					if(mmsg == lastMsg) { // resend
-						if(tries > 0) { // do resend
-							Logger.getInstance().logMessage(
-								ELogMsgType.INFORMATION,
-								"resubmit scheduled for WP " + mmsg.hashCode()
-							);
-							isBlocked = true;
-							scheduleEvent(step, Time.randTime(4));
-							return true;
+						if(tries > 0) { // do resubmit
+							if (resubmit) {
+								Logger.getInstance().logMessage(
+									ELogMsgType.INFORMATION,
+									"resubmitting WP " + mmsg.hashCode() + " tries = " + tries +
+									"; isBlocked = " + isBlocked + ", lastMsg = " + lastMsg
+								);
+								resubmit = false;
+								return getGate("lower").recieveMessage(mmsg, this);
+							} else {
+								Logger.getInstance().logMessage(
+									ELogMsgType.INFORMATION,
+									"resubmit scheduled for WP " + mmsg.hashCode() + " tries = " + tries +
+									"; isBlocked = " + isBlocked + ", lastMsg = " + lastMsg
+								);
+								isBlocked = Math.abs(randomizer.nextInt() % 4);
+								tries--;
+								resubmit = true;
+								return true; 
+							}
 						} else { // discard
 							pending.removeFirst();
 							mmsg = null;
@@ -189,10 +216,11 @@ public class CommonMac extends MotModule {
 								mmsg = pending.removeFirst();
 								lastMsg = mmsg;
 								tries = 3;
+								resubmit = false;
 							}
 						}
-						tries--;
 					} else { // newcomer in line
+						resubmit = false;
 						lastMsg = mmsg;
 						tries = 3;
 					}
@@ -202,8 +230,6 @@ public class CommonMac extends MotModule {
 					// just send
 					pending.removeFirst();
 				}
-				
-				scheduleEvent(step, oneUnitTime);
 				Logger.getInstance().logMessage(
 					ELogMsgType.INFORMATION,
 					"regular step scheduled for mot " + mot.getID() +
