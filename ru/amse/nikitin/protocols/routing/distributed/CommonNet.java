@@ -5,13 +5,31 @@ import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.simulator.impl.Time;
 
 public class CommonNet extends MotModule {
 	public static final int BAD_PRED = -201;
 	protected int pred = BAD_PRED;
+	private final CommonNet instance;
+	
+	class ResendMsg implements Runnable {
+		private IWirelessPacket m;
+		
+		public ResendMsg(IWirelessPacket m) {
+			this.m = m;
+		}
+
+		public void run () {
+			DistributedNetData data = (DistributedNetData)m.getData();
+			IWirelessPacket p = new WirelessPacket(-1, mot);
+			m.setData(data);
+			getGate("lower").recieveMessage(p, instance);
+		}
+	}
 	
 	public CommonNet(Mot m) {
 		super(m);
+		instance = this;
 	}
 	public void init(IGraph<Integer> topology) {
 		/* Collection<IVertex<Integer>> vertices = topology.getVertices();
@@ -32,12 +50,9 @@ public class CommonNet extends MotModule {
 				return getGate("upper").recieveMessage(m.decapsulate(), this);
 			} else {
 				if (pred == BAD_PRED) {
-					DistributedNetData data = (DistributedNetData)m.getData();
 					pred = mot.getLastMessageSource();
 					System.err.println("pred of " + mot.getID() + " = " + pred);
-					IWirelessPacket p = new WirelessPacket(-1, mot);
-					m.setData(data);
-					getGate("lower").recieveMessage(p, this);
+					scheduleEvent(new ResendMsg(m), Time.randTime(4));
 					return true;
 				} else {
 					return false;
