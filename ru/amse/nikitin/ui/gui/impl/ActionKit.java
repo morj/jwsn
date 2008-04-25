@@ -68,11 +68,14 @@ class RunSimulationAction extends AbstractAction {
 		if (running) {
 			component.stopSimulation();
 			putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
+			running = false;
 		} else {
-			component.runSimulation(rate, units);
-			putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+			if(!component.isRunning()) {
+				component.runSimulation(rate, units);
+				putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+				running = true;
+			}
 		}
-		running = !running;
 	}
 }
 
@@ -111,10 +114,10 @@ class StepSimulationAction extends AbstractAction {
 class LongRunSimulationAction extends AbstractAction {
 	private static final long serialVersionUID = 239;
 	protected DisplayComponent component;
-
 	protected TimeUnit units;
 	protected long rate;
-	protected MessagesProgressBar m; 
+	protected MessagesProgressBar m;
+	protected boolean running = false;
 
 	/* package-private */ LongRunSimulationAction(DisplayComponent component,
 			JComponent container, long rate, TimeUnit units) {
@@ -128,12 +131,20 @@ class LongRunSimulationAction extends AbstractAction {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(!component.isRunning()) {
-			int steps = Integer.parseInt(JOptionPane.showInputDialog(null,
-				"Number of steps"));
-			m.setMaximum(steps);
-			m.init();
-			component.stepSimulation(m, rate, units);
+		if (running) {
+			component.stopSimulation();
+			putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
+			running = false;
+		} else {
+			if(!component.isRunning()) {
+				int steps = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Number of steps"));
+				m.setMaximum(steps);
+				m.init();
+				component.stepSimulation(m, rate, units);
+				putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+				running = true;
+			}
 		}
 	}
 }
