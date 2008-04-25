@@ -64,10 +64,13 @@ public class BasicUI {
 		JScrollPane logPane = new JScrollPane(logTextArea);
 		logPane.setWheelScrollingEnabled(true);
 		logPane.setBorder(BorderFactory.createTitledBorder("Log"));
-		
+
+		JPanel opPanel = new JPanel();
 		Action runAction  = ActionKit.createRunSimulationAction (dispc,
 				Const.SIM_RATE, TimeUnit.MILLISECONDS);
 		Action stepAction = ActionKit.createStepSimulationAction(dispc);
+		Action runnAction = ActionKit.createLongRunSimulationAction(dispc, opPanel,
+				Const.SIM_RATE, TimeUnit.MILLISECONDS);
 		// Action stopAction = ActionKit.createStopSimulationAction(dispc);
 		
 		JPanel dispPanel = new JPanel(new BorderLayout());
@@ -76,12 +79,13 @@ public class BasicUI {
         pane.setBorder(BorderFactory.createTitledBorder("Simulated network"));
        
 		JButton runButton = new JButton(runAction);
+		JButton runnButton = new JButton(runnAction);
 		JButton stepButton = new JButton(stepAction);
 		// JButton stopButton = new JButton(stopAction);
 
-	    JPanel opPanel = new JPanel();
 	    opPanel.setLayout(new BoxLayout(opPanel, BoxLayout.X_AXIS));
 	    opPanel.add(runButton);
+	    opPanel.add(runnButton);
         opPanel.add(stepButton);
         // opPanel.add(stopButton);
         pane.setBorder(BorderFactory.createTitledBorder("Process control"));
