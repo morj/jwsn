@@ -358,7 +358,9 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	/* package-private */ synchronized void stopSimulation() {
 		if (isRunning) {
 			scheduler.shutdown();
-			killProgressBar();
+			if (progressBar != null) {
+				killProgressBar();
+			}
 			isRunning = false;
 		}
 	}
