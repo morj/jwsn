@@ -57,6 +57,8 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	protected final JTextArea logOutput;
 	protected final Map<Integer, ToolTip> tips
 		= new HashMap<Integer, ToolTip>();
+	protected MessagesProgressBar progressBar = null;
+	protected int progress = 0;
 	
 	protected boolean firstRun = true;
 	protected boolean isRunning = false;
@@ -67,6 +69,15 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	class SimulationRunnable implements Runnable {
 		public void run() {
 			try {
+				if (progressBar != null) {
+					progress++;
+					progressBar.setValue(progress);
+					if(progress == progressBar.getMaximum()) {
+						scheduler.shutdown();
+						killProgressBar();
+						isRunning = false;
+					}
+				}
 				step();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -152,7 +163,6 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		}
 	
 		public void notificationArrived(int id, String notification) {
-			//	TODO Auto-generated method stub
 			IActiveObjectDesc d = descriptions.get(id);
 			try {
 				shapes.put(new Notification(
@@ -222,6 +232,11 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			mouseTool.mouseReleased(arg0);
 		}
 		
+	}
+	
+	protected void killProgressBar() {
+		progressBar.finish();
+		progressBar = null;
 	}
 	
 	/** icons painter */
@@ -343,6 +358,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	/* package-private */ synchronized void stopSimulation() {
 		if (isRunning) {
 			scheduler.shutdown();
+			killProgressBar();
 			isRunning = false;
 		}
 	}
@@ -354,6 +370,18 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			isRunning = false;
 		}
 	}
+	
+	/* package-private */ synchronized void stepSimulation(MessagesProgressBar progressBar,
+			long rate, TimeUnit units) {
+		if (!isRunning) {
+			this.progressBar = progressBar;
+			this.progress = 0;
+			isRunning = true;
+			scheduler = Executors.newSingleThreadScheduledExecutor();
+			scheduler.scheduleWithFixedDelay(new SimulationRunnable(),
+				0, rate, units);
+		}
+	}
 
 	/**
 	 * @param mouseTool The mouseTool to set.
@@ -361,6 +389,10 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	public void setMouseTool(ITool mouseTool) {
 		// System.err.println(mouseTool.getClass().getSimpleName());
 		this.mouseTool = mouseTool;
+	}
+	
+	public synchronized boolean isRunning() {
+		return isRunning;
 	}
 	
 }

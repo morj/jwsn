@@ -3,8 +3,10 @@ package ru.amse.nikitin.ui.gui.impl;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JComponent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /** 
  * GUI actions Kit
@@ -30,6 +32,12 @@ public class ActionKit {
 	public static StepSimulationAction createStepSimulationAction
 			(DisplayComponent component) {
 		return new StepSimulationAction(component);
+	}
+	
+	/** run simulation for some time */
+	public static LongRunSimulationAction createLongRunSimulationAction
+			(DisplayComponent component, JComponent container, long rate, TimeUnit units) {
+		return new LongRunSimulationAction(component, container, rate, units);
 	}
 }
 
@@ -97,5 +105,35 @@ class StepSimulationAction extends AbstractAction {
 	
 	public void actionPerformed(ActionEvent e) {
 		component.stepSimulation();
+	}
+}
+
+class LongRunSimulationAction extends AbstractAction {
+	private static final long serialVersionUID = 239;
+	protected DisplayComponent component;
+
+	protected TimeUnit units;
+	protected long rate;
+	protected MessagesProgressBar m; 
+
+	/* package-private */ LongRunSimulationAction(DisplayComponent component,
+			JComponent container, long rate, TimeUnit units) {
+		// super("Step");
+		putValue(SHORT_DESCRIPTION, "Run simulation for given steps amount");
+        putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
+		this.component = component;
+		this.units = units;
+		this.rate = rate;
+		m = new MessagesProgressBar(container);
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if(!component.isRunning()) {
+			int steps = Integer.parseInt(JOptionPane.showInputDialog(null,
+				"Number of steps"));
+			m.setMaximum(steps);
+			m.init();
+			component.stepSimulation(m, rate, units);
+		}
 	}
 }
