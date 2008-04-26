@@ -138,12 +138,12 @@ public class M4_CarCentrAloha {
 		MonitoredObject car1 = new MonitoredObject(100, 100);
 		car1.addModule("logic", new CarObject(car1));
 		car1.createTopology();
-		car1.newDesc(new ImageIcon("icons\\noicon.png"), "some car a", 100, 100);
+		car1.newDesc(new ImageIcon("icons\\car.jpg"), "some car a", 100, 100);
 		
 		MonitoredObject car2 = new MonitoredObject(700, 100);
 		car2.addModule("logic", new CarObject(car2));
 		car2.createTopology();
-		car2.newDesc(new ImageIcon("icons\\noicon.png"), "some car b", 500, 500);
+		car2.newDesc(new ImageIcon("icons\\car.jpg"), "some car b", 500, 500);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			
