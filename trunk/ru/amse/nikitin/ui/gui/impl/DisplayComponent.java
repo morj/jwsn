@@ -259,7 +259,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		Color prevColor = graphics.getColor();
 		graphics.setColor(Const.BK_COLOR);
 		Rectangle r = graphics.getClipBounds();
-		graphics.fillRect(0, 0, r.width, r.height);
+		graphics.fillRect(r.x, r.y, r.width, r.height);
 		graphics.drawRect(0, 0, getWidth() - 1, getHeight() - 1); // frame
 		for (IShape s: shapes) {
 			s.draw(graphics);
