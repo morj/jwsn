@@ -90,16 +90,16 @@ public class BasicUI {
         // opPanel.add(stopButton);
         pane.setBorder(BorderFactory.createTitledBorder("Process control"));
  
-        ToolBox tools = new ToolBox(dispc);
+        /* ToolBox tools = new ToolBox(dispc);
         JPanel aaaPanel = new JPanel();
         // aaaPanel.setBorder(new LineBorder(Color.DARK_GRAY));
         aaaPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
         // aaaPanel.setBorder(BorderFactory.createTitledBorder("*"));
-        aaaPanel.add(tools.getJList(), BorderLayout.NORTH);
+        aaaPanel.add(tools.getJList(), BorderLayout.NORTH); */
         
         JPanel simPanel = new JPanel(new BorderLayout());
         simPanel.add(opPanel, BorderLayout.NORTH);
-        simPanel.add(aaaPanel, BorderLayout.WEST);
+        // simPanel.add(aaaPanel, BorderLayout.WEST);
         simPanel.add(pane);
         
         appFrame.add(logPane, BorderLayout.SOUTH);

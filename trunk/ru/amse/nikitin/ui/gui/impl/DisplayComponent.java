@@ -203,33 +203,41 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		public void mouseMoved(MouseEvent arg0) {}
 		
 		public void mousePressed(MouseEvent arg0) {
-			IActiveObjectDesc affectedDesc = null;
-			for (IActiveObjectDesc d: descriptions.values()) {
-				if (
-					(Math.abs(arg0.getX() - d.getX() - Const.POINT_X_SIZE / 2)
-						< Const.POINT_X_SIZE) &&
-					(Math.abs(arg0.getY() - d.getY() - Const.POINT_Y_SIZE / 2)
-						< Const.POINT_Y_SIZE)
-				) {
-					affectedDesc = d;
-					// System.err.println("Hit!");
+			if (mouseTool != null) {
+				IActiveObjectDesc affectedDesc = null;
+				for (IActiveObjectDesc d: descriptions.values()) {
+					if (
+						(Math.abs(arg0.getX() - d.getX() - Const.POINT_X_SIZE / 2)
+							< Const.POINT_X_SIZE) &&
+						(Math.abs(arg0.getY() - d.getY() - Const.POINT_Y_SIZE / 2)
+							< Const.POINT_Y_SIZE)
+					) {
+						affectedDesc = d;
+						// System.err.println("Hit!");
+					}
 				}
+				mouseTool.mousePressed(arg0, affectedDesc);
 			}
-			mouseTool.mousePressed(arg0, affectedDesc);
 		}
 		
 		public void mouseDragged(MouseEvent arg0) {
-			// System.err.println("Moved!");
-			mouseTool.mouseMoved(arg0);
-			repaint();
+			if (mouseTool != null) {
+				// System.err.println("Moved!");
+				mouseTool.mouseMoved(arg0);
+				repaint();
+			}
 		}
 		
 		public void mouseReleased(MouseEvent arg0) {
-			mouseTool.mouseReleased(arg0);
+			if (mouseTool != null) {
+				mouseTool.mouseReleased(arg0);
+			}
 		}
 		
 		public void mouseExited(MouseEvent arg0) {
-			mouseTool.mouseReleased(arg0);
+			if (mouseTool != null) {
+				mouseTool.mouseReleased(arg0);
+			}
 		}
 		
 	}
