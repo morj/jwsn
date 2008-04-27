@@ -62,7 +62,7 @@ import ru.amse.nikitin.protocols.app.TemperatureObject;
 	
 } /**/
 
-class BsMotGenerator2 extends MotGenerator {
+class BsMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		Mot m = new Mot(x, y, power, threshold);
 		
@@ -76,7 +76,7 @@ class BsMotGenerator2 extends MotGenerator {
 	}
 }
 
-class SendMotGenerator2 extends MotGenerator {
+class SendMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		Mot m = new Mot(x, y, power, threshold);
 		
@@ -90,7 +90,7 @@ class SendMotGenerator2 extends MotGenerator {
 	}
 }
 
-class EmptyMotGenerator2 extends MotGenerator {
+class EmptyMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
 		Mot m = new Mot(x, y, power, threshold);
 		
@@ -110,7 +110,7 @@ class EmptyMotGenerator2 extends MotGenerator {
 	}
 }
 
-public class M4_CarCentrAloha {
+public class M6_CarCentrAloha {
 
 	public static void main(String[] args) {
 		
@@ -124,9 +124,9 @@ public class M4_CarCentrAloha {
 		
 		Mot[] mots = RandomArea.getInstance().getArea(
 			Const.fieldX, Const.fieldY, 30,
-			new SendMotGenerator2(),
-			new EmptyMotGenerator2(),
-			new BsMotGenerator2(),
+			new SendMotGenerator(),
+			new EmptyMotGenerator(),
+			new BsMotGenerator(),
 			Const.bsPower
 		);
 		
@@ -135,15 +135,10 @@ public class M4_CarCentrAloha {
 		temp.createTopology();
 		temp.newDesc(new ImageIcon("icons\\bs.png"), "temperature", 10, 10);
 		
-		MonitoredObject car1 = new MonitoredObject(100, 100);
-		car1.addModule("logic", new CarObject(car1));
-		car1.createTopology();
-		car1.newDesc(new ImageIcon("icons\\car.jpg"), "some car a", 100, 100);
-		
-		MonitoredObject car2 = new MonitoredObject(700, 100);
-		car2.addModule("logic", new CarObject(car2));
-		car2.createTopology();
-		car2.newDesc(new ImageIcon("icons\\car.jpg"), "some car b", 500, 500);
+		MonitoredObject car = new MonitoredObject(100, 100);
+		car.addModule("logic", new CarObject(car));
+		car.createTopology();
+		car.newDesc(new ImageIcon("icons\\noicon.png"), "some car", 100, 100);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			
@@ -157,8 +152,7 @@ public class M4_CarCentrAloha {
 			disp.addActiveObjectListener(mots[i]);
 		}
 		disp.addActiveObjectListener(temp);
-		disp.addActiveObjectListener(car1);
-		disp.addActiveObjectListener(car2);
+		disp.addActiveObjectListener(car);
 	}
 	
 }
