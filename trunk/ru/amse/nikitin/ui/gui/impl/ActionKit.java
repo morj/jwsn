@@ -2,8 +2,6 @@ package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
-
-import javax.swing.JComponent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -36,8 +34,8 @@ public class ActionKit {
 	
 	/** run simulation for some time */
 	public static LongRunSimulationAction createLongRunSimulationAction
-			(DisplayComponent component, JComponent container, long rate, TimeUnit units) {
-		return new LongRunSimulationAction(component, container, rate, units);
+			(DisplayComponent component, MessagesProgressBar m, long rate, TimeUnit units) {
+		return new LongRunSimulationAction(component, m, rate, units);
 	}
 }
 
@@ -120,31 +118,39 @@ class LongRunSimulationAction extends AbstractAction {
 	protected boolean running = false;
 
 	/* package-private */ LongRunSimulationAction(DisplayComponent component,
-			JComponent container, long rate, TimeUnit units) {
+			MessagesProgressBar m, long rate, TimeUnit units) {
 		// super("Step");
 		putValue(SHORT_DESCRIPTION, "Run simulation for given steps amount");
         putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
 		this.component = component;
 		this.units = units;
 		this.rate = rate;
-		m = new MessagesProgressBar(container);
+		this.m = m;
+		m.setAction(this);
 	}
 	
-	public void actionPerformed(ActionEvent e) {
+	public synchronized void actionPerformed(ActionEvent e) {
 		if (running) {
 			component.stopSimulation();
-			putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
-			running = false;
+			resetBtn();
 		} else {
 			if(!component.isRunning()) {
-				int steps = Integer.parseInt(JOptionPane.showInputDialog(null,
-					"Number of steps"));
-				m.setMaximum(steps);
-				m.init();
-				component.stepSimulation(m, rate, units);
-				putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
-				running = true;
+				try {
+					int steps = Integer.parseInt(JOptionPane.showInputDialog(null,
+						"Number of steps"));
+					m.setMaximum(steps);
+					m.init();
+					component.stepSimulation(m, rate, units);
+					putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+					running = true;
+				} catch (NumberFormatException nfe) {
+				}
 			}
 		}
+	}
+	
+	/* package-private */ synchronized void resetBtn() {
+		putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
+		running = false;
 	}
 }

@@ -3,6 +3,7 @@ package ru.amse.nikitin.models.conflicter;
 import ru.amse.nikitin.protocols.app.BsData;
 import ru.amse.nikitin.protocols.app.Const;
 import ru.amse.nikitin.protocols.app.EmptyApp;
+import ru.amse.nikitin.sensnet.IWirelessPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.WirelessPacket;
 import ru.amse.nikitin.simulator.ELogMsgType;
@@ -36,6 +37,13 @@ public class ConflicterApp extends EmptyApp {
 		}
 		
 	};
+	
+	public boolean lowerMessage(IWirelessPacket m) {
+		return false;
+	}
+	public boolean upperMessage(IWirelessPacket m) {
+		return true;
+	}
 	
 	private boolean sendMsgToLower(WirelessPacket packet) {
 		return getGate("lower").recieveMessage(packet, this);

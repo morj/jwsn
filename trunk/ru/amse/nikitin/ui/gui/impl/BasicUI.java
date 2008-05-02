@@ -11,9 +11,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
 
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.sensnet.impl.SensingChannel;
@@ -65,11 +65,13 @@ public class BasicUI {
 		logPane.setWheelScrollingEnabled(true);
 		logPane.setBorder(BorderFactory.createTitledBorder("Log"));
 
-		JPanel opPanel = new JPanel();
+		// JPanel opPanel = new JPanel();
+		JToolBar opPanel = new JToolBar("Actions");
+		MessagesProgressBar m = new MessagesProgressBar(opPanel);
 		Action runAction  = ActionKit.createRunSimulationAction (dispc,
 				Const.SIM_RATE, TimeUnit.MILLISECONDS);
 		Action stepAction = ActionKit.createStepSimulationAction(dispc);
-		Action runnAction = ActionKit.createLongRunSimulationAction(dispc, opPanel,
+		Action runnAction = ActionKit.createLongRunSimulationAction(dispc, m,
 				Const.SIM_RATE, TimeUnit.MILLISECONDS);
 		// Action stopAction = ActionKit.createStopSimulationAction(dispc);
 		
@@ -87,6 +89,8 @@ public class BasicUI {
 	    opPanel.add(runButton);
 	    opPanel.add(runnButton);
         opPanel.add(stepButton);
+        opPanel.addSeparator();
+        opPanel.add(m);
         // opPanel.add(stopButton);
         pane.setBorder(BorderFactory.createTitledBorder("Process control"));
  

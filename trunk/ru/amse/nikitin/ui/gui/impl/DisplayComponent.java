@@ -404,5 +404,5 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	public synchronized boolean isRunning() {
 		return isRunning;
 	}
-	
+
 }
