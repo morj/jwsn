@@ -22,9 +22,9 @@ public class M1_Conflicter {
 	public static double threshold = 0;
 
 	public static void main(String[] args) {
-		Mot m1 = new Mot(101, 100, power, threshold);
-		Mot m2 = new Mot(101, 200, 100 * power, threshold);
-		Mot m3 = new Mot(201, 100, power, threshold);
+		Mot m1 = new Mot(100, 100, power, threshold);
+		Mot m2 = new Mot(300, 100, power, threshold);
+		Mot m3 = new Mot(200, 100, 100 * power, threshold);
 		
 		m1.addModule("mac", new CommonMac(m1));
 		m1.addModule("net", new Net(m1));

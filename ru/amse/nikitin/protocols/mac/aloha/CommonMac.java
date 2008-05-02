@@ -123,6 +123,7 @@ public class CommonMac extends MotModule {
 							if (!lastMsg.releaseLock(mot)) {
 								System.err.println("not a lock owner");
 							}
+							pending.remove(lastMsg);
 							lastMsg = null;
 						} else {
 							Logger.getInstance().logMessage(

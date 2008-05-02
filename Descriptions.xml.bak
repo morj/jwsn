@@ -21,9 +21,9 @@
 		y = "100"
 	/>
 	<mot id = "2"
-		style = "b"
+		style = "bs"
 		name = "bs"
 		x = "100"
-		y = "200"
+		y = "100"
 	/>
 </descriptions>

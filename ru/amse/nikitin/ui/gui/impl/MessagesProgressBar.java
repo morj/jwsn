@@ -6,6 +6,8 @@ import javax.swing.JProgressBar;
 public class MessagesProgressBar extends JProgressBar {
 	private static final long serialVersionUID = 239;
 	protected JComponent container;
+	protected boolean added = false;
+	protected LongRunSimulationAction a = null;
 	
 	public MessagesProgressBar(JComponent container) {
 		super();
@@ -13,14 +15,25 @@ public class MessagesProgressBar extends JProgressBar {
 	}
 	
 	public void init() {
+		if(!added) {
+			container.add(this);
+			added = true;
+			container.revalidate();
+		}
 		setMinimum(0);
-		container.add(this);
-		container.revalidate();
 	}
 	
 	public void finish() {
-		container.remove(this);
+		if (a != null) {
+			a.resetBtn();
+		}
+		// container.remove(this);
+		setValue(0);
 		container.repaint();
+	}
+	
+	/* package-private */ void setAction(LongRunSimulationAction a) {
+		this.a = a;
 	}
 	
 }
