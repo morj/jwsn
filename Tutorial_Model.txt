@@ -1,0 +1,52 @@
+Чтобы создать новую модель, необходимо выполнить следующую последовательность действий:
+
+1. Объявить необходимое количество мотов или любых других объектов с суперклассом NetObject.
+
+   Mot m1 = new Mot(100, 100, power, threshold);
+   Mot m2 = new Mot(300, 100, power, threshold);
+   Mot m3 = new Mot(200, 100, 100 * power, threshold);
+
+   m1.addModule("mac", new CommonMac(m1));
+   m1.addModule("net", new Net(m1));
+   m1.addModule("app", new SenderApp(m1));
+
+   m2.addModule...
+   m3.addModule...
+
+2. При линейной топологии модулей внутри мота можно напрямую её задать, первые 3 уровня зарезервированы под mac, net и app. Иначе либо соединять вручную (как показано в Tutorial_Protocol), либо перегружать createTopology.
+
+   m1.createTopology();
+   m2.createTopology();
+   m3.createTopology();
+
+3. Возможно считать описания из файла.
+
+  List<Mot> mots = new LinkedList<Mot>();
+  mots.add(m1); mots.add(m2); mots.add(m3);
+  try {
+  	FieldParser.ReadStyles(new FileInputStream("Descriptions.xml"), mots);
+  } catch (FileNotFoundException nf) { ... }
+
+4. Задать топологию сети для hard-coded протоколов.
+
+  IDispatcher disp = Dispatcher.getInstance();
+  IGraph<Integer> g = new Graph<Integer>();
+
+  for (int i = 0; i < 3; i++) {
+  	g.newVertex(new Integer(i));
+  }
+		
+  g.addNeighbour(0, 1);
+  ...		
+  g.solvePaths(2);
+  disp.setTopology(g);
+
+5. Создать UI.
+
+  BasicUI.createUI();
+
+6. Добавить слушателей, чтобы их отобразил визуализатор.
+
+  disp.addActiveObjectListener(m1);
+  disp.addActiveObjectListener(m2);
+  disp.addActiveObjectListener(m3);
