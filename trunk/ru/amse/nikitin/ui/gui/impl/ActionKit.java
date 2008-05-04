@@ -141,7 +141,7 @@ class LongRunSimulationAction extends AbstractAction {
 					m.setMaximum(steps);
 					m.init();
 					component.stepSimulation(m, rate, units);
-					putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+					putValue(SMALL_ICON, new ImageIcon("icons\\icon_stop.png"));
 					running = true;
 				} catch (NumberFormatException nfe) {
 				}
