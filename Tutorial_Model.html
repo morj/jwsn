@@ -1,7 +1,11 @@
-Чтобы создать новую модель, необходимо выполнить следующую последовательность действий:
-
+<html>
+<title>JWSN - Создание новой модели</title>
+<head>Чтобы создать новую модель, необходимо выполнить следующую последовательность действий:</head>
+<body>
+<p>
 1. Объявить необходимое количество мотов или любых других объектов с суперклассом NetObject.
-
+</p>
+<pre>
    Mot m1 = new Mot(100, 100, power, threshold);
    Mot m2 = new Mot(300, 100, power, threshold);
    Mot m3 = new Mot(200, 100, 100 * power, threshold);
@@ -12,23 +16,29 @@
 
    m2.addModule...
    m3.addModule...
-
+</pre>
+<p>
 2. При линейной топологии модулей внутри мота можно напрямую её задать, первые 3 уровня зарезервированы под mac, net и app. Иначе либо соединять вручную (как показано в Tutorial_Protocol), либо перегружать createTopology.
-
+</p>
+<pre>
    m1.createTopology();
    m2.createTopology();
    m3.createTopology();
-
+</pre>
+<p>
 3. Возможно считать описания из файла.
-
+</p>
+<pre>
   List<Mot> mots = new LinkedList<Mot>();
   mots.add(m1); mots.add(m2); mots.add(m3);
   try {
   	FieldParser.ReadStyles(new FileInputStream("Descriptions.xml"), mots);
   } catch (FileNotFoundException nf) { ... }
-
+</pre>
+<p>
 4. Задать топологию сети для hard-coded протоколов.
-
+</p>
+<pre>
   IDispatcher disp = Dispatcher.getInstance();
   IGraph<Integer> g = new Graph<Integer>();
 
@@ -40,13 +50,20 @@
   ...		
   g.solvePaths(2);
   disp.setTopology(g);
-
+</pre>
+<p>
 5. Создать UI.
-
+</p>
+<pre>
   BasicUI.createUI();
-
+</pre>
+<p>
 6. Добавить слушателей, чтобы их отобразил визуализатор.
-
+</p>
+<pre>
   disp.addActiveObjectListener(m1);
   disp.addActiveObjectListener(m2);
   disp.addActiveObjectListener(m3);
+</pre>
+</body>
+</html>
