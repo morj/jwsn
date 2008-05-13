@@ -31,7 +31,7 @@ public class M7_Huge {
 			System.err.println("Output file not found!");
 		}
 		
-		BasicUI.createUI();
+		BasicUI.createUI(args);
 	}
 
 }

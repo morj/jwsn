@@ -44,6 +44,6 @@ public class CentralizedPerformanceTest {
 			System.err.println("Output file not found!");
 		}
 			
-		BasicUI.createUI();
+		BasicUI.createUI(args);
 	}
 }
