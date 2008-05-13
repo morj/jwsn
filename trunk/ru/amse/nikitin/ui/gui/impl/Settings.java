@@ -15,12 +15,7 @@ public class Settings implements ISettings {
 	private final List<IPropertyChangeListener> listeners
 		= new LinkedList<IPropertyChangeListener>();
 	
-	// private final JFrame mainFrame;
-	// private final static String RETURN_ACTION = "return-done";
-	
 	private Settings() {
-		// mainFrame = new JFrame ("Settings");
-		// mainFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
 	public static ISettings getInstance() {
@@ -31,10 +26,6 @@ public class Settings implements ISettings {
 	}
 
 	public void setProperty(String name, String value) {
-		/* if(!params.containsKey(value)) {
-			TextArea input = new TextArea();
-			mainFrame.add(input);
-		} */
 		String oldValue = params.get(name);
 		if(!value.equals(oldValue)) {
 			params.put(name, value);

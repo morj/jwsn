@@ -7,6 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import ru.amse.nikitin.ui.gui.Const;
 import ru.amse.nikitin.ui.gui.ISettings;
 
 /** 
@@ -19,8 +20,8 @@ public class ActionKit {
 
 	/** run simulation */
 	public static RunSimulationAction createRunSimulationAction
-			(DisplayComponent component, long rate, TimeUnit units) {
-		return new RunSimulationAction(component, rate, units);
+			(DisplayComponent component) {
+		return new RunSimulationAction(component);
 	}
 	
 	/** stop simulation */
@@ -37,8 +38,8 @@ public class ActionKit {
 	
 	/** run simulation for some time */
 	public static LongRunSimulationAction createLongRunSimulationAction
-			(DisplayComponent component, MessagesProgressBar m, long rate, TimeUnit units) {
-		return new LongRunSimulationAction(component, m, rate, units);
+			(DisplayComponent component, MessagesProgressBar m) {
+		return new LongRunSimulationAction(component, m);
 	}
 }
 
@@ -51,18 +52,14 @@ public class ActionKit {
 class RunSimulationAction extends AbstractAction {
 	private static final long serialVersionUID = 239;
 	protected DisplayComponent component;
-	protected long rate;
-	protected TimeUnit units;
+	protected TimeUnit units = TimeUnit.MILLISECONDS;
 	protected boolean running = false; 
 
-	/* package-private */ RunSimulationAction(DisplayComponent component,
-			long rate, TimeUnit units) {
+	/* package-private */ RunSimulationAction(DisplayComponent component) {
 		// super("Run");
 		putValue(SHORT_DESCRIPTION, "Run simulation");
         putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
 		this.component = component;
-		this.rate = rate;
-		this.units = units;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -74,6 +71,8 @@ class RunSimulationAction extends AbstractAction {
 		} else {
 			Settings.getInstance().setProperty("Running", ISettings.PROP_ON);
 			if(!component.isRunning()) {
+				String s = Settings.getInstance().getProperty("Speed");
+				int rate = Const.MAX_RATE - Integer.parseInt(s) + 1;
 				component.runSimulation(rate, units);
 				putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
 				running = true;
@@ -117,19 +116,16 @@ class StepSimulationAction extends AbstractAction {
 class LongRunSimulationAction extends AbstractAction {
 	private static final long serialVersionUID = 239;
 	protected DisplayComponent component;
-	protected TimeUnit units;
-	protected long rate;
+	protected final TimeUnit units = TimeUnit.MILLISECONDS;
 	protected MessagesProgressBar m;
 	protected boolean running = false;
 
 	/* package-private */ LongRunSimulationAction(DisplayComponent component,
-			MessagesProgressBar m, long rate, TimeUnit units) {
+			MessagesProgressBar m) {
 		// super("Step");
 		putValue(SHORT_DESCRIPTION, "Run simulation for given steps amount");
         putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
 		this.component = component;
-		this.units = units;
-		this.rate = rate;
 		this.m = m;
 		m.setAction(this);
 	}
@@ -145,6 +141,8 @@ class LongRunSimulationAction extends AbstractAction {
 						"Number of steps"));
 					m.setMaximum(steps);
 					m.init();
+					String s = Settings.getInstance().getProperty("Speed");
+					int rate = Const.MAX_RATE - Integer.parseInt(s) + 1;
 					component.stepSimulation(m, rate, units);
 					putValue(SMALL_ICON, new ImageIcon("icons\\icon_stop.png"));
 					running = true;

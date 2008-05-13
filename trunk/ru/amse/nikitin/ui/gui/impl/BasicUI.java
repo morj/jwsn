@@ -3,7 +3,6 @@ package ru.amse.nikitin.ui.gui.impl;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.LayoutManager;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -76,11 +75,9 @@ public class BasicUI {
 		// JPanel opPanel = new JPanel();
 		JToolBar opPanel = new JToolBar("Actions");
 		MessagesProgressBar m = new MessagesProgressBar(opPanel);
-		Action runAction  = ActionKit.createRunSimulationAction (dispc,
-				Const.SIM_RATE, TimeUnit.MILLISECONDS);
+		Action runAction  = ActionKit.createRunSimulationAction (dispc);
 		Action stepAction = ActionKit.createStepSimulationAction(dispc);
-		Action runnAction = ActionKit.createLongRunSimulationAction(dispc, m,
-				Const.SIM_RATE, TimeUnit.MILLISECONDS);
+		Action runnAction = ActionKit.createLongRunSimulationAction(dispc, m);
 		// Action stopAction = ActionKit.createStopSimulationAction(dispc);
 		
 		JPanel dispPanel = new JPanel(new BorderLayout());
@@ -100,6 +97,9 @@ public class BasicUI {
         opPanel.add(SettingsUtil.getInstance().getCheckBox("Grid", false));
         // opPanel.add(SettingsUtil.getInstance().getCheckBox("Running"));
         opPanel.add(SettingsUtil.getInstance().getCheckBox("Red arrows", true));
+        opPanel.add(SettingsUtil.getInstance().getSlider(
+        	"Speed", 1, Const.MAX_RATE, 500
+        ));
         opPanel.addSeparator();
         opPanel.add(m);
         // opPanel.add(stopButton);
