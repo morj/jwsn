@@ -32,7 +32,6 @@ import ru.amse.nikitin.ui.gui.IDisplayComponent;
 import ru.amse.nikitin.ui.gui.IPropertyChangeListener;
 import ru.amse.nikitin.ui.gui.IShape;
 import ru.amse.nikitin.ui.gui.ITool;
-import ru.amse.nikitin.ui.gui.ISettings;
 
 class ToolTip {
     Rectangle rect;
@@ -73,6 +72,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			try {
 				if (progressBar != null) {
 					progress++;
+					// Settings.getInstance().setProperty("Speed", Integer.toString(progress));
 					progressBar.setValue(progress);
 					if(progress == progressBar.getMaximum()) {
 						scheduler.shutdown();
