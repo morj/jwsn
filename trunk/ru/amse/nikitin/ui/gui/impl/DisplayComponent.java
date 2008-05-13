@@ -29,8 +29,10 @@ import ru.amse.nikitin.simulator.ILoggerListener;
 import ru.amse.nikitin.simulator.impl.Logger;
 import ru.amse.nikitin.ui.gui.Const;
 import ru.amse.nikitin.ui.gui.IDisplayComponent;
+import ru.amse.nikitin.ui.gui.IPropertyChangeListener;
 import ru.amse.nikitin.ui.gui.IShape;
 import ru.amse.nikitin.ui.gui.ITool;
+import ru.amse.nikitin.ui.gui.ISettings;
 
 class ToolTip {
     Rectangle rect;
@@ -85,6 +87,14 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		}
 	}
 	
+	class SettingsListener implements IPropertyChangeListener {
+		public void propertyChanged(String name, String newValue) {
+			if (name.equals("Red arrows")) {
+				repaint();
+			}
+		}
+	}
+	
 	/** display listener */
 	class DisplayListener implements IDisplayListener, ILoggerListener {
 	
@@ -122,7 +132,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 			IActiveObjectDesc d2 = descriptions.get(dest);
 			
 			try {
-				shapes.put(new Line(
+				shapes.put(new SwitchableLine(
 					d1, d2,
 					Color.RED,
 					Const.BK_COLOR
@@ -316,6 +326,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		MouseInputListener listener = new MyMouseListener();
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
+		Settings.getInstance().addPropertyChangeListener(new SettingsListener());
 		
 		setToolTipText("outline");
 		setPreferredSize(new Dimension (1024, 768));
