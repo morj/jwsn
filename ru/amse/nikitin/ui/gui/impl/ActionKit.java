@@ -2,9 +2,12 @@ package ru.amse.nikitin.ui.gui.impl;
 
 import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
+import ru.amse.nikitin.ui.gui.ISettings;
 
 /** 
  * GUI actions Kit
@@ -64,10 +67,12 @@ class RunSimulationAction extends AbstractAction {
 
 	public void actionPerformed(ActionEvent e) {
 		if (running) {
+			Settings.getInstance().setProperty("Running", ISettings.PROP_OFF);
 			component.stopSimulation();
 			putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
 			running = false;
 		} else {
+			Settings.getInstance().setProperty("Running", ISettings.PROP_ON);
 			if(!component.isRunning()) {
 				component.runSimulation(rate, units);
 				putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));

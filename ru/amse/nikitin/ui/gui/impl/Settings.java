@@ -36,7 +36,7 @@ public class Settings implements ISettings {
 			mainFrame.add(input);
 		} */
 		String oldValue = params.get(name);
-		if(!oldValue.equals(value)) {
+		if(!value.equals(oldValue)) {
 			params.put(name, value);
 			for(IPropertyChangeListener l: listeners) {
 				l.propertyChanged(name, value);
