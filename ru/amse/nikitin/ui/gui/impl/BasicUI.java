@@ -19,7 +19,7 @@ import ru.amse.nikitin.sensnet.impl.SensingChannel;
 import ru.amse.nikitin.sensnet.impl.Wireless;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.ui.gui.Const;
-import ru.amse.nikitin.ui.gui.IPropertyChangeListener;
+// import ru.amse.nikitin.ui.gui.IPropertyChangeListener;
 
 /** 
  * Simple UI implementation
@@ -66,11 +66,11 @@ public class BasicUI {
 		logPane.setWheelScrollingEnabled(true);
 		logPane.setBorder(BorderFactory.createTitledBorder("Log"));
 		
-		Settings.getInstance().addPropertyChangeListener(new IPropertyChangeListener () {
+		/* Settings.getInstance().addPropertyChangeListener(new IPropertyChangeListener () {
 			public void propertyChanged(String name, String newValue) {
 				System.out.println("name: " + name + ", value: " + newValue);
 			}
-        });
+        }); // debug */
 
 		// JPanel opPanel = new JPanel();
 		JToolBar opPanel = new JToolBar("Actions");
@@ -94,7 +94,7 @@ public class BasicUI {
 	    opPanel.add(runButton);
 	    opPanel.add(runnButton);
         opPanel.add(stepButton);
-        opPanel.add(SettingsUtil.getInstance().getCheckBox("Grid", false));
+        opPanel.add(SettingsUtil.getInstance().getCheckBox("Grid", true));
         // opPanel.add(SettingsUtil.getInstance().getCheckBox("Running"));
         opPanel.add(SettingsUtil.getInstance().getCheckBox("Red arrows", true));
         opPanel.add(SettingsUtil.getInstance().getSlider(

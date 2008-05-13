@@ -8,16 +8,17 @@ import ru.amse.nikitin.simulator.IActiveObjectDesc;
 import ru.amse.nikitin.ui.gui.IPropertyChangeListener;
 import ru.amse.nikitin.ui.gui.ISettings;
 
-/** display listener */ class SettingsListener implements IPropertyChangeListener {
-	public void propertyChanged(String name, String newValue) {
-		if (name.equals("Red arrows")) {
-			SwitchableLine.showArrows = ISettings.PROP_ON.equals(newValue);
-		}
-	}
-}
 
 public class SwitchableLine extends Line {
 	/* package-private */ static boolean showArrows = true;
+	
+	/** display listener */ static class SettingsListener implements IPropertyChangeListener {
+		public void propertyChanged(String name, String newValue) {
+			if (name.equals("Red arrows")) {
+				showArrows = ISettings.PROP_ON.equals(newValue);
+			}
+		}
+	}
 	
 	static {
 		Settings.getInstance().addPropertyChangeListener(new SettingsListener());

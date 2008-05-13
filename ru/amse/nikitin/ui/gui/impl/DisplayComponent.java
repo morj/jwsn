@@ -66,6 +66,8 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	
 	protected ITool mouseTool;
 	
+	protected Grid grid = new Grid(1024, 768, Color.LIGHT_GRAY, Const.BK_COLOR);
+	
 	/** a runnable, performing steps */
 	class SimulationRunnable implements Runnable {
 		public void run() {
@@ -90,6 +92,9 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	class SettingsListener implements IPropertyChangeListener {
 		public void propertyChanged(String name, String newValue) {
 			if (name.equals("Red arrows")) {
+				repaint();
+			}
+			if (name.equals("Grid")) {
 				repaint();
 			}
 		}
@@ -193,6 +198,10 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 				s.erase(g);
 			}
 			shapes.clear();
+			try {
+				shapes.put(grid);
+			} catch (InterruptedException ie) {
+			}
 		}
 		
 		public void stepPerformed() {
@@ -327,6 +336,10 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
 		Settings.getInstance().addPropertyChangeListener(new SettingsListener());
+		try {
+			shapes.put(grid);
+		} catch (InterruptedException ie) {
+		}
 		
 		setToolTipText("outline");
 		setPreferredSize(new Dimension (1024, 768));
