@@ -12,12 +12,15 @@ import javax.xml.parsers.*;
 
 class MyContentHandler extends DefaultHandler {
 	protected class Style {
-		protected ImageIcon image;
-		public Style(ImageIcon image) {
-			this.image = image;
+		private Map<String, String> variables = new HashMap<String, String>();
+		public void put(String var, String val) {
+			variables.put(var, val);
 		}
-		public ImageIcon getImage() {
-			return image;
+		public String get(String var) {
+			return variables.get(var);
+		}
+		public boolean contains(String var) {
+			return variables.containsKey(var);
 		}
 	}
 	
@@ -32,27 +35,37 @@ class MyContentHandler extends DefaultHandler {
 		if (qName == "style") { // style record
 			String name = atts.getValue("name");
 			if (!styles.containsKey(name)) {
-				styles.put(name, new Style(
-					new ImageIcon(atts.getValue("img"))
-				));
+				Style style = new Style();
+				for(int i = 0; i < atts.getLength(); i++) {
+					String n = atts.getLocalName(i);
+					String s = atts.getValue(i);
+					if(!"name".equals(n)) {
+						style.put(n, s);
+					}
+				}
+				styles.put(name, style);
 			}
 		}
 		
-		if (qName == "mot") { // style record
+		if (qName == "mot") { // mot record
 			int id = Integer.parseInt(atts.getValue("id"));
 			if ((0 <= id) && (id < objects.size())) {
 				String style = atts.getValue("style");
 				if (styles.containsKey(style)) {
 					Style s = styles.get(style);
 					((IActiveObject)objects.get(id)).newDesc(
-						s.getImage(),
-						atts.getValue("name"),
-						Integer.parseInt(atts.getValue("x")),
-						Integer.parseInt(atts.getValue("y"))
+						new ImageIcon(checkParam("img", s, atts)),
+						atts.getValue(checkParam("name", s, atts)),
+						Integer.parseInt(checkParam("x", s, atts)),
+						Integer.parseInt(checkParam("y", s, atts))
 					);
 				}
 			}
 		}
+	}
+	
+	private String checkParam(String name, Style style, Attributes atts) {
+		return style.contains(name) ? style.get(name) : atts.getValue(name);
 	}
 	
 }

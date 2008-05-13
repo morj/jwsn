@@ -66,7 +66,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 	
 	protected ITool mouseTool;
 	
-	protected Grid grid = new Grid(1024, 768, Color.LIGHT_GRAY, Const.BK_COLOR);
+	protected Grid grid = new Grid(989, 768, Color.LIGHT_GRAY, Const.BK_COLOR);
 	
 	/** a runnable, performing steps */
 	class SimulationRunnable implements Runnable {
@@ -342,7 +342,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		}
 		
 		setToolTipText("outline");
-		setPreferredSize(new Dimension (1024, 768));
+		setPreferredSize(new Dimension (989, 768));
 		setBackground(Const.BK_COLOR);
 	}
 	
