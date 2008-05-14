@@ -1,7 +1,6 @@
 package ru.amse.nikitin.net;
 
 import ru.amse.nikitin.simulator.IActiveObject;
-import ru.amse.nikitin.simulator.IMessage;
 
 /**
  * NetObject interface.
@@ -13,17 +12,10 @@ import ru.amse.nikitin.simulator.IMessage;
 public interface INetObject extends IActiveObject {
 	/** default output gate getter */
 	IGate getOutputGate();
-	/** called to pass a message to object */
-	boolean recieveMessage(IMessage m);
-	// int getLastMessageID();
 	/** getter for last arrived message source */
 	int getLastMessageSource();
 	/** getter for last arrived message destanation */
 	int getLastMessageDest();
-	/** id setter */
-	int getID();
-	/** id getter */
-	void setID(int newID);
 	/** declares input gate for specifed class */
 	IGate declareInputGate(Class<? extends IPacket> msgClass);
 	/** returns input gate for specified class, if exists */
