@@ -31,7 +31,7 @@ public class BasicUI {
 
 	/** auxilliary frame creator */
 	protected static JFrame createMainFrame () {
-		JFrame mainFrame = new JFrame ("Random sensnet test");
+		JFrame mainFrame = new JFrame ("JWSN");
 		
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(Const.FRAME_WIDTH, Const.FRAME_HEIGHT);
