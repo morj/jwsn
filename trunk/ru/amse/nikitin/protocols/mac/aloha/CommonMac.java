@@ -32,7 +32,7 @@ public class CommonMac extends MotModule {
 			// System.out.println("mac step " + mot.getID());
 			if(isBlocked > 0) isBlocked--;
 			if (wasSent) {
-				mot.notification("msg queue size = " + pending.size());
+				mot.notification("q size = " + pending.size());
 				wasSent = false;
 			} else {
 				wasSent = true;
@@ -161,12 +161,12 @@ public class CommonMac extends MotModule {
 				wasSent = false;
 				return true;
 			} else {
-				mot.notification("msg queue size = " + pending.size());
+				mot.notification("q size = " + pending.size());
 				wasSent = true;
 				return sendNextMessage();
 			}
 		} else {
-			mot.notification("blocked, msg queue size = " + pending.size());
+			mot.notification("bl, q size = " + pending.size());
 			return false;
 		}
 	}

@@ -14,9 +14,9 @@ public class BsApp extends MotModule {
 	}
 	
 	public boolean lowerMessage(IWirelessPacket m) {
-		mot.notification("Привет!!!");
 		if (m.getData() != null) {
 			if (m.getData() instanceof BsData) {
+				mot.notification("hello arrived");
 				BsData data = (BsData)m.getData();
 				if (data.getType() == Const.hello) {
 					Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
@@ -26,8 +26,10 @@ public class BsApp extends MotModule {
 			}
 			if (m.getData() instanceof CarData) {
 				CarData data = (CarData)m.getData();
+				String where = data.getX() + ", " + data.getY();
+				mot.notification("car at " + where);
 				Logger.getInstance().logMessage(ELogMsgType.RECIEVE,
-						"car seen at " + data.getX() + ", " + data.getY());
+						"car seen at " + where);
 					return true;
 			}
 		} else {
