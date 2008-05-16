@@ -109,7 +109,7 @@ public class M5_Temperature {
 		MonitoredObject temp = new MonitoredObject(10, 10);
 		temp.addModule("logic", new TemperatureObject(temp));
 		temp.createTopology();
-		temp.newDesc(new ImageIcon("icons\\bs.png"), "temperature", 10, 10);
+		temp.newDesc(new ImageIcon("icons\\thermo.png"), "temperature", 10, 10);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			
