@@ -1,12 +1,12 @@
 <descriptions>
 	<style name = "send"
-		img = "icons\\terminal_vs.gif"
+		img = "terminal_vs.gif"
 	/>
 	<style name = "common"
-		img = "icons\\palm2_vs.gif"
+		img = "palm2_vs.gif"
 	/>
 	<style name = "bs"
-		img = "icons\\laptop_vs.gif"
+		img = "laptop_vs.gif"
 	/>
 	<mot id = "0"
 		style = "send"
