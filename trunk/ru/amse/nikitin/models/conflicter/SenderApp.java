@@ -11,7 +11,7 @@ import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class SenderApp extends EmptyApp {
-	protected final static Time someUnitsTime = new Time(1);
+	protected final static Time someUnitsTime = new Time(2);
 	protected final static Time oneUnitTime = new Time(0);
 	
 	protected static int helloCount = 1;
@@ -46,6 +46,7 @@ public class SenderApp extends EmptyApp {
 	public void init(IGraph<Integer> topology) {
 		Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 			"snd init " + mot.getID());
-		scheduleEvent(step, oneUnitTime);
+		// scheduleEvent(step, oneUnitTime);
+		step.run();
 	}
 }

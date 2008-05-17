@@ -51,7 +51,7 @@ public class CommonNet extends MotModule {
 			} else {
 				if (pred == BAD_PRED) {
 					pred = mot.getLastMessageSource();
-					System.err.println("pred of " + mot.getID() + " = " + pred);
+//					System.err.println("pred of " + mot.getID() + " = " + pred);
 					scheduleEvent(new ResendMsg(m), Time.randTime(4));
 					return true;
 				} else {
@@ -64,7 +64,7 @@ public class CommonNet extends MotModule {
 	}
 	public boolean upperMessage(IWirelessPacket m) {
 		if (pred == BAD_PRED) {
-			System.err.println("bad pred");
+//			System.err.println("bad pred");
 			return false;
 		} else {
 			IWirelessPacket msg = new WirelessPacket(pred, mot);

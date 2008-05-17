@@ -12,8 +12,8 @@ import ru.amse.nikitin.simulator.impl.Time;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 
 public class ConflicterApp extends EmptyApp {
-	protected final static Time offsetTime = new Time(6);
-	protected final static Time someUnitsTime = new Time(3);
+	// protected final static Time offsetTime = new Time(6);
+	protected final static Time someUnitsTime = new Time(5);
 	protected final static Time oneUnitTime = new Time(0);
 	
 	protected static int helloCount = 1;
@@ -55,6 +55,7 @@ public class ConflicterApp extends EmptyApp {
 	public void init(IGraph<Integer> topology) {
 		Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 			"snd init " + mot.getID());
-		scheduleEvent(step, offsetTime);
+		// scheduleEvent(step, offsetTime);
+		step.run();
 	}
 }
