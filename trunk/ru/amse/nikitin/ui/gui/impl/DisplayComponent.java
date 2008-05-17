@@ -336,6 +336,7 @@ public class DisplayComponent extends JComponent implements IDisplayComponent {
 		addMouseListener(listener);
 		addMouseMotionListener(listener);
 		Settings.getInstance().addPropertyChangeListener(new SettingsListener());
+		Settings.getInstance().addPropertyChangeListener(SwitchableLine.settingsListener);
 		try {
 			shapes.put(grid);
 		} catch (InterruptedException ie) {

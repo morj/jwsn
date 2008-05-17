@@ -17,12 +17,15 @@ public class SwitchableLine extends Line {
 			if (name.equals("Red arrows")) {
 				showArrows = ISettings.PROP_ON.equals(newValue);
 			}
+			System.err.println("arrrows set to " + newValue);
 		}
 	}
 	
-	static {
+	public static final IPropertyChangeListener settingsListener = new SettingsListener();
+	
+	/* static {
 		Settings.getInstance().addPropertyChangeListener(new SettingsListener());
-	}
+	} */
 
 	public SwitchableLine(IActiveObjectDesc d1, IActiveObjectDesc d2, Color color, Color bkColor) {
 		super(d1, d2, color, bkColor);
