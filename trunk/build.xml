@@ -5,13 +5,9 @@
 	</description>
 
 	<property name="src" location="."/>
-
   	<property name="deploy" location="deploy"/>
-  	
   	<property name="temp" location="tmp"/>
-  
 	<property name="docs" location="docs"/>
-	
 	<property environment="env"/>
 	<echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
 	
@@ -54,7 +50,20 @@
 		</jar>
 	</target>
 	
-	<target name="finalize" depends="dist" description="clean up">
+	<target name="source_docs_copy" description="Copy files" depends="init">
+		<zip destfile="${deploy}/JWSN_src.zip"
+			basedir="${src}"
+			includes="ru/**/*.java,icons/*.png,icons/*.gif,icons/*.jpg,Descriptions.xml,docs/Introduction.ppt,docs/Tutorial_Model.html"
+		/>
+	</target>
+	
+	<target name="short_desc_copy" description="Copy files" depends="init">
+		<dirset dir = "${docs}"/>
+		<copy file="${docs}/screenshot.png" todir="${deploy}"/>
+		<copy file="${docs}/Short_Description.html" todir="${deploy}"/>
+	</target>
+	
+	<target name="finalize" depends="dist,source_docs_copy,short_desc_copy" description="clean up">
 		<!-- Delete the ${build} and ${dist} directory trees -->
 		<delete dir="${temp}"/>
 	</target>
