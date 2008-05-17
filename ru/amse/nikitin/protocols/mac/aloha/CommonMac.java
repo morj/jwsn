@@ -51,7 +51,7 @@ public class CommonMac extends MotModule {
 
 		public void run () {
 			if(waiting.containsKey(id)) {
-				pending.addLast(waiting.get(id));
+				pending.addFirst(waiting.get(id));
 				Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 						"- msg " + id + ": resubmitting");
 			} else {
@@ -74,9 +74,11 @@ public class CommonMac extends MotModule {
 					"- msg " + id + " sent successfully!");
 			} else { // resend
 				if(tries.get(id) > 0) {
+					Time t = Time.randTime(4);
 					Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
-							"- msg " + id + ": resubmit scheduled");
-					scheduleEvent(new ResendMsg(id), Time.randTime(4));
+							"- msg " + id + ": resubmit scheduled at " + t.getTime());
+					
+					scheduleEvent(new ResendMsg(id), t);
 				} else {
 					Logger.getInstance().logMessage(ELogMsgType.INFORMATION,
 							"- msg " + id + ": resubmit cancelled");
@@ -109,7 +111,7 @@ public class CommonMac extends MotModule {
 						ELogMsgType.INFORMATION, 
 						"bad confirm data in msg " + m.getID()
 					); */
-					System.err.println("bad confirm data in msg " + m.getDest());
+					//System.err.println("bad confirm data in msg " + m.getDest());
 					return false;
 				} else {
 					MacData reciever = ((MacData)m.getData());
@@ -121,7 +123,7 @@ public class CommonMac extends MotModule {
 								"rem " + id
 							);
 							if (!lastMsg.releaseLock(mot)) {
-								System.err.println("not a lock owner");
+								//System.err.println("not a lock owner");
 							}
 							pending.remove(lastMsg);
 							lastMsg = null;
@@ -152,7 +154,7 @@ public class CommonMac extends MotModule {
 		IWirelessPacket msg = new WirelessPacket(m.getDest(), mot);
 		msg.encapsulate(m);
 		if(!msg.setLock(mot)) {
-			System.err.println("not a lock owner");
+			//System.err.println("not a lock owner");
 		}
 		// msg.setOnSendAction(new ConfirmMsg(msg));
 		pending.addLast(msg);

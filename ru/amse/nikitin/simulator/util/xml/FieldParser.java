@@ -81,11 +81,11 @@ public class FieldParser {
 			SAXParser parser = factory.newSAXParser();
 			parser.parse(byteStream, new MyContentHandler(objects));
 		} catch (ParserConfigurationException pce) {
-			System.err.println("Parser Config Error");
+//			System.err.println("Parser Config Error");
 		} catch (IOException ioe) {
-			System.err.println("I/O Error");
+//			System.err.println("I/O Error");
 		}  catch (SAXException sae) {
-			System.err.println(sae.getMessage());
+//			System.err.println(sae.getMessage());
 		}
 		
 		return res;

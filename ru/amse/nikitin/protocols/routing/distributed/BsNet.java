@@ -27,7 +27,7 @@ public class BsNet extends MotModule {
 	}
 	public boolean upperMessage(IWirelessPacket m) {
 		if (pred == BAD_PRED) {
-			System.err.println("bad pred");
+//			System.err.println("bad pred");
 			return false;
 		} else {
 			IWirelessPacket msg = new WirelessPacket(pred, mot);

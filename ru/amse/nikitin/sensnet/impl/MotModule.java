@@ -60,7 +60,7 @@ public class MotModule extends NetModule implements IMotModule {
 		if (arrivedOn.equals(Const.sensingGateName)) {
 			return sensingMessage(((IMonitoredPacket)m));
 		}
-		System.err.println("bad gate");
+		//System.err.println("bad gate");
 		return false;
 	}
 	

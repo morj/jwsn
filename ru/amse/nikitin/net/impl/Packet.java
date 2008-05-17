@@ -58,7 +58,7 @@ public class Packet implements IPacket {
 	public IPacket decapsulate() {
 		if (isIncapsulating) {
 			if (isLocked) {
-				System.err.println("packet is locked");
+				//System.err.println("packet is locked");
 				return (IPacket)data;
 			} else {
 				IPacket p = (IPacket)data;
