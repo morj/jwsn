@@ -6,8 +6,8 @@ import org.xml.sax.helpers.*;
 import java.util.*;
 
 import ru.amse.nikitin.simulator.IActiveObject;
+import ru.amse.nikitin.ui.gui.impl.Util;
 
-import javax.swing.ImageIcon;
 import javax.xml.parsers.*;
 
 class MyContentHandler extends DefaultHandler {
@@ -54,7 +54,7 @@ class MyContentHandler extends DefaultHandler {
 				if (styles.containsKey(style)) {
 					Style s = styles.get(style);
 					((IActiveObject)objects.get(id)).newDesc(
-						new ImageIcon(checkParam("img", s, atts)),
+						Util.getInstance().createImageIcon(checkParam("img", s, atts)),
 						atts.getValue(checkParam("name", s, atts)),
 						Integer.parseInt(checkParam("x", s, atts)),
 						Integer.parseInt(checkParam("y", s, atts))
@@ -81,11 +81,8 @@ public class FieldParser {
 			SAXParser parser = factory.newSAXParser();
 			parser.parse(byteStream, new MyContentHandler(objects));
 		} catch (ParserConfigurationException pce) {
-//			System.err.println("Parser Config Error");
 		} catch (IOException ioe) {
-//			System.err.println("I/O Error");
 		}  catch (SAXException sae) {
-//			System.err.println(sae.getMessage());
 		}
 		
 		return res;

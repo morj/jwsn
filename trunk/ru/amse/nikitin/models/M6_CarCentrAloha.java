@@ -1,66 +1,26 @@
 package ru.amse.nikitin.models;
 
-import javax.swing.ImageIcon;
 import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.protocols.app.BsApp;
+import ru.amse.nikitin.protocols.app.CarObject;
 import ru.amse.nikitin.protocols.app.SensorApp;
+import ru.amse.nikitin.protocols.app.TemperatureObject;
 import ru.amse.nikitin.protocols.mac.aloha.CommonMac;
-import ru.amse.nikitin.protocols.routing.centralized.CommonNet;
 import ru.amse.nikitin.protocols.routing.centralized.BsNet;
+import ru.amse.nikitin.protocols.routing.centralized.CommonNet;
+import ru.amse.nikitin.sensnet.impl.MonitoredObject;
 import ru.amse.nikitin.sensnet.impl.MonitoredPacket;
 import ru.amse.nikitin.sensnet.impl.Mot;
 import ru.amse.nikitin.sensnet.impl.MotGenerator;
 import ru.amse.nikitin.sensnet.impl.MotModule;
-import ru.amse.nikitin.sensnet.impl.MonitoredObject;
 import ru.amse.nikitin.sensnet.random.RandomArea;
-import ru.amse.nikitin.ui.gui.impl.BasicUI;
-import ru.amse.nikitin.simulator.util.graph.IGraph;
-import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.IDispatcher;
-import ru.amse.nikitin.protocols.app.CarObject;
-import ru.amse.nikitin.protocols.app.TemperatureObject;
+import ru.amse.nikitin.simulator.impl.Dispatcher;
+import ru.amse.nikitin.simulator.util.graph.IGraph;
+import ru.amse.nikitin.ui.gui.impl.BasicUI;
+import ru.amse.nikitin.ui.gui.impl.Util;
 
-/* abstract class MotGenerator implements IMotGenerator {
-	
-	protected void connectDuplexGates(IGate a, IGate b) {
-		a.setFrom(b);
-		a.setTo(b);
-		b.setTo(a);
-		b.setFrom(a);
-	}
-	
-	protected void declareDuplexGates(MotModule a, MotModule b) {
-		IGate u = a.declareGate("upper");
-		IGate l = b.declareGate("lower");
-		connectDuplexGates(u, l);
-	}
-
-
-	protected void connectModules(Mot m, MotModule mac, MotModule net, MotModule app) {
-		m.addModule("mac", mac);
-		m.addModule("net", net);
-		m.addModule("app", app);
-		
-		IGate gate = mac.declareGate("lower");
-		
-		IGate input = m.declareInputGate(WirelessPacket.class);
-		input.setTo(gate);
-		gate.setFrom(input);
-		
-		IGate output = m.getOutputGate();
-		gate.setTo(output);
-		output.setFrom(gate);
-		
-		declareDuplexGates(mac, net);
-		declareDuplexGates(net, app);
-	}
-	
-	public Mot generateMot(int x, int y, double power, double threshold) {
-		return null;
-	}
-	
-} /**/
 
 class BsMotGenerator extends MotGenerator {
 	public Mot generateMot(int x, int y, double power, double threshold) {
@@ -133,12 +93,12 @@ public class M6_CarCentrAloha {
 		MonitoredObject temp = new MonitoredObject(10, 10);
 		temp.addModule("logic", new TemperatureObject(temp));
 		temp.createTopology();
-		temp.newDesc(new ImageIcon("icons\\bs.png"), "temperature", 10, 10);
+		temp.newDesc(Util.getInstance().createImageIcon("thermo.png"), "temperature", 10, 10);
 		
 		MonitoredObject car = new MonitoredObject(100, 100);
 		car.addModule("logic", new CarObject(car));
 		car.createTopology();
-		car.newDesc(new ImageIcon("icons\\noicon.png"), "some car", 100, 100);
+		car.newDesc(Util.getInstance().createImageIcon("noicon.png"), "some car", 100, 100);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			

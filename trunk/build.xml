@@ -1,0 +1,62 @@
+<project name="JWSN" default="finalize" basedir=".">
+
+	<description>
+		JWSN buildfile
+	</description>
+
+	<property name="src" location="."/>
+
+  	<property name="deploy" location="deploy"/>
+  	
+  	<property name="temp" location="tmp"/>
+  
+	<property name="docs" location="docs"/>
+	
+	<property environment="env"/>
+	<echo message="ANT_HOME is set to = ${env.ANT_HOME}"/>
+	
+	<path id="classpath">
+		<!-- Define classpath for included lib's -->
+		<fileset dir="${env.JUNIT_HOME}" includes="junit.jar"/>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${deploy}"/>
+		<mkdir dir="${temp}"/>
+	</target>
+	
+	<target name="copy" description="Copy files" depends="init">
+		<dirset dir = "${temp}"/>
+		<copy todir="${temp}/icons">
+			<fileset dir="icons">
+				<include name = "*.png"/>
+				<include name = "*.gif"/>
+				<include name = "*.jpg"/>
+			</fileset>
+		</copy>
+		<copy file="Descriptions.xml" todir="${temp}"/>
+	</target>
+
+	<target name="compile" depends="copy" description="compile the source">
+		<!-- Compile the java code from ${src} into ${temp} -->
+		<javac srcdir="${src}"
+			destdir="${temp}"
+			source="1.6"
+			classpathref="classpath"/>
+	</target>
+	
+	<target name="dist" depends="compile" description="generate the distribution" >
+		<!-- Put everything in ${build} into the JWSN.jar file -->
+		<jar jarfile="${deploy}/JWSN.jar" basedir="${temp}">
+			<manifest>
+				<attribute name="Main-Class" value="ru.amse.nikitin.models.M4_CarsCentrAloha"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="finalize" depends="dist" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${temp}"/>
+	</target>
+	
+</project>

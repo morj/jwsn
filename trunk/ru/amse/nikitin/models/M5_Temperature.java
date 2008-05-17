@@ -1,6 +1,5 @@
 package ru.amse.nikitin.models;
 
-import javax.swing.ImageIcon;
 import ru.amse.nikitin.models.aloha.GraphProduceStrategy;
 import ru.amse.nikitin.net.IGate;
 import ru.amse.nikitin.protocols.app.BsApp;
@@ -16,6 +15,7 @@ import ru.amse.nikitin.sensnet.impl.MotModule;
 import ru.amse.nikitin.sensnet.impl.MonitoredObject;
 import ru.amse.nikitin.sensnet.random.RandomArea;
 import ru.amse.nikitin.ui.gui.impl.BasicUI;
+import ru.amse.nikitin.ui.gui.impl.Util;
 import ru.amse.nikitin.simulator.util.graph.IGraph;
 import ru.amse.nikitin.simulator.impl.Dispatcher;
 import ru.amse.nikitin.simulator.IDispatcher;
@@ -109,7 +109,7 @@ public class M5_Temperature {
 		MonitoredObject temp = new MonitoredObject(10, 10);
 		temp.addModule("logic", new TemperatureObject(temp));
 		temp.createTopology();
-		temp.newDesc(new ImageIcon("icons\\thermo.png"), "temperature", 10, 10);
+		temp.newDesc(Util.getInstance().createImageIcon("thermo.png"), "temperature", 10, 10);
 		
 		IDispatcher disp = Dispatcher.getInstance();
 			

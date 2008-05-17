@@ -20,8 +20,8 @@ class MyCellRenderer extends JLabel implements ListCellRenderer {
 	protected static final int dd = 0;
 	
 	protected final static ImageIcon[] deselectedIcons = {
-    	new ImageIcon("icons\\tool_inspect.png"),
-    	new ImageIcon("icons\\tool_edit.png")
+		Util.getInstance().createImageIcon("tool_inspect.png"),
+		Util.getInstance().createImageIcon("tool_edit.png")
     };
     
 	/* protected final static ImageIcon[] selectedIcons = {

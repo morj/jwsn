@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import ru.amse.nikitin.ui.gui.Const;
@@ -58,7 +57,7 @@ class RunSimulationAction extends AbstractAction {
 	/* package-private */ RunSimulationAction(DisplayComponent component) {
 		// super("Run");
 		putValue(SHORT_DESCRIPTION, "Run simulation");
-        putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
+		putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_run.png"));
 		this.component = component;
 	}
 
@@ -66,7 +65,7 @@ class RunSimulationAction extends AbstractAction {
 		if (running) {
 			Settings.getInstance().setProperty("Running", ISettings.PROP_OFF);
 			component.stopSimulation();
-			putValue(SMALL_ICON, new ImageIcon("icons\\icon_run.png"));
+			putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_run.png"));
 			running = false;
 		} else {
 			Settings.getInstance().setProperty("Running", ISettings.PROP_ON);
@@ -74,7 +73,7 @@ class RunSimulationAction extends AbstractAction {
 				String s = Settings.getInstance().getProperty("Speed");
 				int rate = Const.MAX_RATE - Integer.parseInt(s) + 1;
 				component.runSimulation(rate, units);
-				putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+				putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_paused.png"));
 				running = true;
 			}
 		}
@@ -88,7 +87,7 @@ class StopSimulationAction extends AbstractAction {
 	/* package-private */ StopSimulationAction(DisplayComponent component) {
 		// super("Stop");
 		putValue(SHORT_DESCRIPTION, "Stop simulation");
-        putValue(SMALL_ICON, new ImageIcon("icons\\icon_paused.png"));
+        putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_paused.png"));
 		this.component = component;
 	}
 	
@@ -104,7 +103,7 @@ class StepSimulationAction extends AbstractAction {
 	/* package-private */ StepSimulationAction(DisplayComponent component) {
 		// super("Step");
 		putValue(SHORT_DESCRIPTION, "Step simulation");
-        putValue(SMALL_ICON, new ImageIcon("icons\\icon_step.png"));
+        putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_step.png"));
 		this.component = component;
 	}
 	
@@ -124,7 +123,7 @@ class LongRunSimulationAction extends AbstractAction {
 			MessagesProgressBar m) {
 		// super("Step");
 		putValue(SHORT_DESCRIPTION, "Run simulation for given steps amount");
-        putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
+        putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_step_n.png"));
 		this.component = component;
 		this.m = m;
 		m.setAction(this);
@@ -144,7 +143,7 @@ class LongRunSimulationAction extends AbstractAction {
 					String s = Settings.getInstance().getProperty("Speed");
 					int rate = Const.MAX_RATE - Integer.parseInt(s) + 1;
 					component.stepSimulation(m, rate, units);
-					putValue(SMALL_ICON, new ImageIcon("icons\\icon_stop.png"));
+					putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_stop.png"));
 					running = true;
 				} catch (NumberFormatException nfe) {
 				}
@@ -153,7 +152,7 @@ class LongRunSimulationAction extends AbstractAction {
 	}
 	
 	/* package-private */ synchronized void resetBtn() {
-		putValue(SMALL_ICON, new ImageIcon("icons\\icon_step_n.png"));
+		putValue(SMALL_ICON, Util.getInstance().createImageIcon("icon_step_n.png"));
 		running = false;
 	}
 }

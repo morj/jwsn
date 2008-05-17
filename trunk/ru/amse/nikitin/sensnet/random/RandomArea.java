@@ -1,11 +1,10 @@
 package ru.amse.nikitin.sensnet.random;
 
-import javax.swing.ImageIcon;
-
 import ru.amse.nikitin.sensnet.IMotGenerator;
 import ru.amse.nikitin.sensnet.IMotModuleFactory;
 import ru.amse.nikitin.sensnet.IRandomArea;
 import ru.amse.nikitin.sensnet.impl.Mot;
+import ru.amse.nikitin.ui.gui.impl.Util;
 
 public class RandomArea implements IRandomArea {
 	public static final double commonMotPower = 900;
@@ -97,19 +96,19 @@ public class RandomArea implements IRandomArea {
 
 	private void createDescs(int count, Mot[] mots, CoordInfo coordInfo, int sendCount) {
 		for (int i = 0; i < sendCount; i++) {
-			mots[i].newDesc(new ImageIcon(
-				"icons\\terminal_vs.gif"), "send " + i,
+			mots[i].newDesc(
+				Util.getInstance().createImageIcon("terminal_vs.gif"), "send " + i,
 				coordInfo.motsX[i], coordInfo.motsY[i]
 			);
 		}
 		for (int i = sendCount; i < count-1; i++) {
-			mots[i].newDesc(new ImageIcon(
-				"icons\\palm2_vs.gif"), "mot " + i,
+			mots[i].newDesc(
+				Util.getInstance().createImageIcon("palm2_vs.gif"), "mot " + i,
 				coordInfo.motsX[i], coordInfo.motsY[i]
 			);
 		}
-		mots[count-1].newDesc(new ImageIcon(
-			"icons\\laptop_vs.gif"), "bs " + (count-1),
+		mots[count-1].newDesc(
+			Util.getInstance().createImageIcon("laptop_vs.gif"), "bs " + (count-1),
 			coordInfo.motsX[count-1], coordInfo.motsY[count-1]
 		);
 	}
