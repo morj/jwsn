@@ -1,0 +1,1 @@
+An educational project, wich purpose is to build an user- and developer- friendly WSN simulator.
